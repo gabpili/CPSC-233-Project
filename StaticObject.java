@@ -30,7 +30,7 @@ public class StaticObject{
     return y;
 
   }
-  
+
   public String getName(){
     return name;
   }
