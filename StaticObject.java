@@ -52,4 +52,10 @@ public class StaticObject{
   public String toString(){
     return name + " " + x + " " + y;
   }
+
+  StaticObject(StaticObject copy){
+    x = copy.x;
+    y = copy.y;
+    name = copy.name;
+  }
 }
