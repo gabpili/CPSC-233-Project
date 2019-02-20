@@ -44,9 +44,9 @@ public class StaticObject{
   }
 
   public double directionFrom(StaticObject d){
-    dx = d.x - this.x;
-    dy = d.y - this,y;
-    return Math.atan(dy/dx); 
+    dx = this.x - d.x;
+    dy = this.y - d.y;
+    return Math.atan2(dy, dx);
   }
 
   public String toString(){
