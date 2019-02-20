@@ -40,10 +40,10 @@ public class StaticObject{
   public double distance(StaticObject d){
     dx = d.x - this.x;
     dy = d.y - this.y;
-    return Math.sqrt(dx^2 + dy^2);
+    return Math.sqrt((dx * dx) + (dy * dy);
   }
 
   public String toString(){
-    return name + " " + x + " " + y
+    return name + " " + x + " " + y;
   }
 }
