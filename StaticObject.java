@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class StaticObject{
   private double x;
   private double y;
@@ -31,7 +33,23 @@ public class StaticObject{
 
   }
 
+  public String getName(){
+    return name;
+  }
+
+  public double distance(StaticObject d){
+    dx = d.x - this.x;
+    dy = d.y - this.y;
+    return Math.sqrt((dx * dx) + (dy * dy);
+  }
+
+  public double directionFrom(StaticObject d){
+    dx = d.x - this.x;
+    dy = d.y - this,y;
+    return Math.atan(dy/dx); 
+  }
+
   public String toString(){
-    return name + " " + x + " " + y
+    return name + " " + x + " " + y;
   }
 }
