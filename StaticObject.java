@@ -4,8 +4,8 @@ public class StaticObject{
   private String name;
 
   public StaticObject(double x, double y, String name){
-    this.x = x;
-    this.y = y;
+    setX(x);
+    setY(y);
     this.name = name;
 
 
@@ -32,6 +32,6 @@ public class StaticObject{
   }
 
   public String toString(){
-    return name + "" + x + "" + y
+    return name + " " + x + " " + y
   }
 }
