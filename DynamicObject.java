@@ -11,14 +11,12 @@ public class DynamicObject extends StaticObject {
 
     public DynamicObject(double x, double y, String name){
         super(x,y,name);
-        this.setSpeed(speed);
-        this.setDirection(direction);
   }
 
     public DynamicObject(double x, double y, String name, double speed, double direction){
           super(x, y, name);
-          setSpeed(speed);
-          setDirection(direction);
+          this.setSpeed(speed);
+          this.setDirection(direction);
     }
 
     public DynamicObject(DynamicObject toCopy){
