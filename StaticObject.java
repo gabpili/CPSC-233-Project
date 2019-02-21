@@ -38,14 +38,14 @@ public class StaticObject{
   }
 
   public double distance(StaticObject d){
-    dx = d.x - this.x;
-    dy = d.y - this.y;
-    return Math.sqrt((dx * dx) + (dy * dy);
+    double dx = d.x - this.x;
+    double dy = d.y - this.y;
+    return Math.sqrt((dx * dx) + (dy * dy));
   }
 
   public double directionFrom(StaticObject d){
-    dx = this.x - d.x;
-    dy = this.y - d.y;
+    double dx = this.x - d.x;
+    double dy = this.y - d.y;
     return Math.atan2(dy, dx);
   }
 
@@ -54,8 +54,8 @@ public class StaticObject{
   }
 
   StaticObject(StaticObject copy){
-    x = copy.x;
-    y = copy.y;
-    name = copy.name;
+    double x = copy.x;
+    double y = copy.y;
+    String name = copy.name;
   }
 }
