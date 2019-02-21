@@ -1,6 +1,6 @@
 import java.lang.Math;
 
-public class DynamicObject extends staticObject {
+public class DynamicObject extends StaticObject {
 
     /* Instance Variables */
     private double speed;
@@ -10,9 +10,7 @@ public class DynamicObject extends staticObject {
     /*constructors*/
 
     public DynamicObject(double x, double y, String name){
-        super(x);
-        super(y);
-        super(name);
+        super(x,y,name);
         this.setSpeed(speed);
         this.setDirection(direction);
   }
@@ -40,7 +38,7 @@ public class DynamicObject extends staticObject {
     }
     
     public void setXYVelocity(double xvelocity, double yvelocity){
-        setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity);
+        setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity));
         double newDirection = Math.atan2(yvelocity, xvelocity);
         if (newDirection >= 0){
           setDirection(newDirection);
