@@ -1,6 +1,6 @@
 import java.lang.Math;
 
-public class DynamicObject extends staticObject {
+public class DynamicObject extends StaticObject {
 
     /* Instance Variables */
     private double speed;
@@ -9,20 +9,14 @@ public class DynamicObject extends staticObject {
 
     /*constructors*/
 
-    public DynamicObject(double x, double y, String name)
-    {
-        super(x);
-        super(y);
-        super(name);
-        this.setSpeed(speed);
-        this.setDirection(direction);
+    public DynamicObject(double x, double y, String name){
+        super(x,y,name);
   }
 
-    public DynamicObject(double x, double y, String name, double speed, double direction )
-    {
+    public DynamicObject(double x, double y, String name, double speed, double direction){
           super(x, y, name);
-          setSpeed(speed);
-          setDirection(direction);
+          this.setSpeed(speed);
+          this.setDirection(direction);
     }
 
     public DynamicObject(DynamicObject toCopy){
@@ -36,16 +30,21 @@ public class DynamicObject extends staticObject {
     public void setSpeed(double spd){
       this.speed = spd;
     }
+    
     public void setDirection(double direct){
       this.direction = direct;
     }
+    
     public void setXYVelocity(double xvelocity, double yvelocity){
-        setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity);
+        setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity));
         double newDirection = Math.atan2(yvelocity, xvelocity);
-        if (newDirection >= 0)
+        if (newDirection >= 0){
           setDirection(newDirection);
-        else
-          setDirection(Math.PI * 2 + newDirection);  }
+        }
+        else {
+          setDirection(Math.PI * 2 + newDirection);  
+        }
+    }
 
     /*getters */
     public double getSpeed(){
