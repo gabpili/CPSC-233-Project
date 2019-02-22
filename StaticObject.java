@@ -9,10 +9,15 @@ public class StaticObject{
     setX(x);
     setY(y);
     this.name = name;
-
-
+    
   }
-
+  
+  public StaticObject(StaticObject copy){
+    double x = copy.x;
+    double y = copy.y;
+    String name = copy.name;
+  }
+  
   public void setX(double x){
     this.x = x;
 
@@ -35,27 +40,25 @@ public class StaticObject{
 
   public String getName(){
     return name;
+    
   }
 
   public double distance(StaticObject d){
     double dx = d.x - this.x;
     double dy = d.y - this.y;
     return Math.sqrt((dx * dx) + (dy * dy));
+    
   }
 
   public double directionFrom(StaticObject d){
     double dx = this.x - d.x;
     double dy = this.y - d.y;
     return Math.atan2(dy, dx);
+    
   }
 
   public String toString(){
     return name + " " + x + " " + y;
-  }
-
-  StaticObject(StaticObject copy){
-    double x = copy.x;
-    double y = copy.y;
-    String name = copy.name;
+    
   }
 }
