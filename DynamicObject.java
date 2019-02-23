@@ -29,10 +29,10 @@ public class DynamicObject extends StaticObject {
     }
     
     public void setDirection(double direction){
-        while(direction < 0){
+        while(direction < -Math.PI){
             direction += Math.PI * 2;
         }
-        while(direction >= Math.PI * 2){
+        while(direction >= Math.PI){
             direction -= Math.PI * 2;
         }
 
