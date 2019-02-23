@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class Engine{
 	private static Map currentMap;
@@ -40,15 +41,26 @@ public class Engine{
 		Car mainCar = currentMap.getDynamicObjList().get(0)
 		System.out.println(mainCar);
 		for(StaticObject o: objectsInProximity.get(0)){
-			double dirFromCar = o.directionFrom(mainCar) - mainCar.getDirection();
 			System.out.println(o.getName() + " " + o.distance(mainCar) + 
 				"m from main car, ");
 
+			double carDir = mainCar.getDirection();
+			double carToObj = o.directionFrom(mainCar);
+			double dDirection = carDir - carToObj;
 
+			if(dDirection >= Math.PI){
+				System.out.print((int) Math.toDegrees(carDir + carToObj) + "deg to the right");
+			}else if(dDirection >= 0){
+				System.out.print((int) Math.toDegrees(dDirection) + "deg to the left");
+			}else if(dDirection >= -Math.PI){
+				System.out.print((int) Math.toDegrees(-dDirection) + "deg to the right");
+			}else{
+				System.out.print((int) Math.toDegrees(Math.PI * 2 + dDirection) + "deg to the left");
+			}
 		}
 	}
 
 	public static void main(String[] args){
-		for()
+		
 	}
 }
