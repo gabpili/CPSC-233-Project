@@ -1,49 +1,48 @@
 import java.lang.Math;
 
 public class DynamicObject extends StaticObject {
-
     /* Instance Variables */
     private double speed;
     private double direction;
 
 
     /*constructors*/
-
     public DynamicObject(double x, double y, String name){
-        super(x,y,name);
-  }
+        this(x, y, name, 0, 0);
+    }
 
     public DynamicObject(double x, double y, String name, double speed, double direction){
-          super(x, y, name);
-          this.setSpeed(speed);
-          this.setDirection(direction);
+        super(x, y, name);
+        setSpeed(speed);
+        setDirection(direction);
     }
 
     public DynamicObject(DynamicObject toCopy){
-          super(toCopy);
-          this.speed = toCopy.speed;
-          this.direction = toCopy.direction;
+        super(toCopy);
+        this.speed = toCopy.speed;
+        this.direction = toCopy.direction;
     }
 
     /* setters */
-
-    public void setSpeed(double spd){
-      this.speed = spd;
+    public void setSpeed(double speed){
+        this.speed = speed;
     }
     
-    public void setDirection(double direct){
-      this.direction = direct;
+    public void setDirection(double direction){
+        while(direction < 0){
+            direction += Math.PI * 2;
+        }
+        while(direction > Math.PI * 2){
+            direction -= Math.PI * 2;
+        }
+
+        this.direction = direction;
     }
     
     public void setXYVelocity(double xvelocity, double yvelocity){
         setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity));
         double newDirection = Math.atan2(yvelocity, xvelocity);
-        if (newDirection >= 0){
-          setDirection(newDirection);
-        }
-        else {
-          setDirection(Math.PI * 2 + newDirection);  
-        }
+        setDirection(newDirection);
     }
 
     /*getters */
@@ -58,6 +57,7 @@ public class DynamicObject extends StaticObject {
     public double getXVelocity(){
         return Math.cos(direction) * speed;
     }
+    
     public double getYVelocity(){
         return Math.sin(direction) * speed;
     }
