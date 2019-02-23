@@ -32,7 +32,7 @@ public class DynamicObject extends StaticObject {
         while(direction < 0){
             direction += Math.PI * 2;
         }
-        while(direction > Math.PI * 2){
+        while(direction >= Math.PI * 2){
             direction -= Math.PI * 2;
         }
 
