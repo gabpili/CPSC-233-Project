@@ -15,7 +15,7 @@ public class Engine{
 			if(o instanceof Car)activeCars.add(o);
 		}
 
-		ArrayList<ArrayList<StaticObject> objectsInProximity = new ArrayList<ArrayList<StaticObject>>();
+		ArrayList<ArrayList<StaticObject>> objectsInProximity = new ArrayList<ArrayList<StaticObject>>();
 
 		for(int i=0; i<activeCars.size(); i++){
 			objectsInProximity.set(i, Map.getProximityObjects(activeCars.get(i)));
@@ -38,7 +38,7 @@ public class Engine{
 
 
 		// 4. display
-		Car mainCar = currentMap.getDynamicObjList().get(0)
+		Car mainCar = currentMap.getDynamicObjList().get(0);
 		System.out.println(mainCar);
 		for(StaticObject o: objectsInProximity.get(0)){
 			System.out.println(o.getName() + " " + o.distance(mainCar) + 
