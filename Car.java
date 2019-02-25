@@ -3,11 +3,19 @@ import java.lang.Math;
 public class Car extends DynamicObject{
 	private double baseAcceleration;
 	private double baseFriction;
-	private double angularVelocity;
+	private double angularVelocity = 0;
 
 	public Car(double x, double y, String name, double direction, double baseAcceleration, double baseFriction){
 		super(x,y,name,speed,direction);
+		this.baseAcceleration = baseAcceleration;
+		this.baseFriction = baseFriction;
+	}
 
+	public Car(Car toCopy){
+		super(toCopy);
+		this.baseAcceleration = toCopy.baseAcceleration;
+		this.baseFriction = toCopy.baseFriction;
+		this.angularVelocity = toCopy.angularVelocity;
 	}
 
 	public void setAngularVelocity(double angularVelocity){
@@ -16,7 +24,6 @@ public class Car extends DynamicObject{
 
 	public double getAngularVelocity(){
 		return angularVelocity;
-
 	}
 
 	public double getBaseAcceleration(){
@@ -29,7 +36,8 @@ public class Car extends DynamicObject{
 
 	public void tick(double time){
 		super.tick(time);
-		super.setDirection(super.getDirection() + angularVelocity);
+		super.setSpeed(super.getSpeed() - super.getSpeed() * 0.2 * time);
+		super.setDirection(super.getDirection() + angularVelocity * time);
 	}
 
 }

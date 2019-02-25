@@ -9,9 +9,9 @@ public class Map{
   private int height;
 
   public Map(ArrayList<StaticObject> staticObjList, ArrayList<DynamicObject> dynamicObjList, ArrayList<Interface> interfaceList, int width, int height){
-    this.staticObjList = staticObjList;
-    this.dynamicObjList = dynamicObjList;
-    this.interfaceList = interfaceList;
+    for(StaticObject o: staticObjList)this.staticObjList.add(o);
+    for(DynamicObject o: dynamicObjList)this.dynamicObjList.add(o);
+    for(Interface i: interfaceList)this.interfaceList.add(i);
     this.width = width;
     this.height = height;
   }
