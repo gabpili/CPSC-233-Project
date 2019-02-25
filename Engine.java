@@ -14,13 +14,14 @@ public class Engine{
 			ArrayList<Car> activeCars = new ArrayList<Car>();
 
 			for(DynamicObject o: currentMap.getDynamicObjList()){
-				if(o instanceof Car)activeCars.add(o);
+				if(o instanceof Car)activeCars.add((Car) o);
 			}
 
 			ArrayList<ArrayList<StaticObject>> objectsInProximity = new ArrayList<ArrayList<StaticObject>>();
 
 			for(int i=0; i<activeCars.size(); i++){
-				objectsInProximity.set(i, Map.getProximityObjects(activeCars.get(i)));
+				
+				objectsInProximity.set(i, currentMap.getProximityObjects(activeCars.get(i)));
 			}
 			// objectsInProximity contains arrays of objects close to a car, for each car in activeCars
 
@@ -31,7 +32,7 @@ public class Engine{
 
 			if(text.equals("exit"))exit = true;
 
-			Map.giveInput(keysIn, time);
+			currentMap.giveInput(keysIn, time);
 
 
 			// 3. tick
@@ -66,16 +67,21 @@ public class Engine{
 	}
 
 	public static void main(String[] args){
-		ArrayList<StaticObject> obstacles = new ArrayList<StaticObject>();
 		ArrayList<Car> carList = new ArrayList<Car>();
-
-		for(int i=0; i<10; i++){
-			obstacles.add(new StaticObstacle(30, 10 + 5 * i, "l" + i));
-			obstacles.add(new StaticObstacle(70, 10 + 5 * i, "r" + i));
-		}
+		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
 
 		carList.add(new Car(50, 0, "Magic School Bus", Math.toRadians(90), 8.2, 0.3));
 
-		currentMap = new Map()
+		interfaceList.add(new Interface(carList.get(0)));
+
+		currentMap = new Map(obstacles, new ArrayList<DynamicObject>().addAll(carList), interfaceList, 200, 200);
+
+		for(int i=0; i<10; i++){
+			currentMap.addStaticObject(new StaticObstacle(30, 10 + 5 * i, "l" + i));
+			currentMap.addStaticObject(new StaticObstacle(70, 10 + 5 * i, "r" + i));
+		}
+
+
+
 	}
 }

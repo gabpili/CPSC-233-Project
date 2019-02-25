@@ -1,6 +1,6 @@
 import java.lang.Math;
 
-public class StaticObject{
+public abstract class StaticObject{
   private double x;
   private double y;
   private String name;
