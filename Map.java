@@ -8,38 +8,32 @@ public class Map{
   private int width;
   private int height;
 
-  public Map(ArrayList<StaticObject> staticObjList, ArrayList<DynamicObject> dynamicObjList, ArrayList<Interface> interfaceList, int width, int height){
-    for(StaticObject o: staticObjList)this.staticObjList.add(o);
-    for(DynamicObject o: dynamicObjList)this.dynamicObjList.add(o);
-    for(Interface i: interfaceList)this.interfaceList.add(i);
+  public Map(ArrayList<Interface> interfaceList, int width, int height){
+    this.interfaceList = interfaceList;
     this.width = width;
     this.height = height;
   }
 
-  public ArrayList<StaticObject> getStaticObjList(){
-    ArrayList<StaticObject> copy = new ArrayList<StaticObject>();
-    for (StaticObject i: this.staticObjList){
-      copy.add(new StaticObject(i));
-    }
+  public Map(ArrayList<StaticObject> staticObjList, ArrayList<DynamicObject> dynamicObjList, ArrayList<Interface> interfaceList, int width, int height){
+    this(interfaceList, width, height);
+    this.staticObjList = staticObjList;
+    this.dynamicObjList = dynamicObjList;
+  }
 
-    return copy;
+  public ArrayList<StaticObject> getStaticObjList(){
+    return staticObjList;
   }
 
   public ArrayList<DynamicObject> getDynamicObjList(){
-    ArrayList<DynamicObject> copy = new ArrayList<DynamicObject>();
-    for (DynamicObject i: this.dynamicObjList){
-      copy.add(new DynamicObject(i));
-    }
-
-    return copy;
+    return dynamicObjList;
   }
 
   public void addStaticObject(StaticObject s1){
-    this.staticObjList.add(new StaticObject(s1));
+    this.staticObjList.add(s1);
   }
 
   public void addDynamicObject(DynamicObject d1){
-    this.dynamicObjList.add(new DynamicObject(d1));
+    this.dynamicObjList.add(d1);
   }
 
   public void giveInput(ArrayList<Character> character, double time){
@@ -59,11 +53,11 @@ public class Map{
     giveInput(copy, time);
   }
 
-  public ArrayList<Integer> getProximityObjects(Car car){
-    ArrayList<Integer> copy = new ArrayList<Integer>();
-    for (int i = 0; i < staticObjList.size(); i++){
-      if (i.distance(car) <= 30){
-        copy.add(new Integer(i));
+  public ArrayList<StaticObject> getProximityObjects(Car car){
+    ArrayList<StaticObject> copy = new ArrayList<StaticObject>();
+    for (StaticObject o: staticObjList){
+      if (o.distance(car) <= 30){
+        copy.add(o);
 
       }
     }

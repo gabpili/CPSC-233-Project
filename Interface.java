@@ -15,10 +15,10 @@ public class Interface{
 	private void brake(double time){
 		double v = attachedCar.getSpeed();
 
-		if(speed > 0){
+		if(v > 0){
 			v -= attachedCar.getBaseAcceleration() * time * 1.5;
 		}else{
-			v += attachedCar.getBaseAcceleration() * time * 0.3;
+			v += attachedCar.getBaseAcceleration() * time * 0.6;
 		}
 
 		attachedCar.setSpeed(v);
@@ -26,13 +26,14 @@ public class Interface{
 
 	private void turn(boolean clockwise, double time){
 		if(clockwise){
-			attachedCar.setAngularVelocity(Math.toRadians(10));
+			attachedCar.setAngularVelocity(Math.toRadians(50));
 		}else{
-			attachedCar.setAngularVelocity(Math.toRadians(-10));
+			attachedCar.setAngularVelocity(Math.toRadians(-50));
 		}
 	}
 
 	public void takeInput(ArrayList<Character> input, double time){
+		attachedCar.setAngularVelocity(0);
 		for(char c: input){
 			switch(c){
 				case('w'):
