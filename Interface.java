@@ -9,21 +9,19 @@ public class Interface{
 	}
 
 	private void accelerate(double time){
-		double speed = attachedCar.getSpeed();
-
-		if(speed > 0){
-			double a = attachedCar.getBaseAcceleration() * time;
-		}else{
-			double a = attachedCar.getBaseAcceleration() * time * -1;
-		}
-
-		attachedCar.setSpeed(speed + a);
+		attachedCar.setSpeed(attachedCar.getSpeed() + attachedCar.getBaseAcceleration() * time);
 	}
 
 	private void brake(double time){
-		double speed = attachedCar.getSpeed(); 
-		
-		attachedCar.setSpeed(speed - speed * getBaseFriction() * time);
+		double v = attachedCar.getSpeed();
+
+		if(speed > 0){
+			v -= attachedCar.getBaseAcceleration() * time * 1.5;
+		}else{
+			v += attachedCar.getBaseAcceleration() * time * 0.3;
+		}
+
+		attachedCar.setSpeed(v);
 	}
 
 	private void turn(boolean clockwise, double time){

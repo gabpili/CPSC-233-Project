@@ -34,8 +34,7 @@ public class Car extends DynamicObject{
 		return baseFriction;
 	}
 
-	public void tick(double time){
-		super.tick(time);
+	public void tickExtended(double time){
 		super.setSpeed(super.getSpeed() - super.getSpeed() * 0.2 * time);
 		super.setDirection(super.getDirection() + angularVelocity * time);
 	}
