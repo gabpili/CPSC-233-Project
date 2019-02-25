@@ -8,12 +8,16 @@ public class Map{
   private int width;
   private int height;
 
-  public Map(ArrayList<StaticObject> staticObjList, ArrayList<DynamicObject> dynamicObjList, ArrayList<Interface> interfaceList, int width, int height){
-    for(StaticObject o: staticObjList)this.staticObjList.add(o);
-    this.dynamicObjList = dynamicObjList;
+  public Map(ArrayList<Interface> interfaceList, int width, int height){
     this.interfaceList = interfaceList;
     this.width = width;
     this.height = height;
+  }
+
+  public Map(ArrayList<StaticObject> staticObjList, ArrayList<DynamicObject> dynamicObjList, ArrayList<Interface> interfaceList, int width, int height){
+    this(interfaceList, width, height);
+    this.staticObjList = staticObjList;
+    this.dynamicObjList = dynamicObjList;
   }
 
   public ArrayList<StaticObject> getStaticObjList(){
@@ -49,11 +53,11 @@ public class Map{
     giveInput(copy, time);
   }
 
-  public ArrayList<Integer> getProximityObjects(Car car){
-    ArrayList<Integer> copy = new ArrayList<Integer>();
-    for (int i = 0; i < staticObjList.size(); i++){
-      if (staticObjList.get(i).distance(car) <= 30){
-        copy.add(new Integer(i));
+  public ArrayList<StaticObject> getProximityObjects(Car car){
+    ArrayList<StaticObject> copy = new ArrayList<StaticObject>();
+    for (StaticObject o: staticObjList){
+      if (o.distance(car) <= 30){
+        copy.add(o);
 
       }
     }
