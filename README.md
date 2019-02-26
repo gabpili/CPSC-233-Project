@@ -5,7 +5,7 @@ Accessing the files
   > You will need to download every class under the demo-1 branch.
   > You will need to place all the class files in the same folder.
   > Use 'javac' to compile the 'Engine' class.
-  > Execute the 'Engine' class.
+  > Run the 'Engine' class.
   > You will not be using JUnit for this demo. 
 
 Controls     
