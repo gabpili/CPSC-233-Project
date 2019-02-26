@@ -58,7 +58,7 @@ public abstract class StaticObject{
   }
 
   public String toString(){
-    return name + " " + (int) x + " " + (int) y;
+    return name + " x:" + (int) x + "m y:" + (int) y +"m ";
     
   }
 }
