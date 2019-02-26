@@ -72,6 +72,6 @@ public abstract class DynamicObject extends StaticObject {
     abstract void tickExtended(double time);
 
     public String toString(){
-        return super.toString() + " " + (int) speed +  " " + (int) Math.toDegrees(direction);
+        return super.toString() + (int) speed +  "m/s " + (int) Math.toDegrees(direction) + "deg";
     }
 }
