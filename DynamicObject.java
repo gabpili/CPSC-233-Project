@@ -7,12 +7,12 @@ public abstract class DynamicObject extends StaticObject {
 
 
     /*constructors*/
-    public DynamicObject(double x, double y, String name){
-        this(x, y, name, 0, 0);
+    public DynamicObject(double x, double y, String name, double halfW, double halfH){
+        this(x, y, name, halfW, halfH, 0, 0);
     }
 
-    public DynamicObject(double x, double y, String name, double speed, double direction){
-        super(x, y, name);
+    public DynamicObject(double x, double y, String name, double halfW, double halfH, double speed, double direction){
+        super(x, y, name, halfW, halfH);
         setSpeed(speed);
         setDirection(direction);
     }
@@ -70,6 +70,7 @@ public abstract class DynamicObject extends StaticObject {
     }
 
     abstract void tickExtended(double time);
+
 
     public String toString(){
         return super.toString() + (int) speed +  "m/s " + (int) Math.toDegrees(direction) + "deg";
