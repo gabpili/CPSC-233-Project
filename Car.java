@@ -5,8 +5,8 @@ public class Car extends DynamicObject{
 	private double baseFriction;
 	private double angularVelocity = 0;
 
-	public Car(double x, double y, String name, double direction, double baseAcceleration, double baseFriction){
-		super(x,y,name,0,direction);
+	public Car(double x, double y, String name, double direction, double halfW, double halfH, double baseAcceleration, double baseFriction){
+		super(x,y,name,0,direction, halfW, halfH);
 		this.baseAcceleration = baseAcceleration;
 		this.baseFriction = baseFriction;
 	}
