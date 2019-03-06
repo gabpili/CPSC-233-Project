@@ -16,9 +16,15 @@ public class Map{
     ArrayList<StaticObject> staticObjList,
     ArrayList<DynamicObject> dynamicObjList,
     ArrayList<Interface> interfaceList, int width, int height) {
-        this.staticObjList.addAll(staticObjList);
-        this.dynamicObjList.addAll(dynamicObjList);
-        this.interfaceList.addAll(interfaceList);
+        if (staticObjList != null) {
+            this.staticObjList.addAll(staticObjList);
+        }
+        if (dynamicObjList != null) {
+            this.dynamicObjList.addAll(dynamicObjList);
+        }
+        if (interfaceList != null) {
+            this.interfaceList.addAll(interfaceList);
+        }
         this.width = width;
         this.height = height;
     }
@@ -56,10 +62,10 @@ public class Map{
         giveInput(copy, time);
     }
 
-    public ArrayList<StaticObject> getProximityObjects(Car car) {
+    public ArrayList<StaticObject> getProximityObjects(DynamicObject d, double proximity) {
         ArrayList<StaticObject> copy = new ArrayList<StaticObject>();
             for (StaticObject o: staticObjList) {
-                if (o.distance(car) <= 30) {
+                if (o.distance(d) <= proximity) {
                 copy.add(o);
 
             }
@@ -68,9 +74,9 @@ public class Map{
         return copy;
     }
 
-    public void tickAll(){
+    public void tickAll(double time){
         for (DynamicObject o: dynamicObjList) {
-
+            o.tick(time);
         }
     }
 }
