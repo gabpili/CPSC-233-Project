@@ -9,6 +9,6 @@ public class FinishLine extends Checkpoint{
 		}
 
 @Override
-		public void resolveCollision(DynamicObject dObj)
+		public void resolveCollision(DynamicObject dObj){
 		}
 	}
