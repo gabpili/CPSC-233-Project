@@ -12,10 +12,11 @@ public abstract class StaticObject{
     setX(x);
     setY(y);
     this.name = name;
+
     this.halfW = halfW;
     this.halfH = halfH;
     maxR = Math.sqrt(halfW * halfW + halfH * halfH);
-    }
+  }
 
   public StaticObject(StaticObject copy){
     double x = copy.x;
@@ -77,6 +78,5 @@ public abstract class StaticObject{
     return name + " x:" + (int) x + "m y:" + (int) y +"m ";
     }
 
-  abstract void resolveCollision(DynamicObject);{
-  }
+  abstract void resolveCollision(DynamicObject);
 }
