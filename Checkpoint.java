@@ -1,8 +1,8 @@
 public class Checkpoint extends Wall{
 	  private int number;
 
-		public Checkpoint(int number, double x2, double y2, String name, double halfW, double halfH){
-				super(x2, y2, name, halfW, halfH);
+		public Checkpoint (double x, double y, String name, double x2, double y2, int number){
+				super(x, y, name, x2, y2);
 				setNumber(number);
 		}
 
@@ -22,6 +22,6 @@ public class Checkpoint extends Wall{
 
 
 @Override
-		public void resolveCollision(DynamicObject){
+		public void resolveCollision(DynamicObject dObj){
 		}
 }

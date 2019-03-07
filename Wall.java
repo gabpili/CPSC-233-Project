@@ -2,14 +2,14 @@ public class Wall extends StaticObject{
 	  private double x2;
 	  private double y2;
 
-		public Wall(double x2, double y2, String name, double halfW, double halfH){
-				super(name, halfW, halfH);
+		public Wall(double x, double y, String name, double x2, double y2){
+				super(x, y, name, (x2-x)/2, (y2-y)/2);
 				setX2(x2);
 				setY2(y2);
 		}
 
 	  public Wall(Wall copy){
-			  super(copy)
+			  super(copy);
 		    double x2 = copy.x2;
 		    double y2 = copy.y2;
         }
@@ -31,6 +31,6 @@ public class Wall extends StaticObject{
 		}
 
 @Override
-		public void resolveCollision(DynamicObject){
+		public void resolveCollision(DynamicObject dObj){
 		}
 }

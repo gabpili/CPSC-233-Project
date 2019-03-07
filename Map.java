@@ -37,6 +37,14 @@ public class Map{
         return dynamicObjList;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public void addStaticObject(StaticObject s1) {
         this.staticObjList.add(s1);
     }
@@ -45,12 +53,18 @@ public class Map{
         this.dynamicObjList.add(d1);
     }
 
+    public void removeStaticObject(StaticObject toRemove) {
+        staticObjList.remove(toRemove);
+    }
+
+    public void removeDynamicObject(DynamicObject toRemove) {
+        dynamicObjList.remove(toRemove);
+    }
+
     public void giveInput(ArrayList<Character> character, double time) {
         for (Interface i: interfaceList) {
             i.takeInput(character, time);
-
         }
-
     }
 
     public void giveInput(String input, double time) {
@@ -58,7 +72,6 @@ public class Map{
             for (int i = 0; i < input.length(); i++) {
                 copy.add(new Character(input.charAt(i)));
             }
-
         giveInput(copy, time);
     }
 
@@ -67,7 +80,6 @@ public class Map{
             for (StaticObject o: staticObjList) {
                 if (o.distance(d) <= proximity) {
                 copy.add(o);
-
             }
         }
 

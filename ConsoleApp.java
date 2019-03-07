@@ -6,7 +6,7 @@ public class ConsoleApp {
 	private static Map currentMap;
 
 
-	public static void collisionStep() {
+	public static void collisionStep(double time) {
 
 	}
 
@@ -46,7 +46,7 @@ public class ConsoleApp {
 	public static void mainLoop(double time){
 		Scanner keyboard = new Scanner(System.in);
 		while (true) {
-			collisionStep();
+			collisionStep(time);
 			inputStep(keyboard, time);
 			tickStep(time);
 			displayStep();
@@ -54,7 +54,7 @@ public class ConsoleApp {
 	}
 
 	public static void main(String[] args) {
-		Car mainCar = new Car(50, 0, "Magic School Bus", Math.toRadians(90), 8.2, 0.3);
+		Car mainCar = new Car(50, 0, "Magic School Bus", Math.toRadians(90), 8.2, 0.3, 1, 1.5);
 		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
 		interfaceList.add(new Interface(mainCar));
 
@@ -63,8 +63,8 @@ public class ConsoleApp {
 		currentMap.addDynamicObject(mainCar);
 
 		for (int i=0; i<5; i++) {
-			currentMap.addStaticObject(new StaticObstacle(30, 10 + 10 * i, "RCone" + i));
-			currentMap.addStaticObject(new StaticObstacle(70, 5 + 10 * i, "LCone" + i));
+			currentMap.addStaticObject(new StaticObstacle(30, 10 + 10 * i, "RCone" + i, 1, 1));
+			currentMap.addStaticObject(new StaticObstacle(70, 5 + 10 * i, "LCone" + i, 1, 1));
 		}
 
 		mainLoop(1.0/4);
