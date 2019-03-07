@@ -9,7 +9,7 @@ public class Wall extends StaticObject{
 		}
 
 	  public Wall(Wall copy){
-			  super(copy)
+			  super(copy);
 		    double x2 = copy.x2;
 		    double y2 = copy.y2;
         }
