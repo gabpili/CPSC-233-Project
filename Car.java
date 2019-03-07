@@ -39,4 +39,7 @@ public class Car extends DynamicObject{
 		super.setDirection(super.getDirection() + angularVelocity * time);
 	}
 
+@Override
+			public void resolveCollision(DynamicObject dObj){
+			}
 }
