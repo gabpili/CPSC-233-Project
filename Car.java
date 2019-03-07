@@ -5,8 +5,8 @@ public class Car extends DynamicObject{
 	private double baseFriction;
 	private double angularVelocity = 0;
 
-	public Car(double x, double y, String name, double direction, double baseAcceleration, double baseFriction){
-		super(x,y,name,0,direction);
+	public Car(double x, double y, String name, double direction, double halfW, double halfH, double baseAcceleration, double baseFriction){
+		super(x, y, name, halfW, halfH, 0, direction);
 		this.baseAcceleration = baseAcceleration;
 		this.baseFriction = baseFriction;
 	}
@@ -37,6 +37,11 @@ public class Car extends DynamicObject{
 	public void tickExtended(double time){
 		super.setSpeed(super.getSpeed() - super.getSpeed() * baseFriction * time);
 		super.setDirection(super.getDirection() + angularVelocity * time);
+	}
+
+	@Override
+	public void resolveCollision(DynamicObject dObj) {
+
 	}
 
 }
