@@ -11,17 +11,20 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.animation.AnimationTimer;
 
 
 public class GraphicalApp extends Application {
 	private static int scale = 4;
 	private static Map currentMap;
-    private static boolean showFpsOverlay = true;
     private static HashMap<StaticObject, Shape> objDisplay = new HashMap<StaticObject, Shape>();
 	private static ArrayList<StaticObject> toUpdate = new ArrayList<StaticObject>();
+	private static ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
+    private static boolean showFpsOverlay = true;
 	private static Car mainCar = new Car(50, 5, "Magic School Bus", Math.toRadians(90), 1, 1.5, 8.2, 0.3);
 
 
@@ -30,7 +33,16 @@ public class GraphicalApp extends Application {
 	}
 
 	public static void inputStep(double time) {
+		if (!keysPressed.isEmpty()) {
+			ArrayList<Character> inputCharacters = new ArrayList<Character>();
 
+			for (KeyCode k: keysPressed) {
+				if (k.isLetterKey()) {
+					inputCharacters.add(new Character(k.toString().charAt(0)));
+				}
+			}
+			currentMap.giveInput(inputCharacters, time);
+		}
 	}
 
 	public static void tickStep(double time) {
@@ -47,15 +59,20 @@ public class GraphicalApp extends Application {
     private static void updateDisplayShape (Rectangle r, StaticObject o) {
         r.setX((o.getX() - o.getHalfW()) * scale);
         r.setY((o.getY() - o.getHalfH()) * scale);
+		if (o instanceof DynamicObject) {
+			DynamicObject o_ = (DynamicObject) o;
+			r.setRotate(Math.toDegrees(o_.getDirection()) + 90);
+		}
     }
 
 	public static void displayStep() {
 		if (!toUpdate.isEmpty()) {
-			ArrayList<StaticObject> tempStaticObjList = currentMap.getStaticObjList();
-	        ArrayList<DynamicObject> tempDynamicObjList = currentMap.getDynamicObjList();
+			//ArrayList<StaticObject> tempStaticObjList = ;
+	        //ArrayList<DynamicObject> tempDynamicObjList = ;
 
 	        for (StaticObject o: toUpdate) {
-	            if (!tempStaticObjList.contains(o) && !tempDynamicObjList.contains(o)) {
+	            if (!currentMap.getStaticObjList().contains(o) &&
+					!currentMap.getDynamicObjList().contains(o)) {
 	                objDisplay.remove(o);
 	            }else {
 	                if (o instanceof Wall) {
@@ -68,7 +85,8 @@ public class GraphicalApp extends Application {
 		}
 	}
 
-    private static HashMap<StaticObject, Shape> createDisplayShapes(ArrayList<? extends StaticObject> objList) {
+    private static HashMap<StaticObject, Shape> createDisplayShapes(
+		ArrayList<? extends StaticObject> objList) {
         HashMap<StaticObject, Shape> temp = new HashMap<StaticObject, Shape>();
         for (StaticObject o: objList) {
             if (o instanceof Wall) {
@@ -90,15 +108,19 @@ public class GraphicalApp extends Application {
 	public void start (Stage primaryStage) throws Exception {
 		Group root = new Group();
 
+		// game window with physical game objects
         Pane gameWindow = new Pane();
-
         objDisplay.putAll(createDisplayShapes(currentMap.getStaticObjList()));
         objDisplay.putAll(createDisplayShapes(currentMap.getDynamicObjList()));
-
         gameWindow.getChildren().addAll(objDisplay.values());
 
-		System.out.println(mainCar.getHalfW());
+		// testing info screen
+		Pane infoScreen = new Pane();
+		Label carInfo = new Label();
+		infoScreen.getChildren().add(carInfo);
+		carInfo.setLayoutY(150);
 
+		// fps overlay
         Group fpsOverlay = new Group();
         Label fpsLabel = new Label();
         Label gameFpsLabel = new Label();
@@ -106,15 +128,36 @@ public class GraphicalApp extends Application {
         fpsOverlay.getChildren().add(gameFpsLabel);
         gameFpsLabel.setLayoutY(20);
 
+
 		root.getChildren().add(fpsOverlay);
         root.getChildren().add(gameWindow);
+		root.getChildren().add(infoScreen);
+        Scene scene = new Scene(root, currentMap.getWidth() * scale,
+			currentMap.getHeight() * scale);
+		// handle key press + release
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				KeyCode k = e.getCode();
+				if (!keysPressed.contains(k)) {
+					keysPressed.add(k);
+				}
+			}
+		});
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				KeyCode k = e.getCode();
+				if (keysPressed.contains(k)) {
+					keysPressed.remove(k);
+				}
+			}
+		});
 
-        Scene scene = new Scene(root, currentMap.getWidth() * scale, currentMap.getHeight() * scale);
-        primaryStage.setTitle("title");
-        primaryStage.setScene(scene);
+		primaryStage.setScene(scene);
+        primaryStage.setTitle("Project C");
         primaryStage.show();
 
-		System.out.println(((Rectangle)objDisplay.get(mainCar)).getWidth());
 
         AnimationTimer animator = new AnimationTimer(){
             private final int idealGameFps = 30; // 0 < fps <= 60
@@ -139,6 +182,7 @@ public class GraphicalApp extends Application {
                     inputStep(time);
                     tickStep(time);
                     displayStep();
+					carInfo.setText("" + mainCar);
 
                     //back to fps stuff
                     if (showFpsOverlay) {
@@ -157,6 +201,7 @@ public class GraphicalApp extends Application {
 	}
 
 	public static void main(String[] args) {
+		toUpdate.add((StaticObject) mainCar);
 
 		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
 		interfaceList.add(new Interface(mainCar));
