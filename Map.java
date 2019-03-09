@@ -71,7 +71,7 @@ public class Map{
   public void giveInput(String input, double time) {
         ArrayList<Character> copy = new ArrayList<Character>();
             for (int i = 0; i < input.length(); i++) {
-                copy.add(new Character(input.charAt(i)));
+                copy.add(Character.valueOf(input.charAt(i)));
             }
         giveInput(copy, time);
     }
