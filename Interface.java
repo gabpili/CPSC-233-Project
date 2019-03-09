@@ -36,16 +36,16 @@ public class Interface{
 		attachedCar.setAngularVelocity(0);
 		for(char c: input){
 			switch(c){
-				case('w'):
+				case('W'):
 					accelerate(time);
 					break;
-				case('s'):
+				case('S'):
 					brake(time);
 					break;
-				case('a'):
+				case('A'):
 					turn(false, time);
 					break;
-				case('d'):
+				case('D'):
 					turn(true, time);
 					break;
 			}

@@ -22,9 +22,7 @@ public class Map{
         if (dynamicObjList != null) {
             this.dynamicObjList.addAll(dynamicObjList);
         }
-        if (interfaceList != null) {
-            this.interfaceList.addAll(interfaceList);
-        }
+        this.interfaceList.addAll(interfaceList);
         this.width = width;
         this.height = height;
     }
@@ -53,12 +51,14 @@ public class Map{
         this.dynamicObjList.add(d1);
     }
 
-    public void removeStaticObject(StaticObject toRemove) {
+    public StaticObject removeStaticObject(StaticObject toRemove) {
         staticObjList.remove(toRemove);
+        return toRemove;
     }
 
-    public void removeDynamicObject(DynamicObject toRemove) {
+    public DynamicObject removeDynamicObject(DynamicObject toRemove) {
         dynamicObjList.remove(toRemove);
+        return toRemove;
     }
 
     public void giveInput(ArrayList<Character> character, double time) {
