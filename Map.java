@@ -87,7 +87,7 @@ public class Map{
         return copy;
     }
 
-    public ArrayList<StaticObject> detectAABB(DynamicObject dObj, ArrayList<StaticObject> sObjs){
+    public ArrayList<StaticObject> detectAABB(DynamicObject dObj, StaticObject sObjs){
         // create new list for potential collisions
         ArrayList<StaticObject> potentialCollisions = new ArrayList<StaticObject>();
         // iterating through list of static objects
