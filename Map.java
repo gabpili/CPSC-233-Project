@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class Map{
 
@@ -86,6 +87,50 @@ public class Map{
         return copy;
     }
 
+    public boolean testSAT(DynamicObject b, StaticObject a) {
+        double tx, ty;
+        if (a instanceof Wall){
+            double ai = a.getX2() - a.getX();
+            double aj = a.getY2() - a.getY();
+            double di = b.getX() - a.getX();
+            double dj = b.getY() - a.getY();
+            double proj = ((di*ai) + (dj*aj)) / (ai*ai + aj*aj);
+            tx = di - proj*ai;
+            ty = dj - proj*aj;
+        }
+        else{
+            tx = a.getX() - b.getX();
+            ty = a.getY() - b.getY();
+        }
+        double dir = b.getDirection();
+        double theta = dir + (Math.PI/2);
+        double cTh = Math.cos(theta);
+        double cD = Math.cos(dir);
+        double sTh = Math.sin(theta);
+        double sD = Math.sin(dir);
+
+        return !(Math.abs(tx) > a.getHalfW()
+            + Math.abs(b.getHalfW() * cTh)
+            + Math.abs(b.getHalfW() * cD) ||
+            Math.abs(ty) > a.getHalfH()
+            + Math.abs(b.getHalfH() * sTh)
+            + Math.abs(b.getHalfH() * sD) ||
+            Math.abs(tx * cTh + ty * sTh) > b.getHalfW()
+            + Math.abs(a.getHalfW() * cTh)
+            + Math.abs(a.getHalfH() * sTh) ||
+            Math.abs(tx * cD + ty * sD) > b.getHalfH()
+            + Math.abs(a.getHalfW() * cD)
+            + Math.abs(a.getHalfH() * sD));
+    }
+
+    public ArrayList<StaticObject> detectSATCollisions(DynamicObject dObj, ArrayList<StaticObject> sObjs){
+        for (StaticObject o : sObjs){
+            if (!testSAT(dObj, o)){
+                sObjs.remove(o);
+            }
+        }
+        return sObjs;
+    }
     public void tickAll(double time){
         for (DynamicObject o: dynamicObjList) {
             o.tick(time);
