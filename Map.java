@@ -68,7 +68,7 @@ public class Map{
         }
     }
 
-    public void giveInput(String input, double time) {
+  public void giveInput(String input, double time) {
         ArrayList<Character> copy = new ArrayList<Character>();
             for (int i = 0; i < input.length(); i++) {
                 copy.add(new Character(input.charAt(i)));
@@ -86,6 +86,23 @@ public class Map{
 
         return copy;
     }
+
+    public ArrayList<StaticObject> detectAABB(DynamicObject dObj, ArrayList<StaticObject> sObjs){
+        // create new list for potential collisions
+        ArrayList<StaticObject> potentialCollisions = new ArrayList<StaticObject>();
+        // iterating through list of static objects
+        for (StaticObject s : staticObjList){
+            if (dObj.getMaxR() < sObjs.getX() + sObjs.getMaxR() && 
+                dObj.getMaxR() + dObj.getX() > sObjs.getX() &&             
+                dObj.getMaxR() < sObjs.getY() + sObjs.getMaxR() &&
+                dObj.getY() + dObj.getMaxR() > sObjs.getY()){
+
+                potentialCollisions.add(sObjs);
+            }
+        }
+        return potentialCollisions;
+    }
+
 
     public boolean testSAT(DynamicObject b, StaticObject a) {
         double tx, ty;
