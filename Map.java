@@ -91,13 +91,13 @@ public class Map{
         // create new list for potential collisions
         ArrayList<StaticObject> potentialCollisions = new ArrayList<StaticObject>();
         // iterating through list of static objects
-        for (StaticObject s : staticObjList){
-            if (dObj.getMaxR() < sObjs.getX() + sObjs.getMaxR() && 
-                dObj.getMaxR() + dObj.getX() > sObjs.getX() &&             
-                dObj.getMaxR() < sObjs.getY() + sObjs.getMaxR() &&
-                dObj.getY() + dObj.getMaxR() > sObjs.getY()){
+        for (StaticObject s : sOBjs){
+            if (dObj.getMaxR() < s.getX() + s.getMaxR() && 
+                dObj.getMaxR() + dObj.getX() > s.getX() &&             
+                dObj.getMaxR() < s.getY() + s.getMaxR() &&
+                dObj.getY() + dObj.getMaxR() > s.getY()){
 
-                potentialCollisions.add(sObjs);
+                potentialCollisions.add(s);
             }
         }
         return potentialCollisions;
