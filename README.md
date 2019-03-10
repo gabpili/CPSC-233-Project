@@ -4,8 +4,8 @@ Accessing the files
   > Everthing needed for the first demo is under the demo-2 branch.
   > You will need to download every class under the demo-2 branch.
   > You will need to place all the class files in the same folder.
-  > Use 'javac' to compile the 'GraphicalApp' class.
-  > Run the 'Engine' class.
+  > Use 'javac' to compile every class.
+  > Run the 'GraphicalApp' class.
   > You will not be using JUnit for this demo. 
 
 Controls     
