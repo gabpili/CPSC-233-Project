@@ -25,4 +25,8 @@ public class Flag{
         return method;
     }
 
+    public void setHandlingMethod(HandlingMethod method){
+        this.method = method;
+    }
+
 }
