@@ -4,6 +4,7 @@ public class Car extends DynamicObject{
 	private double baseAcceleration;
 	private double baseFriction;
 	private double angularVelocity = 0;
+	private Interface attachedInterface;
 
 	public Car(double x, double y, String name, double direction, double halfW, double halfH, double baseAcceleration, double baseFriction){
 		super(x, y, name, halfW, halfH, 0, direction);
@@ -22,6 +23,10 @@ public class Car extends DynamicObject{
 		this.angularVelocity = angularVelocity;
 	}
 
+	public void setInterface(Interface attachedInterface) {
+		this.attachedInterface = attachedInterface;
+	}
+
 	public double getAngularVelocity(){
 		return angularVelocity;
 	}
@@ -32,6 +37,10 @@ public class Car extends DynamicObject{
 
 	public double getBaseFriction(){
 		return baseFriction;
+	}
+
+	public Interface getInterface() {
+		return attachedInterface;
 	}
 
 	public void tickExtended(double time){

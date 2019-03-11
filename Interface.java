@@ -3,10 +3,26 @@ import java.lang.Math;
 
 public class Interface{
 	private Car attachedCar;
+	private int section = 0;
+	private int lap = 1;
 
 	public Interface(Car car){
 		attachedCar = car;
+		car.setInterface(this);
 	}
+
+	public int getSection(){
+			return section;
+	}
+
+	public int getLap(){
+			return lap;
+	}
+
+	public Car getAttachedCar(){
+		  return attachedCar;
+	}
+
 
 	private void accelerate(double time){
 		attachedCar.setSpeed(attachedCar.getSpeed() + attachedCar.getBaseAcceleration() * time);
@@ -50,5 +66,13 @@ public class Interface{
 					break;
 			}
 		}
+	}
+
+	public void setSection(int section){
+	    this.section = section;
+	}
+
+	public void setLap(int lap){
+			this.lap = lap;
 	}
 }

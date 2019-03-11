@@ -23,5 +23,12 @@ public class Checkpoint extends Wall{
 
 @Override
 		public void resolveCollision(DynamicObject dObj){
+			if (dObj instanceof Car) {
+				Interface i = ((Car) dObj).getInterface();
+				if (i.getSection() < number) {
+					i.setSection(number);
+				}
+			}
+
 		}
 }
