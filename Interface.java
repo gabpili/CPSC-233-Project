@@ -18,7 +18,7 @@ public class Interface{
 		if(v > 0){
 			v -= attachedCar.getBaseAcceleration() * time * 1.5;
 		}else{
-			v += attachedCar.getBaseAcceleration() * time * 0.6;
+			v -= attachedCar.getBaseAcceleration() * time * 0.3;
 		}
 
 		attachedCar.setSpeed(v);
