@@ -123,7 +123,7 @@ public class GraphicalApp extends Application {
 		infoScreen.getChildren().add(carInfo);
 		infoScreen.getChildren().add(collidingInfo);
 		carInfo.setLayoutY(150);
-		collidingInfo.setLayoutY(160);
+		collidingInfo.setLayoutY(165);
 
 		// fps overlay
         Group fpsOverlay = new Group();
@@ -188,7 +188,8 @@ public class GraphicalApp extends Application {
                     tickStep(time);
                     displayStep();
 					carInfo.setText("" + mainCar);
-					collidingInfo.setText("" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
+					collidingInfo.setText(currentMap.detectAABB(mainCar, currentMap.getStaticObjList())
+						+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
 
                     //back to fps stuff
                     if (showFpsOverlay) {
@@ -226,4 +227,6 @@ public class GraphicalApp extends Application {
 		launch(args);
 
 	}
+
+
 }

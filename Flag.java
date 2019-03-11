@@ -5,24 +5,58 @@ public class Flag{
     private double value;
 
     public enum HandlingMethod{
-        DESTROY, ADD_SPEED, SET_SPEED, ADD_DIRECTION, SET_DIRECTION;
+        DESTROY{
+            @Override
+            public String getMethod(){
+                return "DESTROY";
+            }
+        },
+        ADD_SPEED{
+            @Override
+            public String getMethod(){
+                return "ADD_SPEED";
+            }
+        },
+        SET_SPEED{
+            @Override
+            public String getMethod(){
+                return "SET_SPEED";
+            }
+        },
+        ADD_DIRECTION{
+            @Override
+            public String getMethod(){
+                return "ADD_DIRECTION";
+            }
+        },
+        SET_DIRECTION{
+            @Override
+            public String getMethod(){
+                return "SET_DIRECTION";
+            }
+        };
+
+
+        public abstract String getMethod();
     }
 
-    public Flag(double value){
+    public Flag(double value, HandlingMethod method){
+        this(method);
         this.value = value;
 
+
     }
 
-    public Flag(){
-
+    public Flag(HandlingMethod method){
+        setHandlingMethod(method);
     }
 
     public double getValue(){
         return value;
     }
 
-    public HandlingMethod getHandlingMethod(){
-        return method;
+    public String getHandlingMethod(){
+        return method.getMethod();
     }
 
     public void setHandlingMethod(HandlingMethod method){

@@ -8,7 +8,7 @@ public abstract class StaticObject{
 	private double halfW;
 	private double halfH;
 	private double maxR;
-	private ArrayList<Flag> flags = new ArrayList<Flag>;
+	private ArrayList<Flag> flags = new ArrayList<Flag>();
 
 	public StaticObject(double x, double y, String name, double halfW, double halfH){
 		setX(x);

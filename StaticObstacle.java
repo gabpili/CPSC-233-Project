@@ -5,5 +5,8 @@ public class StaticObstacle extends StaticObject{
 
 @Override
 			public void resolveCollision(DynamicObject dObj){
+				super.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
+				System.out.println(super.getFlags().get(0).getHandlingMethod());
+
 			}
 }

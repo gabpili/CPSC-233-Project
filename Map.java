@@ -92,6 +92,7 @@ public class Map{
         ArrayList<StaticObject> potentialCollisions = new ArrayList<StaticObject>();
         // iterating through list of static objects
         for (StaticObject s : sObjs){
+            if (2 * dobj.getMaxR() == Math.abs(dObj.getX() - s.getX() + dObj.getMaxR()) + Math.abs(s.getX() + dObj.getMaxR() - dObj.getX()))
             if (dObj.getMaxR() < s.getX() + s.getMaxR() &&
                 dObj.getMaxR() + s.getX() > s.getX() &&
                 dObj.getMaxR() < s.getY() + s.getMaxR() &&
@@ -189,39 +190,59 @@ public class Map{
     }
 
     public void handleFlag(StaticObject o, Flag f){
+        System.out.println("handling");
 
-        switch (f.getHandlingMethod()){
+        if (o instanceof DynamicObject){
+            DynamicObject o_ = (DynamicObject) o;
 
-            case (f.HandlingMethod.DESTROY):
-                remove(o);
-                break;
+            switch (f.getHandlingMethod()){
 
-            case (f.HandlingMethod.ADD_SPEED):
-                DynamicObject o_ = (DynamicObject) o;
-                o_.setSpeed(o_.getSpeed() + f.getValue());
-                break;
+                case ("DESTROY"):
+                    removeDynamicObject(o_);
+                    break;
 
-            case (f.HandlingMethod.SET_SPEED):
-                DynamicObject o_ = (DynamicObject) o;
-                o_.setSpeed(f.getValue());
-                break;
+                case ("ADD_SPEED"):
+                    o_.setSpeed(o_.getSpeed() + f.getValue());
+                    break;
 
-            case (f.HandlingMethod.ADD_DIRECTION):
-                DynamicObject o_ = (DynamicObject) o;
-                o_.setDirection(o_.getDirection() + f.getValue());
-                break;
+                case ("SET_SPEED"):
+                    o_.setSpeed(f.getValue());
+                    break;
 
-            case (f.HandlingMethod.SET_DIRECTION):
-                DynamicObject o_ = (DynamicObject) o;
-                o_.setDirection(f.getValue());
-                break
+                case ("ADD_DIRECTION"):
+                    o_.setDirection(o_.getDirection() + f.getValue());
+                    break;
+
+                case ("SET_DIRECTION"):
+                    o_.setDirection(f.getValue());
+                    break;
+            }
         }
+        else{
 
+            switch (f.getHandlingMethod()){
+
+                case ("DESTROY"):
+                    System.out.println("lllll");
+                    removeStaticObject(o);
+                    break;
+
+                default:;
+            }
+        }
 
     }
 
     public void tickAll(double time){
+        for (StaticObject o: staticObjList) {
+            for (Flag f: o.getFlags()) {
+                handleFlag(o, f);
+            }
+        }
         for (DynamicObject o: dynamicObjList) {
+            for (Flag f: o.getFlags()){
+                handleFlag(o, f);
+            }
             o.tick(time);
         }
     }
