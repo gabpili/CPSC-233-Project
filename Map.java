@@ -190,6 +190,9 @@ public class Map{
 
     public void tickAll(double time){
         for (DynamicObject o: dynamicObjList) {
+            for (Flag f: o.getFlags()){
+                handleFlag(o, f);
+            }
             o.tick(time);
         }
     }
