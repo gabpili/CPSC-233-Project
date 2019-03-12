@@ -4,7 +4,6 @@ import java.lang.Math;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
@@ -27,8 +26,11 @@ public class GraphicalApp extends Application {
     private static boolean showFpsOverlay = true;
 	private static Car mainCar = new Car(50, 5, "Magic School Bus", Math.toRadians(90), 1, 2.4, 8.2, 0.3);
 
-
-	public static void collisionStep(double time) {
+	/**
+	 * detects collision between each DynamicObject and every StaticObject
+	 * colliding objects have collisions resolved as per the StaticObject's specific method of resolution
+	 */
+	private static void collisionStep(double time) {
 		for (DynamicObject o: currentMap.getDynamicObjList()) {
 			for (StaticObject s: currentMap.detectSATCollisions(o, currentMap.getStaticObjList())) {
 				s.resolveCollision(o);
@@ -36,13 +38,16 @@ public class GraphicalApp extends Application {
 		}
 	}
 
-	public static void inputStep(double time) {
+	/**
+	 * passes in input as characters into map
+	 */
+	private static void inputStep(double time) {
 		if (!keysPressed.isEmpty()) {
 			ArrayList<Character> inputCharacters = new ArrayList<Character>();
 
 			for (KeyCode k: keysPressed) {
 				if (k.isLetterKey()) {
-					inputCharacters.add(new Character(k.toString().charAt(0)));
+					inputCharacters.add(Character.valueOf(k.toString().charAt(0)));
 				}
 			}
 			currentMap.giveInput(inputCharacters, time);
@@ -51,10 +56,17 @@ public class GraphicalApp extends Application {
 		}
 	}
 
-	public static void tickStep(double time) {
-		currentMap.tickAll(time);
+	/**
+	 * ticks all objects, handling all flags and changing positions
+	 * all objects that were changed are added to toUpdate so their shape counterparts can be updated
+	 */
+	private static void tickStep(double time) {
+		toUpdate = currentMap.tickAll(time);
 	}
 
+	/**
+	 * sets coordinates of Line shape based on Wall object
+	 */
     private static void updateDisplayShape(Line l, Wall o) {
         l.setStartX(o.getX() * scale);
         l.setStartY(o.getY() * scale);
@@ -62,6 +74,9 @@ public class GraphicalApp extends Application {
         l.setEndY(o.getY2() * scale);
     }
 
+    /**
+     * sets coordinate and width/height of Rectangle shape based on given object
+     */
     private static void updateDisplayShape (Rectangle r, StaticObject o) {
         r.setX((o.getX() - o.getHalfW()) * scale);
         r.setY((o.getY() - o.getHalfH()) * scale);
@@ -71,14 +86,18 @@ public class GraphicalApp extends Application {
 		}
     }
 
-	public static void displayStep() {
+    /**
+     * updates every shape of objects that were put to be updated in toUpdate
+     * @return shapes to remove from windowPane
+     */
+	private static ArrayList<Shape> displayStep() {
+		ArrayList<Shape> toRemove = new ArrayList<Shape>();
 		if (!toUpdate.isEmpty()) {
-			//ArrayList<StaticObject> tempStaticObjList = ;
-	        //ArrayList<DynamicObject> tempDynamicObjList = ;
 
 	        for (StaticObject o: toUpdate) {
 	            if (!currentMap.getStaticObjList().contains(o) &&
 					!currentMap.getDynamicObjList().contains(o)) {
+	            	toRemove.add(objDisplay.get(o));
 	                objDisplay.remove(o);
 	            }else {
 	                if (o instanceof Wall) {
@@ -89,8 +108,13 @@ public class GraphicalApp extends Application {
 	            }
 	        }
 		}
+
+		return toRemove;
 	}
 
+	/**
+	 * takes list of objects and returns hashmap pairs of object to shape
+	 */
     private static HashMap<StaticObject, Shape> createDisplayShapes(
 		ArrayList<? extends StaticObject> objList) {
         HashMap<StaticObject, Shape> temp = new HashMap<StaticObject, Shape>();
@@ -111,6 +135,10 @@ public class GraphicalApp extends Application {
         return(temp);
     }
 
+    /**
+     * starts program with stage/scene setup of all of its nodes
+     * starts animation timer to loop program through the game loop steps
+     */
 	public void start (Stage primaryStage) throws Exception {
 		Group root = new Group();
 
@@ -126,8 +154,8 @@ public class GraphicalApp extends Application {
 		Label collidingInfo = new Label();
 		infoScreen.getChildren().add(carInfo);
 		infoScreen.getChildren().add(collidingInfo);
-		carInfo.setLayoutY(150);
-		collidingInfo.setLayoutY(165);
+		carInfo.setLayoutY(300);
+		collidingInfo.setLayoutY(315);
 
 		// fps overlay
         Group fpsOverlay = new Group();
@@ -137,14 +165,17 @@ public class GraphicalApp extends Application {
         fpsOverlay.getChildren().add(gameFpsLabel);
         gameFpsLabel.setLayoutY(20);
 
-
-		root.getChildren().add(fpsOverlay);
+        // add to root
         root.getChildren().add(gameWindow);
 		root.getChildren().add(infoScreen);
+		root.getChildren().add(fpsOverlay);
         Scene scene = new Scene(root, currentMap.getWidth() * scale,
 			currentMap.getHeight() * scale);
 		// handle key press + release
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			/**
+			 * adds KeyCode to keysPressed if it isn't already in it
+			 */
 			@Override
 			public void handle(KeyEvent e) {
 				KeyCode k = e.getCode();
@@ -154,6 +185,9 @@ public class GraphicalApp extends Application {
 			}
 		});
 		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			/**
+			 * removes KeyCode in keysPressed if it exists
+			 */
 			@Override
 			public void handle(KeyEvent e) {
 				KeyCode k = e.getCode();
@@ -163,6 +197,7 @@ public class GraphicalApp extends Application {
 			}
 		});
 
+		// setup and show stage
 		primaryStage.setScene(scene);
         primaryStage.setTitle("Project C");
         primaryStage.show();
@@ -170,33 +205,27 @@ public class GraphicalApp extends Application {
 
         AnimationTimer animator = new AnimationTimer(){
             private final int idealGameFps = 30; // 0 < fps <= 60
-            private double gameFps;
-            private double animFps;
+            private double gameFps; // actual game fps
+            private double animFps; // actual animation fps
             private long gameLast = 0;
             private long animLast = 0;
             private int count = 0;
 
+            /**
+             * called every animation frame, which java attempts to keep at 60 fps
+             * time between frames and fps are kept track to maintain an ideal game fps
+             * ideal game fps, which is lower than animation fps, is to lower load on cpu
+             */
             @Override
             public void handle(long now){
-                //maintain game fps
+                // maintain game fps
                 animFps = 1000000000d / (now - animLast);
 
                 if (count > animFps / idealGameFps){
                     gameFps = 1000000000d / (now - gameLast);
 
-                    //game frame
-                    double time = (now - gameLast) / 1000000000d;
+                    gameFrame((now - gameLast) / 1000000000d);
 
-                    collisionStep(time);
-                    inputStep(time);
-                    tickStep(time);
-                    displayStep();
-					carInfo.setText("" + mainCar);
-					collidingInfo.setText(currentMap.getInterfaceList().get(0).getSection() 
-						+ " " + currentMap.getInterfaceList().get(0).getLap()
-						+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
-
-                    //back to fps stuff
                     if (showFpsOverlay) {
                         gameFpsLabel.setText("" + (int)(gameFps));
 	                    fpsLabel.setText("" + (int)(animFps));
@@ -207,17 +236,38 @@ public class GraphicalApp extends Application {
                 animLast = now;
                 count++;
             }
+
+            /**
+             * steps through the 4 game loop process and updates info labels
+             */
+            private void gameFrame(double time) {
+                collisionStep(time);
+                inputStep(time);
+                tickStep(time);
+                gameWindow.getChildren().removeAll(displayStep());
+
+				carInfo.setText("" + mainCar);
+				collidingInfo.setText("Section: " + currentMap.getInterfaceList().get(0).getSection() 
+					+ " Lap " + currentMap.getInterfaceList().get(0).getLap()
+					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
+
+            }
         };
 
         animator.start();
 	}
 
+	/**
+	 * loads test map and launches program
+	 */
 	public static void main(String[] args) {
-		toUpdate.add((StaticObject) mainCar);
-
 		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
 		interfaceList.add(new Interface(mainCar));
+		ArrayList<Car> carList = new ArrayList<Car>();
+		carList.add(mainCar);
 
+		currentMap = PresetMaps.loadMap1(carList, interfaceList);
+		/*
 		currentMap = new Map(interfaceList, 150, 200);
 
 		currentMap.addDynamicObject(mainCar);
@@ -228,10 +278,10 @@ public class GraphicalApp extends Application {
 		}
 
 		currentMap.addStaticObject(new Wall(60, 10, "wall0", 80, 60));
-		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 0, 3));
+		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 3));
 		currentMap.addStaticObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
 		currentMap.addStaticObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
-		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));
+		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));*/
 
 		launch(args);
 

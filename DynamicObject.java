@@ -1,9 +1,7 @@
 import java.lang.Math;
 
 public abstract class DynamicObject extends StaticObject {
-    /**
-     * Instance Variables 
-     */
+    // Instance Variables
     private double speed;
     private double direction;
 
@@ -27,7 +25,7 @@ public abstract class DynamicObject extends StaticObject {
     }
     
 	/**
-     * Copy constructor 
+     * copy constructor 
 	 */
     public DynamicObject(DynamicObject toCopy){
         super(toCopy);
@@ -36,23 +34,31 @@ public abstract class DynamicObject extends StaticObject {
     }
 
 	/**
-     * Set given speed with 'this' speed.
+     * sets speed in metres per second
 	 */
     public void setSpeed(double speed){
         this.speed = speed;
     }
 
+    /**
+     * sets direction in radians
+     * positive x axis is 0
+     * limited to -pi < direction < pi
+     */
     public void setDirection(double direction){
-        while(direction < -Math.PI){
+        while(direction <= -Math.PI){
             direction += Math.PI * 2;
         }
-        while(direction >= Math.PI){
+        while(direction > Math.PI){
             direction -= Math.PI * 2;
         }
 
         this.direction = direction;
     }
 
+    /**
+	 * sets speed and direction based on given velocity components
+	 */
     public void setXYVelocity(double xvelocity, double yvelocity){
         setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity));
         double newDirection = Math.atan2(yvelocity, xvelocity);
@@ -60,33 +66,36 @@ public abstract class DynamicObject extends StaticObject {
     }
 
 	/**
-     * returns value of speed
+     * returns value of speed in metres per second
 	 */
     public double getSpeed(){
         return speed;
     }
     
 	/**
-     * returns value of direction
+     * returns value of direction in radians
 	 */
     public double getDirection(){
         return direction;
     }
     
 	/**
-     * returns the 'x' velocity using cosine formula
+     * returns the 'x' velocity using cosine
 	 */
     public double getXVelocity(){
         return Math.cos(direction) * speed;
     }
     
 	/**
-     * returns the 'y' velocity using sine formula
+     * returns the 'y' velocity using sine
 	 */
     public double getYVelocity(){
         return Math.sin(direction) * speed;
     }
 
+    /**
+     * change position based on velocity components and time given
+     */
     public void tick(double time){
         setX(getX() + getXVelocity() * time);
         setY(getY() + getYVelocity() * time);
@@ -94,8 +103,7 @@ public abstract class DynamicObject extends StaticObject {
     }
     
 	/**
-     * declaration of an abstract method that takes in one argument of type double
-     * which will be considered as 'time'.
+     * overriden by Car, which has additional attributes to tick with time
 	 */
     abstract void tickExtended(double time);
 
