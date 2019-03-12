@@ -25,11 +25,15 @@ public class GraphicalApp extends Application {
 	private static ArrayList<StaticObject> toUpdate = new ArrayList<StaticObject>();
 	private static ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
     private static boolean showFpsOverlay = true;
-	private static Car mainCar = new Car(50, 5, "Magic School Bus", Math.toRadians(90), 1, 1.5, 8.2, 0.3);
+	private static Car mainCar = new Car(50, 5, "Magic School Bus", Math.toRadians(90), 1, 2.4, 8.2, 0.3);
 
 
 	public static void collisionStep(double time) {
-
+		for (DynamicObject o: currentMap.getDynamicObjList()) {
+			for (StaticObject s: currentMap.detectSATCollisions(o, currentMap.getStaticObjList())) {
+				s.resolveCollision(o);
+			}
+		}
 	}
 
 	public static void inputStep(double time) {
@@ -42,6 +46,8 @@ public class GraphicalApp extends Application {
 				}
 			}
 			currentMap.giveInput(inputCharacters, time);
+		}else {
+			currentMap.giveInput("", time);
 		}
 	}
 
@@ -117,8 +123,11 @@ public class GraphicalApp extends Application {
 		// testing info screen
 		Pane infoScreen = new Pane();
 		Label carInfo = new Label();
+		Label collidingInfo = new Label();
 		infoScreen.getChildren().add(carInfo);
+		infoScreen.getChildren().add(collidingInfo);
 		carInfo.setLayoutY(150);
+		collidingInfo.setLayoutY(165);
 
 		// fps overlay
         Group fpsOverlay = new Group();
@@ -183,6 +192,9 @@ public class GraphicalApp extends Application {
                     tickStep(time);
                     displayStep();
 					carInfo.setText("" + mainCar);
+					collidingInfo.setText(currentMap.getInterfaceList().get(0).getSection() 
+						+ " " + currentMap.getInterfaceList().get(0).getLap()
+						+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
 
                     //back to fps stuff
                     if (showFpsOverlay) {
@@ -211,11 +223,19 @@ public class GraphicalApp extends Application {
 		currentMap.addDynamicObject(mainCar);
 
 		for (int i=0; i<5; i++) {
-			currentMap.addStaticObject(new StaticObstacle(48, 10 + 10 * i, "RCone" + i, 0.15, 0.15));
-			currentMap.addStaticObject(new StaticObstacle(52, 5 + 10 * i, "LCone" + i, 0.15, 0.15));
+			currentMap.addStaticObject(new StaticObstacle(48, 10 + 4 * i, "RCone" + i, 0.15, 0.15));
+			currentMap.addStaticObject(new StaticObstacle(52, 5 + 4 * i, "LCone" + i, 0.15, 0.15));
 		}
+
+		currentMap.addStaticObject(new Wall(60, 10, "wall0", 80, 60));
+		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 0, 3));
+		currentMap.addStaticObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
+		currentMap.addStaticObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
+		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));
 
 		launch(args);
 
 	}
+
+
 }
