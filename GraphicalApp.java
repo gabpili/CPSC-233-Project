@@ -154,8 +154,8 @@ public class GraphicalApp extends Application {
 		Label collidingInfo = new Label();
 		infoScreen.getChildren().add(carInfo);
 		infoScreen.getChildren().add(collidingInfo);
-		carInfo.setLayoutY(150);
-		collidingInfo.setLayoutY(165);
+		carInfo.setLayoutY(300);
+		collidingInfo.setLayoutY(315);
 
 		// fps overlay
         Group fpsOverlay = new Group();
@@ -247,8 +247,8 @@ public class GraphicalApp extends Application {
                 gameWindow.getChildren().removeAll(displayStep());
 
 				carInfo.setText("" + mainCar);
-				collidingInfo.setText(currentMap.getInterfaceList().get(0).getSection() 
-					+ " " + currentMap.getInterfaceList().get(0).getLap()
+				collidingInfo.setText("Section: " + currentMap.getInterfaceList().get(0).getSection() 
+					+ " Lap " + currentMap.getInterfaceList().get(0).getLap()
 					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
 
             }
@@ -258,12 +258,16 @@ public class GraphicalApp extends Application {
 	}
 
 	/**
-	 * creates test map and launches program
+	 * loads test map and launches program
 	 */
 	public static void main(String[] args) {
 		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
 		interfaceList.add(new Interface(mainCar));
+		ArrayList<Car> carList = new ArrayList<Car>();
+		carList.add(mainCar);
 
+		currentMap = PresetMaps.loadMap1(carList, interfaceList);
+		/*
 		currentMap = new Map(interfaceList, 150, 200);
 
 		currentMap.addDynamicObject(mainCar);
@@ -277,7 +281,7 @@ public class GraphicalApp extends Application {
 		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 3));
 		currentMap.addStaticObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
 		currentMap.addStaticObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
-		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));
+		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));*/
 
 		launch(args);
 
