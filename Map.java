@@ -252,12 +252,64 @@ public class Map{
         return colliding;
 
     }
-    
+  
+    public void handleFlag(StaticObject o, Flag f){
+        System.out.println("handling");
+
+        if (o instanceof DynamicObject){
+            DynamicObject o_ = (DynamicObject) o;
+
+            switch (f.getHandlingMethod()){
+
+                case ("DESTROY"):
+                    removeDynamicObject(o_);
+                    break;
+
+                case ("ADD_SPEED"):
+                    o_.setSpeed(o_.getSpeed() + f.getValue());
+                    break;
+
+                case ("SET_SPEED"):
+                    o_.setSpeed(f.getValue());
+                    break;
+
+                case ("ADD_DIRECTION"):
+                    o_.setDirection(o_.getDirection() + f.getValue());
+                    break;
+
+                case ("SET_DIRECTION"):
+                    o_.setDirection(f.getValue());
+                    break;
+            }
+        }
+        else{
+
+            switch (f.getHandlingMethod()){
+
+                case ("DESTROY"):
+                    System.out.println("lllll");
+                    removeStaticObject(o);
+                    break;
+
+                default:;
+            }
+        }
+
+    }
+  
     /**
 	 * 
 	 */
     public void tickAll(double time){
+        for (StaticObject o: staticObjList) {
+            for (Flag f: o.getFlags()) {
+                handleFlag(o, f);
+            }
+        }
         for (DynamicObject o: dynamicObjList) {
+            for (Flag f: o.getFlags()){
+                handleFlag(o, f);
+            }
             o.tick(time);
         }
     }

@@ -127,7 +127,7 @@ public class GraphicalApp extends Application {
 		infoScreen.getChildren().add(carInfo);
 		infoScreen.getChildren().add(collidingInfo);
 		carInfo.setLayoutY(150);
-		collidingInfo.setLayoutY(160);
+		collidingInfo.setLayoutY(165);
 
 		// fps overlay
         Group fpsOverlay = new Group();
@@ -236,4 +236,6 @@ public class GraphicalApp extends Application {
 		launch(args);
 
 	}
+
+
 }
