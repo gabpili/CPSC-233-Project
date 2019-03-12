@@ -12,7 +12,7 @@ public abstract class StaticObject {
 	private double halfH;
 	private double maxR;
 	private ArrayList<Flag> flags = new ArrayList<Flag>();
-	
+
 	/**
  	 * Constructor that takes 5 arguments and sets the given values to the following
 	 * variables. maximum raidus (maxR) is also initialized under this constructor.
@@ -23,22 +23,22 @@ public abstract class StaticObject {
 		this.name = name;
 		this.halfW = halfW;
 		this.halfH = halfH;
-		maxR = Math.sqrt(halfW * halfW + halfH * halfH);
+		this.maxR = Math.sqrt(halfW * halfW + halfH * halfH);
 
 	}
-	
+
 	/**
  	 * Copy constructor
  	 */
 	public StaticObject(StaticObject copy) {
-		double x = copy.x;
-		double y = copy.y;
-		String name = copy.name;
-		double halfW = copy.halfW;
-		double halfH = copy.halfH;
+		this.x = copy.x;
+		this.y = copy.y;
+		this.name = copy.name;
+		this.halfW = copy.halfW;
+		this.halfH = copy.halfH;
 
 	}
-	
+
 	/**
  	 * Setter method sets given 'x' to the variable 'x'.
  	 */
@@ -46,7 +46,7 @@ public abstract class StaticObject {
 		this.x = x;
 
 	}
-	
+
 	/**
  	 * Setter method sets given 'y' to the variable 'y'.
  	 */
@@ -54,14 +54,14 @@ public abstract class StaticObject {
 		this.y = y;
 
 	}
-	
+
 	/**
  	 * Getter method returns the value of x.
  	 */
 	public double getX() {
 		return x;
 	}
-	
+
 	/**
  	 * Getter method returns the value of y.
  	 */
@@ -75,21 +75,21 @@ public abstract class StaticObject {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
  	 * Getter method returns halfW (half width).
  	 */
 	public double getHalfW() {
 		return halfW;
 	}
-	
+
 	/**
  	 * Getter method returns halfH (half height).
  	 */
 	public double getHalfH() {
 		return halfH;
 	}
-	
+
 	/**
  	 * Getter method returns the value of maxR (maximum radius).
  	 */
@@ -110,7 +110,7 @@ public abstract class StaticObject {
 	public void removeFlag(Flag f) {
 		flags.remove(f);
 	}
-	
+
 	/**
  	 * Getter method returns list of flags
  	 */
@@ -136,19 +136,19 @@ public abstract class StaticObject {
 		return Math.atan2(dy, dx);
 
 	}
-	
+
 	/**
  	 * respond to collision by adding flags to objects
  	 * each physical object type responds differently
  	 */
 	abstract void resolveCollision(DynamicObject dObj);
-	
+
 	/**
  	 * Method puts values in String format.
 	 *
 	 * example output: "Magic School Bus x: 1m y: 1m "
-	 * type casting is used to convert x and y (which are doubles) 
-	 * as integers. 
+	 * type casting is used to convert x and y (which are doubles)
+	 * as integers.
  	 */
 	public String toString() {
 		return name + " x:" + (int) x + "m y:" + (int) y +"m ";

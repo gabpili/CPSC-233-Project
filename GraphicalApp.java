@@ -35,6 +35,10 @@ public class GraphicalApp extends Application {
 			for (StaticObject s: currentMap.detectSATCollisions(o, currentMap.getStaticObjList())) {
 				s.resolveCollision(o);
 			}
+
+			for (StaticObject d: currentMap.detectSATCollisions(o, currentMap.getDynamicObjList())) {
+				d.resolveCollision(o);
+			}
 		}
 	}
 
@@ -247,9 +251,10 @@ public class GraphicalApp extends Application {
                 gameWindow.getChildren().removeAll(displayStep());
 
 				carInfo.setText("" + mainCar);
-				collidingInfo.setText("Section: " + currentMap.getInterfaceList().get(0).getSection() 
+				collidingInfo.setText("Section: " + currentMap.getInterfaceList().get(0).getSection()
 					+ " Lap " + currentMap.getInterfaceList().get(0).getLap()
-					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
+					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList())
+					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getDynamicObjList()));
 
             }
         };
@@ -265,6 +270,9 @@ public class GraphicalApp extends Application {
 		interfaceList.add(new Interface(mainCar));
 		ArrayList<Car> carList = new ArrayList<Car>();
 		carList.add(mainCar);
+		carList.add(new Car(mainCar));
+		carList.add(new Car(mainCar));
+		carList.add(new Car(mainCar));
 
 		currentMap = PresetMaps.loadMap1(carList, interfaceList);
 		/*
