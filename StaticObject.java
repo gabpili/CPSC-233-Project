@@ -98,22 +98,28 @@ public abstract class StaticObject {
 	}
 
 	/**
- 	 * Method adds f (flags) to ArrayList.
+ 	 * Method adds Flag f to list of flags.
  	 */
 	public void addFlag(Flag f) {
 		flags.add(f);
 	}
+
+	/**
+	 * removes Flag f from list of flags
+	 */
+	public void removeFlag(Flag f) {
+		flags.remove(f);
+	}
 	
 	/**
- 	 * Getter method returns a list of flags
+ 	 * Getter method returns list of flags
  	 */
 	public ArrayList<Flag> getFlags() {
 		return new ArrayList<Flag>(flags);
 	}
 
 	/**
- 	 * distance is calculated and returned using Pythagoras' theorem:
-	 * 	sqrt(distance) = (x-x0)^2-(y-y0)^2 
+ 	 * returns distance between this object and other object d
  	 */
 	public double distance(StaticObject d) {
 		double dx = d.x - this.x;
@@ -122,7 +128,7 @@ public abstract class StaticObject {
 
 	}
 	/**
- 	 * Method returns the angle pointing from given object 'd' and 'this' object
+ 	 * Method returns the angle pointing from given object 'd' to 'this' object
  	 */
 	public double directionFrom(StaticObject d) {
 		double dx = this.x - d.x;
@@ -130,6 +136,12 @@ public abstract class StaticObject {
 		return Math.atan2(dy, dx);
 
 	}
+	
+	/**
+ 	 * respond to collision by adding flags to objects
+ 	 * each physical object type responds differently
+ 	 */
+	abstract void resolveCollision(DynamicObject dObj);
 	
 	/**
  	 * Method puts values in String format.
@@ -141,10 +153,5 @@ public abstract class StaticObject {
 	public String toString() {
 		return name + " x:" + (int) x + "m y:" + (int) y +"m ";
 	}
-	
-	/**
- 	 * Declaration of abstract method that will take in a dynamic object (dObj).
- 	 */
-	abstract void resolveCollision(DynamicObject dObj);
 
 }
