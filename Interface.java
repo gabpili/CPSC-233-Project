@@ -8,7 +8,6 @@ public class Interface{
 
 	public Interface(Car car){
 		attachedCar = car;
-		car.setInterface(this);
 	}
 
 	public int getSection(){
@@ -17,10 +16,6 @@ public class Interface{
 
 	public int getLap(){
 			return lap;
-	}
-
-	public Car getAttachedCar(){
-		  return attachedCar;
 	}
 
 

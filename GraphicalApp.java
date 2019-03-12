@@ -192,7 +192,8 @@ public class GraphicalApp extends Application {
                     tickStep(time);
                     displayStep();
 					carInfo.setText("" + mainCar);
-					collidingInfo.setText(mainCar.getInterface().getSection() + " " + mainCar.getInterface().getLap()
+					collidingInfo.setText(currentMap.getInterfaceList().get(0).getSection() 
+						+ " " + currentMap.getInterfaceList().get(0).getLap()
 						+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
 
                     //back to fps stuff
