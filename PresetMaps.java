@@ -59,8 +59,8 @@ public class PresetMaps {
 		map1.addStaticObject(finish);
 		map1.addStaticObject(new Checkpoint(50, 0, "checkpoint1", 50, 20, 1));
 		map1.addStaticObject(new Checkpoint(80, 50, "checkpoint2", 100, 50, 2));
-		map1.addStaticObject(new Checkpoint(50, 80, "checkpoint2", 50, 100, 3));
-		
+		map1.addStaticObject(new Checkpoint(50, 80, "checkpoint3", 50, 100, 3));
+
 		for (DynamicObject o: carList) {
 			map1.addDynamicObject(o);
 		}
