@@ -52,7 +52,7 @@ public class GraphicalApp extends Application {
 	}
 
 	public static void tickStep(double time) {
-		toUpdate = currentMap.tickAll(time);
+		currentMap.tickAll(time);
 	}
 
     private static void updateDisplayShape(Line l, Wall o) {
@@ -71,14 +71,14 @@ public class GraphicalApp extends Application {
 		}
     }
 
-	public static ArrayList<Shape> displayStep() {
-		ArrayList<Shape> toRemove = new ArrayList<Shape>();
+	public static void displayStep() {
 		if (!toUpdate.isEmpty()) {
+			//ArrayList<StaticObject> tempStaticObjList = ;
+	        //ArrayList<DynamicObject> tempDynamicObjList = ;
 
 	        for (StaticObject o: toUpdate) {
 	            if (!currentMap.getStaticObjList().contains(o) &&
 					!currentMap.getDynamicObjList().contains(o)) {
-	            	toRemove.add(objDisplay.get(o));
 	                objDisplay.remove(o);
 	            }else {
 	                if (o instanceof Wall) {
@@ -89,8 +89,6 @@ public class GraphicalApp extends Application {
 	            }
 	        }
 		}
-
-		return toRemove;
 	}
 
     private static HashMap<StaticObject, Shape> createDisplayShapes(
@@ -192,8 +190,7 @@ public class GraphicalApp extends Application {
                     collisionStep(time);
                     inputStep(time);
                     tickStep(time);
-                    gameWindow.getChildren().removeAll(displayStep());
-
+                    displayStep();
 					carInfo.setText("" + mainCar);
 					collidingInfo.setText(currentMap.getInterfaceList().get(0).getSection() 
 						+ " " + currentMap.getInterfaceList().get(0).getLap()
@@ -231,7 +228,7 @@ public class GraphicalApp extends Application {
 		}
 
 		currentMap.addStaticObject(new Wall(60, 10, "wall0", 80, 60));
-		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 3));
+		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 0, 3));
 		currentMap.addStaticObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
 		currentMap.addStaticObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
 		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));

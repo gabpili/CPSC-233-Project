@@ -2,8 +2,8 @@ public class FinishLine extends Checkpoint{
 
     private int lastNumber;
 
-	public FinishLine (double x, double y, String name, double x2, double y2, int lastNumber) {
-		super(x, y, name, x2, y2, 0);
+	public FinishLine (double x, double y, String name, double x2, double y2, int number, int lastNumber) {
+		super(x, y, name, x2, y2, number);
 		this.lastNumber = lastNumber;
 
 	}
@@ -16,7 +16,15 @@ public class FinishLine extends Checkpoint{
 
 	@Override
 	public void resolveCollision(DynamicObject dObj) {
-		dObj.addFlag(new Flag(lastNumber, Flag.HandlingMethod.NEXT_LAP));
+		/*
+		if (dObj instanceof Car) {
+			Interface i = ((Car) dObj).getInterface();
+			if (i.getSection() == lastNumber) {
+				i.setSection(super.getNumber());
+				i.setLap(i.getLap() + 1);
+
+			}
+		}*/
 	}
 
 }
