@@ -36,10 +36,6 @@ public class Map{
         return dynamicObjList;
     }
 
-    public ArrayList<Interface> getInterfaceList() {
-      return interfaceList;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -96,8 +92,8 @@ public class Map{
         ArrayList<StaticObject> potentialCollisions = new ArrayList<StaticObject>();
         // iterating through list of static objects
         for (StaticObject s : sObjs){
-            if (dObj.getMaxR() < s.getX() + s.getMaxR() &&
-                dObj.getMaxR() + s.getX() > s.getX() &&
+            if (dObj.getMaxR() < s.getX() + s.getMaxR() && 
+                dObj.getMaxR() + s.getX() > s.getX() &&             
                 dObj.getMaxR() < s.getY() + s.getMaxR() &&
                 dObj.getY() + s.getMaxR() > s.getY()){
 
@@ -127,23 +123,23 @@ public class Map{
             // true if the center of b projected onto the wall, which is a point, is on the wall
             if (Math.abs(a_.getX2() - a_.getX()) == Math.abs(p * adx) + Math.abs(a_.getX2() - a_.getX() - p * adx) &&
                 Math.abs(a_.getY2() - a_.getY()) == Math.abs(p * ady) + Math.abs(a_.getY2() - a_.getY() - p * ady)) {
-
+                
                 tx = dx - p*adx;
                 ty = dy - p*ady;
-
+                
                 return !(Math.abs(ty * adx - tx * ady) > a_.getHalfW() * Math.sqrt(ady * ady + adx * adx)
-                    + Math.abs(b.getHalfW() * (sD * ady + cD * adx))
+                    + Math.abs(b.getHalfW() * (sD * ady + cD * adx)) 
                     + Math.abs(b.getHalfH() * (sD * adx - cD * ady)) ||
                     Math.abs(ty * cD - tx * sD) > b.getHalfW()
                     + Math.abs(a_.getHalfH() * (ady * cD - adx * sD)) ||
-                    Math.abs(tx * cD + ty * sD) > b.getHalfH()
-                    + Math.abs(a_.getHalfH() * (adx * cD + ady * sD)));
-
+                    Math.abs(tx * cD + ty * sD) > b.getHalfH() 
+                    + Math.abs(a_.getHalfH() * (adx * cD + ady * sD)));    
+            
             }else {
                 if (Math.sqrt(dx * dx + dy * dy) <= Math.sqrt(dx2 * dx2 + dy2 * dy2)) {
                     tx = dx;
                     ty = dy;
-
+            
                 }else {
                     tx = dx2;
                     ty = dy2;
@@ -152,13 +148,13 @@ public class Map{
                 return !(Math.abs(ty * adx - tx * ady) >
                     Math.abs(b.getHalfW() * (sD * ady + cD * adx))
                     + Math.abs(b.getHalfH() * (sD * adx - cD * ady)) ||
-                    Math.abs(tx * adx + ty * ady) >
+                    Math.abs(tx * adx + ty * ady) > 
                     Math.abs(b.getHalfW() * (cD * ady - sD * adx))
-                    + Math.abs(b.getHalfH() * (cD * adx + sD * ady)) ||
-                    Math.abs(ty * cD - tx * sD) > b.getHalfW() ||
+                    + Math.abs(b.getHalfH() * (cD * adx + sD * ady)) || 
+                    Math.abs(ty * cD - tx * sD) > b.getHalfW() || 
                     Math.abs(tx * cD + ty * sD) > b.getHalfH());
 
-            }
+            } 
         }
         else{
             tx = a.getX() - b.getX();
@@ -199,6 +195,6 @@ public class Map{
     }
 
     public static void main(String[] args) {
-
+        
     }
 }
