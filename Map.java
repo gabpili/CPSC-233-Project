@@ -52,7 +52,7 @@ public class Map{
     public ArrayList<DynamicObject> getDynamicObjList() {
         return dynamicObjList;
     }
-    
+
     /**
 	 * 
 	 */
