@@ -25,9 +25,9 @@ public class Map{
 	 * 
 	 */
     public Map(
-    ArrayList<StaticObject> staticObjList,
-    ArrayList<DynamicObject> dynamicObjList,
-    ArrayList<Interface> interfaceList, int width, int height) {
+	    ArrayList<StaticObject> staticObjList,
+	    ArrayList<DynamicObject> dynamicObjList,
+	    ArrayList<Interface> interfaceList, int width, int height) {
         if (staticObjList != null) {
             this.staticObjList.addAll(staticObjList);
         }
@@ -41,6 +41,7 @@ public class Map{
     
     /**
 	 * method returns list of static objects
+	 * list contains non-moving obstacles and walls
 	 */
     public ArrayList<StaticObject> getStaticObjList() {
         return staticObjList;
@@ -48,6 +49,7 @@ public class Map{
     
     /**
 	 * method returns list of dynamic objects
+	 * list contains cars and moving obstacles
 	 */
     public ArrayList<DynamicObject> getDynamicObjList() {
         return dynamicObjList;
@@ -75,14 +77,14 @@ public class Map{
     }
     
     /**
-	 * Add given static object to the static object list
+	 * Add given static object to the StaticObject list
 	 */
     public void addStaticObject(StaticObject s1) {
         this.staticObjList.add(s1);
     }
     
     /**
-	 * Add given dynamic object to the static object list
+	 * Add given dynamic object to the DynamicObject list
 	 */
     public void addDynamicObject(DynamicObject d1) {
         this.dynamicObjList.add(d1);
@@ -139,7 +141,7 @@ public class Map{
     }
     
     /**
-	 * Method will detect collisions using the Axis Align Bounding-Box Theorem.
+	 * Method will detect collisions using the Axis Align Bounding-Boxes (AABB).
 	 * Method takes in a DynamicObject named dObj and an array list of type StaticObject sObjs.
 	 * 
 	 * Creates a new array list for potential collisions. Then iterates through the given list
@@ -164,7 +166,13 @@ public class Map{
     }
 
     /**
-	 * 
+	 * test if two objects b (moving object) and a are colliding using the
+	 * Separating Axis Theorem (SAT)
+	 *
+	 * resource: Separating Axis Theorem for Oriented Bounding Boxes by Johnny Huynh
+	 *		www.jkh.me
+	 *
+	 * @return true if colliding, false if not
 	 */
     public boolean testSAT(DynamicObject b, StaticObject a) {
         double tx, ty;
@@ -239,7 +247,9 @@ public class Map{
     }
     
     /**
-	 * 
+	 * performs SAT tests between given DynamicObject and every object in list
+	 *
+	 * @return set of objects that are colliding with dObj
 	 */
     public ArrayList<StaticObject> detectSATCollisions(DynamicObject dObj, ArrayList<StaticObject> sObjs){
         ArrayList<StaticObject> colliding = new ArrayList<StaticObject>();
@@ -252,15 +262,16 @@ public class Map{
         return colliding;
 
     }
-  
-    public void handleFlag(StaticObject o, Flag f){
-        System.out.println("handling");
 
-        if (o instanceof DynamicObject){
+    /**
+     * apply flag action to object o
+     */
+    public void handleFlag(StaticObject o, Flag f){
+
+        if (o instanceof DynamicObject) {
             DynamicObject o_ = (DynamicObject) o;
 
-            switch (f.getHandlingMethod()){
-
+            switch (f.getHandlingMethod()) {
                 case ("DESTROY"):
                     removeDynamicObject(o_);
                     break;
@@ -281,13 +292,38 @@ public class Map{
                     o_.setDirection(f.getValue());
                     break;
             }
-        }
-        else{
 
-            switch (f.getHandlingMethod()){
+            if (o instanceof Car) {
+            	Interface i = null;
 
+            	for (Interface i_: interfaceList) {
+            		if (i_.getAttachedCar() == o) {
+            			i = i_;
+            		}
+            	}
+
+            	if (i != null) {
+            		switch (f.getHandlingMethod()) {
+	            		case ("NEXT_SECTION"):
+	            			if (i.getSection() < f.getValue()) {
+	            				i.setSection((int) f.getValue());
+
+	            			}
+	            			break;
+
+	    				case ("NEXT_LAP"):
+	    					if (i.getSection() == f.getValue()) {
+	    						i.setSection(0);
+	    						i.setLap(i.getLap() + 1);
+	    					}
+	    					break;
+	            	}
+            	}
+            }
+        }else {
+
+            switch (f.getHandlingMethod()) {
                 case ("DESTROY"):
-                    System.out.println("lllll");
                     removeStaticObject(o);
                     break;
 
@@ -298,26 +334,31 @@ public class Map{
     }
   
     /**
-	 * 
+	 * handle all flags of each object and tick all DynamicObjects to change positions
 	 */
-    public void tickAll(double time){
-        for (StaticObject o: staticObjList) {
-            for (Flag f: o.getFlags()) {
-                handleFlag(o, f);
-            }
+    public ArrayList<StaticObject> tickAll(double time){
+    	ArrayList<StaticObject> toUpdate = new ArrayList<StaticObject>();
+
+        for (StaticObject o: new ArrayList<StaticObject>(staticObjList)) {
+        	if (!o.getFlags().isEmpty()) {
+        		for (Flag f: o.getFlags()) {
+	                handleFlag(o, f);
+	            }
+
+	            toUpdate.add(o);
+        	}
+            
         }
-        for (DynamicObject o: dynamicObjList) {
+        for (DynamicObject o: new ArrayList<DynamicObject>(dynamicObjList)) {
             for (Flag f: o.getFlags()){
                 handleFlag(o, f);
+                o.removeFlag(f);
             }
             o.tick(time);
+            toUpdate.add(o);
         }
-    }
-    
-    /**
-	 * 
-	 */
-    public static void main(String[] args) {
 
+        return toUpdate;
     }
+
 }
