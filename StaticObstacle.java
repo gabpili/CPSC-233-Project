@@ -5,16 +5,15 @@ public class StaticObstacle extends StaticObject{
 	 */
 	public StaticObstacle(double x, double y, String name, double halfW, double halfH){
 		super(x, y, name, halfW, halfH);
-	}
-			/**
-			 * Overriding method from StaticObject class that uses a constructor in the StaticObject
-			 * 
-			 * Prints out the list of flags
-	 		 */
-			@Override
-			public void resolveCollision(DynamicObject dObj){
-				super.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
-				System.out.println(super.getFlags().get(0).getHandlingMethod());
 
-			}
+	}
+	/**
+	 * flags this obstacle to be destroyed and flags the colliding dObj to change speed by -5
+	 */
+	@Override
+	public void resolveCollision(DynamicObject dObj){
+		super.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
+		dObj.addFlag(new Flag(-5, Flag.HandlingMethod.ADD_SPEED));
+
+	}
 }

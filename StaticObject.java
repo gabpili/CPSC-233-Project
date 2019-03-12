@@ -1,7 +1,7 @@
 import java.lang.Math;
 import java.util.ArrayList;
 
-public abstract class StaticObject{
+public abstract class StaticObject {
 	/**
  	 * instance variables
  	 */
@@ -17,7 +17,7 @@ public abstract class StaticObject{
  	 * Constructor that takes 5 arguments and sets the given values to the following
 	 * variables. maximum raidus (maxR) is also initialized under this constructor.
  	 */
-	public StaticObject(double x, double y, String name, double halfW, double halfH){
+	public StaticObject(double x, double y, String name, double halfW, double halfH) {
 		setX(x);
 		setY(y);
 		this.name = name;
@@ -30,7 +30,7 @@ public abstract class StaticObject{
 	/**
  	 * Copy constructor
  	 */
-	public StaticObject(StaticObject copy){
+	public StaticObject(StaticObject copy) {
 		double x = copy.x;
 		double y = copy.y;
 		String name = copy.name;
@@ -42,7 +42,7 @@ public abstract class StaticObject{
 	/**
  	 * Setter method sets given 'x' to the variable 'x'.
  	 */
-	public void setX(double x){
+	public void setX(double x) {
 		this.x = x;
 
 	}
@@ -50,7 +50,7 @@ public abstract class StaticObject{
 	/**
  	 * Setter method sets given 'y' to the variable 'y'.
  	 */
-	public void setY(double y){
+	public void setY(double y) {
 		this.y = y;
 
 	}
@@ -58,56 +58,56 @@ public abstract class StaticObject{
 	/**
  	 * Getter method returns the value of x.
  	 */
-	public double getX(){
+	public double getX() {
 		return x;
 	}
 	
 	/**
  	 * Getter method returns the value of y.
  	 */
-	public double getY(){
+	public double getY() {
 		return y;
 	}
 
 	/**
  	 * Getter method returns the name.
  	 */
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 	
 	/**
  	 * Getter method returns halfW (half width).
  	 */
-	public double getHalfW(){
+	public double getHalfW() {
 		return halfW;
 	}
 	
 	/**
  	 * Getter method returns halfH (half height).
  	 */
-	public double getHalfH(){
+	public double getHalfH() {
 		return halfH;
 	}
 	
 	/**
  	 * Getter method returns the value of maxR (maximum radius).
  	 */
-	public double getMaxR(){
+	public double getMaxR() {
 		return maxR;
 	}
 
 	/**
  	 * Method adds f (flags) to ArrayList.
  	 */
-	public void addFlag(Flag f){
+	public void addFlag(Flag f) {
 		flags.add(f);
 	}
 	
 	/**
  	 * Getter method returns a list of flags
  	 */
-	public ArrayList<Flag> getFlags(){
+	public ArrayList<Flag> getFlags() {
 		return new ArrayList<Flag>(flags);
 	}
 
@@ -115,7 +115,7 @@ public abstract class StaticObject{
  	 * distance is calculated and returned using Pythagoras' theorem:
 	 * 	sqrt(distance) = (x-x0)^2-(y-y0)^2 
  	 */
-	public double distance(StaticObject d){
+	public double distance(StaticObject d) {
 		double dx = d.x - this.x;
 		double dy = d.y - this.y;
 		return Math.sqrt((dx * dx) + (dy * dy));
@@ -124,7 +124,7 @@ public abstract class StaticObject{
 	/**
  	 * Method returns the angle pointing from given object 'd' and 'this' object
  	 */
-	public double directionFrom(StaticObject d){
+	public double directionFrom(StaticObject d) {
 		double dx = this.x - d.x;
 		double dy = this.y - d.y;
 		return Math.atan2(dy, dx);
@@ -138,7 +138,7 @@ public abstract class StaticObject{
 	 * type casting is used to convert x and y (which are doubles) 
 	 * as integers. 
  	 */
-	public String toString(){
+	public String toString() {
 		return name + " x:" + (int) x + "m y:" + (int) y +"m ";
 	}
 	

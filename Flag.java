@@ -1,65 +1,75 @@
 public class Flag{
 
-
     private HandlingMethod method;
     private double value;
 
-    public enum HandlingMethod{
-        DESTROY{
+    public enum HandlingMethod {
+        DESTROY {
             @Override
-            public String getMethod(){
+            public String getMethod() {
                 return "DESTROY";
             }
         },
-        ADD_SPEED{
+        ADD_SPEED {
             @Override
-            public String getMethod(){
+            public String getMethod() {
                 return "ADD_SPEED";
             }
         },
-        SET_SPEED{
+        SET_SPEED {
             @Override
-            public String getMethod(){
+            public String getMethod() {
                 return "SET_SPEED";
             }
         },
-        ADD_DIRECTION{
+        ADD_DIRECTION {
             @Override
-            public String getMethod(){
+            public String getMethod() {
                 return "ADD_DIRECTION";
             }
         },
-        SET_DIRECTION{
+        SET_DIRECTION {
             @Override
-            public String getMethod(){
+            public String getMethod() {
                 return "SET_DIRECTION";
             }
+        },
+        NEXT_SECTION {
+        	@Override
+        	public String getMethod() {
+        		return "NEXT_SECTION";
+        	}
+        },
+        NEXT_LAP {
+        	@Override
+        	public String getMethod() {
+        		return "NEXT_LAP";
+        	}
         };
 
 
         public abstract String getMethod();
     }
 
-    public Flag(double value, HandlingMethod method){
+    public Flag(double value, HandlingMethod method) {
         this(method);
         this.value = value;
 
-
     }
 
-    public Flag(HandlingMethod method){
+    public Flag(HandlingMethod method) {
         setHandlingMethod(method);
     }
 
-    public double getValue(){
+    public double getValue() {
         return value;
     }
 
-    public String getHandlingMethod(){
+    public String getHandlingMethod() {
         return method.getMethod();
     }
 
-    public void setHandlingMethod(HandlingMethod method){
+    public void setHandlingMethod(HandlingMethod method) {
         this.method = method;
     }
 
