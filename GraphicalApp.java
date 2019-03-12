@@ -29,7 +29,11 @@ public class GraphicalApp extends Application {
 
 
 	public static void collisionStep(double time) {
-
+		for (DynamicObject o: currentMap.getDynamicObjList()) {
+			for (StaticObject s: currentMap.detectSATCollisions(o, currentMap.getStaticObjList())) {
+				s.resolveCollision(o);
+			}
+		}
 	}
 
 	public static void inputStep(double time) {
@@ -188,7 +192,8 @@ public class GraphicalApp extends Application {
                     tickStep(time);
                     displayStep();
 					carInfo.setText("" + mainCar);
-					collidingInfo.setText(currentMap.detectAABB(mainCar, currentMap.getStaticObjList())
+					collidingInfo.setText(currentMap.getInterfaceList().get(0).getSection() 
+						+ " " + currentMap.getInterfaceList().get(0).getLap()
 						+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList()));
 
                     //back to fps stuff
@@ -223,6 +228,10 @@ public class GraphicalApp extends Application {
 		}
 
 		currentMap.addStaticObject(new Wall(60, 10, "wall0", 80, 60));
+		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 0, 3));
+		currentMap.addStaticObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
+		currentMap.addStaticObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
+		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));
 
 		launch(args);
 
