@@ -48,14 +48,14 @@ public class Wall extends BasicGameObject{
 	}
 	
        /** 
-       * Setter methods sets given value of endX to this.endX
+       * Sets methods sets given value of endX to this.endX
        */
 	public void setEndX(double endX) {
 		this.endX = endX;
 	}
 	
     /** 
-    * Setter methods sets given value of endY to this.endY
+    * Sets methods sets given value of endY to this.endY
     */
     public void setEndY(double endY) {
 	this.endY = endY;
