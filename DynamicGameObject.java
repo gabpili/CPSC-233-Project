@@ -1,6 +1,6 @@
 import java.lang.Math;
 
-public abstract class DynamicObject extends StaticObject {
+public abstract class DynamicGameObject extends BasicGameObject {
     // Instance Variables
     private double speed;
     private double direction;
@@ -9,7 +9,7 @@ public abstract class DynamicObject extends StaticObject {
 	 * Constructor takes in five arguments: x, y, name, half width and half height
 	 * sets them using another constructor in this class.
 	 */
-    public DynamicObject(double x, double y, String name, double halfW, double halfH){
+    public DynamicGameObject(double x, double y, String name, double halfW, double halfH){
         this(x, y, name, halfW, halfH, 0, 0);
     }
     
@@ -18,7 +18,7 @@ public abstract class DynamicObject extends StaticObject {
      * speed and direction with given direction as well as a constructor from the StaticObject class 
      * to set x, y, name, halfW and halfH. 
 	 */
-    public DynamicObject(double x, double y, String name, double halfW, double halfH, double speed, double direction){
+    public DynamicGameObject(double x, double y, String name, double halfW, double halfH, double speed, double direction){
         super(x, y, name, halfW, halfH);
         setSpeed(speed);
         setDirection(direction);
@@ -27,7 +27,7 @@ public abstract class DynamicObject extends StaticObject {
 	/**
      * copy constructor 
 	 */
-    public DynamicObject(DynamicObject toCopy){
+    public DynamicGameObject(DynamicObject toCopy){
         super(toCopy);
         this.speed = toCopy.speed;
         this.direction = toCopy.direction;
