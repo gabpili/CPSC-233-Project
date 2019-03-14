@@ -6,35 +6,35 @@ public class Map{
 	/**
 	 * Instance variables
 	 */
-    private ArrayList<StaticObject> staticObjList = new ArrayList<StaticObject>();
-    private ArrayList<DynamicObject> dynamicObjList = new ArrayList<DynamicObject>();
-    private ArrayList<Interface> interfaceList = new ArrayList<Interface>();
+    private ArrayList<BasicGameObject> staticObjList = new ArrayList<BasicGameObject>();
+    private ArrayList<DynamicGameObject> dynamicObjList = new ArrayList<DynamicGameObject>();
+    private ArrayList<Driver> driverList = new ArrayList<Driver>();
     private int width;
     private int height;
 
 	/**
-	 * Constructor takes in interfaceList of type Interface as well as integers
+	 * Constructor takes in driverList of type Driver as well as integers
 	 * width and height and uses a constructor within the class to initialize
 	 * the values given values.
 	 */
-    public Map(ArrayList<Interface> interfaceList, int width, int height){
-        this(null, null, interfaceList, width, height);
+    public Map(ArrayList<Driver> driverList, int width, int height){
+        this(null, null, driverList, width, height);
     }
 
 	/**
 	 *
 	 */
     public Map(
-	    ArrayList<StaticObject> staticObjList,
-	    ArrayList<DynamicObject> dynamicObjList,
-	    ArrayList<Interface> interfaceList, int width, int height) {
+	    ArrayList<BasicGameObject> staticObjList,
+	    ArrayList<DynamicGameObject> dynamicObjList,
+	    ArrayList<Driver> driverList, int width, int height) {
         if (staticObjList != null) {
             this.staticObjList.addAll(staticObjList);
         }
         if (dynamicObjList != null) {
             this.dynamicObjList.addAll(dynamicObjList);
         }
-        this.interfaceList.addAll(interfaceList);
+        this.driverList.addAll(driverList);
         this.width = width;
         this.height = height;
     }
@@ -43,7 +43,7 @@ public class Map{
 	 * method returns list of static objects
 	 * list contains non-moving obstacles and walls
 	 */
-    public ArrayList<StaticObject> getStaticObjList() {
+    public ArrayList<BasicGameObject> getStaticObjList() {
         return staticObjList;
     }
 
@@ -51,15 +51,15 @@ public class Map{
 	 * method returns list of dynamic objects
 	 * list contains cars and moving obstacles
 	 */
-    public ArrayList<DynamicObject> getDynamicObjList() {
+    public ArrayList<DynamicGameObject> getDynamicObjList() {
         return dynamicObjList;
     }
 
     /**
 	 *
 	 */
-    public ArrayList<Interface> getInterfaceList() {
-      return interfaceList;
+    public ArrayList<Driver> getDriverList() {
+      return driverList;
     }
 
     /**
@@ -77,23 +77,23 @@ public class Map{
     }
 
     /**
-	 * Add given static object to the StaticObject list
+	 * Add given static object to the BasicGameObject list
 	 */
-    public void addStaticObject(StaticObject s1) {
+    public void addBasicGameObject(BasicGameObject s1) {
         this.staticObjList.add(s1);
     }
 
     /**
-	 * Add given dynamic object to the DynamicObject list
+	 * Add given dynamic object to the DynamicGameObject list
 	 */
-    public void addDynamicObject(DynamicObject d1) {
+    public void addDynamicGameObject(DynamicGameObject d1) {
         this.dynamicObjList.add(d1);
     }
 
     /**
 	 * Remove given static object from the list of static objects: 'staticObjList'
 	 */
-    public StaticObject removeStaticObject(StaticObject toRemove) {
+    public BasicGameObject removeBasicGameObject(BasicGameObject toRemove) {
         staticObjList.remove(toRemove);
         return toRemove;
     }
@@ -101,7 +101,7 @@ public class Map{
     /**
 	 * Remove given dynamic object from the list of dynamic objects, "dynamicObjList"
 	 */
-    public DynamicObject removeDynamicObject(DynamicObject toRemove) {
+    public DynamicGameObject removeDynamicGameObject(DynamicGameObject toRemove) {
         dynamicObjList.remove(toRemove);
         return toRemove;
     }
@@ -110,7 +110,7 @@ public class Map{
 	 *
 	 */
     public void giveInput(ArrayList<Character> character, double time) {
-        for (Interface i: interfaceList) {
+        for (Driver i: driverList) {
             i.takeInput(character, time);
         }
     }
@@ -129,9 +129,9 @@ public class Map{
 	/**
 	 *
 	 */
-    public ArrayList<StaticObject> getProximityObjects(DynamicObject d, double proximity) {
-        ArrayList<StaticObject> copy = new ArrayList<StaticObject>();
-            for (StaticObject o: staticObjList) {
+    public ArrayList<BasicGameObject> getProximityObjects(DynamicGameObject d, double proximity) {
+        ArrayList<BasicGameObject> copy = new ArrayList<BasicGameObject>();
+            for (BasicGameObject o: staticObjList) {
                 if (o.distance(d) <= proximity) {
                 copy.add(o);
             }
@@ -142,19 +142,19 @@ public class Map{
 
     /**
 	 * Method will detect collisions using the Axis Align Bounding-Boxes (AABB).
-	 * Method takes in a DynamicObject named dObj and an array list of type StaticObject sObjs.
+	 * Method takes in a DynamicGameObject named dObj and an array list of type BasicGameObject sObjs.
 	 *
 	 * Creates a new array list for potential collisions. Then iterates through the given list
 	 * using a for loop. Check if the maximum radius (maxR) is less than the total length of x and
 	 * maximum raidus of the static object.
 	 *
 	 * If all conditions in the if statement are satisfied, the static object, "s", that would potentially
-	 * collide with the dObj is added into type StaticObject  array list "potentialCollisions".
+	 * collide with the dObj is added into type BasicGameObject  array list "potentialCollisions".
 	 */
-    public ArrayList<StaticObject> detectAABB(DynamicObject dObj,
-        ArrayList<? extends StaticObject> sObjs){
-        ArrayList<StaticObject> potentialCollisions = new ArrayList<StaticObject>();
-        for (StaticObject s : sObjs){
+    public ArrayList<BasicGameObject> detectAABB(DynamicGameObject dObj,
+        ArrayList<? extends BasicGameObject> sObjs){
+        ArrayList<BasicGameObject> potentialCollisions = new ArrayList<BasicGameObject>();
+        for (BasicGameObject s : sObjs){
             if (dObj.getMaxR() < s.getX() + s.getMaxR() &&
                 dObj.getMaxR() + s.getX() > s.getX() &&
                 dObj.getMaxR() < s.getY() + s.getMaxR() &&
@@ -175,7 +175,7 @@ public class Map{
 	 *
 	 * @return true if colliding, false if not
 	 */
-    public boolean testSAT(DynamicObject b, StaticObject a) {
+    public boolean testSAT(DynamicGameObject b, BasicGameObject a) {
         double tx, ty;
         double cD = Math.cos(b.getDirection());
         double sD = Math.sin(b.getDirection());
@@ -248,14 +248,14 @@ public class Map{
     }
 
     /**
-	 * performs SAT tests between given DynamicObject and every object in list
+	 * performs SAT tests between given DynamicGameObject and every object in list
 	 *
 	 * @return set of objects that are colliding with dObj
 	 */
-    public ArrayList<StaticObject> detectSATCollisions(DynamicObject dObj,
-        ArrayList<? extends StaticObject> sObjs){
-        ArrayList<StaticObject> colliding = new ArrayList<StaticObject>();
-            for (StaticObject o: sObjs) {
+    public ArrayList<BasicGameObject> detectSATCollisions(DynamicGameObject dObj,
+        ArrayList<? extends BasicGameObject> sObjs){
+        ArrayList<BasicGameObject> colliding = new ArrayList<BasicGameObject>();
+            for (BasicGameObject o: sObjs) {
                 if (dObj != o && testSAT(dObj, o)) {
                 colliding.add(o);
 
@@ -268,14 +268,14 @@ public class Map{
     /**
      * apply flag action to object o
      */
-    public void handleFlag(StaticObject o, Flag f){
+    public void handleFlag(BasicGameObject o, Flag f){
 
-        if (o instanceof DynamicObject) {
-            DynamicObject o_ = (DynamicObject) o;
+        if (o instanceof DynamicGameObject) {
+            DynamicGameObject o_ = (DynamicGameObject) o;
 
             switch (f.getHandlingMethod()) {
                 case ("DESTROY"):
-                    removeDynamicObject(o_);
+                    removeDynamicGameObject(o_);
                     break;
 
                 case ("ADD_SPEED"):
@@ -296,9 +296,9 @@ public class Map{
             }
 
             if (o instanceof Car) {
-            	Interface i = null;
+            	Driver i = null;
 
-            	for (Interface i_: interfaceList) {
+            	for (Driver i_: driverList) {
             		if (i_.getAttachedCar() == o) {
             			i = i_;
             		}
@@ -326,7 +326,7 @@ public class Map{
 
             switch (f.getHandlingMethod()) {
                 case ("DESTROY"):
-                    removeStaticObject(o);
+                    removeBasicGameObject(o);
                     break;
 
                 default:;
@@ -336,12 +336,12 @@ public class Map{
     }
 
     /**
-	 * handle all flags of each object and tick all DynamicObjects to change positions
+	 * handle all flags of each object and tick all DynamicGameObjects to change positions
 	 */
-    public ArrayList<StaticObject> tickAll(double time){
-    	ArrayList<StaticObject> toUpdate = new ArrayList<StaticObject>();
+    public ArrayList<BasicGameObject> tickAll(double time){
+    	ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
 
-        for (StaticObject o: new ArrayList<StaticObject>(staticObjList)) {
+        for (BasicGameObject o: new ArrayList<BasicGameObject>(staticObjList)) {
         	if (!o.getFlags().isEmpty()) {
         		for (Flag f: o.getFlags()) {
 	                handleFlag(o, f);
@@ -351,7 +351,7 @@ public class Map{
         	}
 
         }
-        for (DynamicObject o: new ArrayList<DynamicObject>(dynamicObjList)) {
+        for (DynamicGameObject o: new ArrayList<DynamicGameObject>(dynamicObjList)) {
             for (Flag f: o.getFlags()){
                 handleFlag(o, f);
                 o.removeFlag(f);

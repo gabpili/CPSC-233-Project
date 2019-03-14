@@ -1,6 +1,6 @@
 import java.lang.Math;
 
-public class Car extends DynamicObject{
+public class Car extends DynamicGameObject{
 	private double baseAcceleration;
 	private double baseFriction;
 	private double angularVelocity = 0;
@@ -40,7 +40,7 @@ public class Car extends DynamicObject{
 	}
 
 	@Override
-	public void resolveCollision(DynamicObject dObj) {
+	public void resolveCollision(DynamicGameObject dObj) {
 
 	}
 

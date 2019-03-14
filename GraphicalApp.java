@@ -20,23 +20,23 @@ import javafx.animation.AnimationTimer;
 public class GraphicalApp extends Application {
 	private static int scale = 4;
 	private static Map currentMap;
-    private static HashMap<StaticObject, Shape> objDisplay = new HashMap<StaticObject, Shape>();
-	private static ArrayList<StaticObject> toUpdate = new ArrayList<StaticObject>();
+    private static HashMap<BasicGameObject, Shape> objDisplay = new HashMap<BasicGameObject, Shape>();
+	private static ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
 	private static ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
     private static boolean showFpsOverlay = true;
 	private static Car mainCar = new Car(50, 5, "Magic School Bus", Math.toRadians(90), 1, 2.4, 8.2, 0.3);
 
 	/**
-	 * detects collision between each DynamicObject and every StaticObject
-	 * colliding objects have collisions resolved as per the StaticObject's specific method of resolution
+	 * detects collision between each DynamicGameObject and every BasicGameObject
+	 * colliding objects have collisions resolved as per the BasicGameObject's specific method of resolution
 	 */
 	private static void collisionStep(double time) {
-		for (DynamicObject o: currentMap.getDynamicObjList()) {
-			for (StaticObject s: currentMap.detectSATCollisions(o, currentMap.getStaticObjList())) {
+		for (DynamicGameObject o: currentMap.getDynamicObjList()) {
+			for (BasicGameObject s: currentMap.detectSATCollisions(o, currentMap.getStaticObjList())) {
 				s.resolveCollision(o);
 			}
 
-			for (StaticObject d: currentMap.detectSATCollisions(o, currentMap.getDynamicObjList())) {
+			for (BasicGameObject d: currentMap.detectSATCollisions(o, currentMap.getDynamicObjList())) {
 				d.resolveCollision(o);
 			}
 		}
@@ -81,11 +81,11 @@ public class GraphicalApp extends Application {
     /**
      * sets coordinate and width/height of Rectangle shape based on given object
      */
-    private static void updateDisplayShape (Rectangle r, StaticObject o) {
+    private static void updateDisplayShape (Rectangle r, BasicGameObject o) {
         r.setX((o.getX() - o.getHalfW()) * scale);
         r.setY((o.getY() - o.getHalfH()) * scale);
-		if (o instanceof DynamicObject) {
-			DynamicObject o_ = (DynamicObject) o;
+		if (o instanceof DynamicGameObject) {
+			DynamicGameObject o_ = (DynamicGameObject) o;
 			r.setRotate(Math.toDegrees(o_.getDirection()) + 90);
 		}
     }
@@ -98,7 +98,7 @@ public class GraphicalApp extends Application {
 		ArrayList<Shape> toRemove = new ArrayList<Shape>();
 		if (!toUpdate.isEmpty()) {
 
-	        for (StaticObject o: toUpdate) {
+	        for (BasicGameObject o: toUpdate) {
 	            if (!currentMap.getStaticObjList().contains(o) &&
 					!currentMap.getDynamicObjList().contains(o)) {
 	            	toRemove.add(objDisplay.get(o));
@@ -119,10 +119,10 @@ public class GraphicalApp extends Application {
 	/**
 	 * takes list of objects and returns hashmap pairs of object to shape
 	 */
-    private static HashMap<StaticObject, Shape> createDisplayShapes(
-		ArrayList<? extends StaticObject> objList) {
-        HashMap<StaticObject, Shape> temp = new HashMap<StaticObject, Shape>();
-        for (StaticObject o: objList) {
+    private static HashMap<BasicGameObject, Shape> createDisplayShapes(
+		ArrayList<? extends BasicGameObject> objList) {
+        HashMap<BasicGameObject, Shape> temp = new HashMap<BasicGameObject, Shape>();
+        for (BasicGameObject o: objList) {
             if (o instanceof Wall) {
                 Line newShape = new Line();
 				updateDisplayShape(newShape, (Wall) o);
@@ -251,8 +251,8 @@ public class GraphicalApp extends Application {
                 gameWindow.getChildren().removeAll(displayStep());
 
 				carInfo.setText("" + mainCar);
-				collidingInfo.setText("Section: " + currentMap.getInterfaceList().get(0).getSection()
-					+ " Lap " + currentMap.getInterfaceList().get(0).getLap()
+				collidingInfo.setText("Section: " + currentMap.getDriverList().get(0).getSection()
+					+ " Lap " + currentMap.getDriverList().get(0).getLap()
 					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getStaticObjList())
 					+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getDynamicObjList()));
 
@@ -266,30 +266,30 @@ public class GraphicalApp extends Application {
 	 * loads test map and launches program
 	 */
 	public static void main(String[] args) {
-		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
-		interfaceList.add(new Interface(mainCar));
+		ArrayList<Driver> driverList = new ArrayList<Driver>();
+		driverList.add(new Driver(mainCar));
 		ArrayList<Car> carList = new ArrayList<Car>();
 		carList.add(mainCar);
 		carList.add(new Car(mainCar));
 		carList.add(new Car(mainCar));
 		carList.add(new Car(mainCar));
 
-		currentMap = PresetMaps.loadMap1(carList, interfaceList);
+		currentMap = PresetMaps.loadMap1(carList, driverList);
 		/*
-		currentMap = new Map(interfaceList, 150, 200);
+		currentMap = new Map(driverList, 150, 200);
 
-		currentMap.addDynamicObject(mainCar);
+		currentMap.addDynamicGameObject(mainCar);
 
 		for (int i=0; i<5; i++) {
-			currentMap.addStaticObject(new StaticObstacle(48, 10 + 4 * i, "RCone" + i, 0.15, 0.15));
-			currentMap.addStaticObject(new StaticObstacle(52, 5 + 4 * i, "LCone" + i, 0.15, 0.15));
+			currentMap.addBasicGameObject(new StaticObstacle(48, 10 + 4 * i, "RCone" + i, 0.15, 0.15));
+			currentMap.addBasicGameObject(new StaticObstacle(52, 5 + 4 * i, "LCone" + i, 0.15, 0.15));
 		}
 
-		currentMap.addStaticObject(new Wall(60, 10, "wall0", 80, 60));
-		currentMap.addStaticObject(new FinishLine(10, 150, "finish", 30, 150, 3));
-		currentMap.addStaticObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
-		currentMap.addStaticObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
-		currentMap.addStaticObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));*/
+		currentMap.addBasicGameObject(new Wall(60, 10, "wall0", 80, 60));
+		currentMap.addBasicGameObject(new FinishLine(10, 150, "finish", 30, 150, 3));
+		currentMap.addBasicGameObject(new Checkpoint(50, 150, "cp1", 50, 170, 1));
+		currentMap.addBasicGameObject(new Checkpoint(80, 150, "cp2", 80, 170, 2));
+		currentMap.addBasicGameObject(new Checkpoint(130, 150, "cp3", 145, 165, 3));*/
 
 		launch(args);
 

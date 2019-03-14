@@ -19,11 +19,11 @@ public class ConsoleApp {
 	}
 
 	public static void displayStep() {
-		DynamicObject mainCar = currentMap.getDynamicObjList().get(0);
+		DynamicGameObject mainCar = currentMap.getDynamicObjList().get(0);
 		System.out.println(mainCar);
-		ArrayList<StaticObject> objectsNearCar = currentMap.getProximityObjects(mainCar, 30);
+		ArrayList<BasicGameObject> objectsNearCar = currentMap.getProximityObjects(mainCar, 30);
 
-		for (StaticObject o: objectsNearCar) {
+		for (BasicGameObject o: objectsNearCar) {
 			System.out.print(o.getName() + " " + (int) o.distance(mainCar) +
 				"m from main car, ");
 
@@ -55,16 +55,16 @@ public class ConsoleApp {
 
 	public static void main(String[] args) {
 		Car mainCar = new Car(50, 0, "Magic School Bus", Math.toRadians(90), 8.2, 0.3, 1, 1.5);
-		ArrayList<Interface> interfaceList = new ArrayList<Interface>();
-		interfaceList.add(new Interface(mainCar));
+		ArrayList<Driver> driverList = new ArrayList<Driver>();
+		driverList.add(new Driver(mainCar));
 
-		currentMap = new Map(interfaceList, 200, 200);
+		currentMap = new Map(driverList, 200, 200);
 
-		currentMap.addDynamicObject(mainCar);
+		currentMap.addDynamicGameObject(mainCar);
 
 		for (int i=0; i<5; i++) {
-			currentMap.addStaticObject(new StaticObstacle(30, 10 + 10 * i, "RCone" + i, 1, 1));
-			currentMap.addStaticObject(new StaticObstacle(70, 5 + 10 * i, "LCone" + i, 1, 1));
+			currentMap.addBasicGameObject(new StaticObstacle(30, 10 + 10 * i, "RCone" + i, 1, 1));
+			currentMap.addBasicGameObject(new StaticObstacle(70, 5 + 10 * i, "LCone" + i, 1, 1));
 		}
 
 		mainLoop(1.0/4);

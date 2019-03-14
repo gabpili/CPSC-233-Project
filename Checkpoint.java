@@ -24,7 +24,7 @@ public class Checkpoint extends Wall{
 
 
 	@Override
-	public void resolveCollision(DynamicObject dObj) {
+	public void resolveCollision(DynamicGameObject dObj) {
 		dObj.addFlag(new Flag(number, Flag.HandlingMethod.NEXT_SECTION));
 
 	}
