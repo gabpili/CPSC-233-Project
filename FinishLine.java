@@ -1,5 +1,8 @@
 public class FinishLine extends Checkpoint{
 
+    /**
+    *Instance variable lastNumber
+    */
     private int lastNumber;
 
 	 /**
