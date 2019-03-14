@@ -1,38 +1,62 @@
 import java.lang.Math;
 
-public class Wall extends StaticObject{
-	private double x2;
-	private double y2;
+public class Wall extends BasicGameObject{
+	private double startX;
+	private double startY;
+	private double endX;
+	private double endY;
 
-	public Wall(double x, double y, String name, double x2, double y2){
-		super(x, y, name, 0, Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) / 2);
-		setX2(x2);
-		setY2(y2);
+	public Wall(double startX, double startY, String name, double endX, double endY) {
+		super(startX, startY, name, 0, Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) / 2);
+		setStartX(startX);
+		setStartY(startY);
+		setEndX(endX);
+		setEndY(endY);
 	}
 
-	public Wall(Wall copy){
+	public Wall(Wall copy) {
 		super(copy);
-		double x2 = copy.x2;
-		double y2 = copy.y2;
+		startX = copy.startX;
+		startY = copy.startY;
+		endX = copy.endX;
+		endY = copy.endY;
 	}
 
-		/* setters */
-	public void setX2(double x2){
-		this.x2 = x2;
+	// setters
+	public void setStartX(double startX) {
+		this.startX = startX;
 	}
-    public void setY2(double y2){
-		this.y2 = y2;
+
+	public void setStartY(double startY) {
+		this.startY = startY;
+	}
+
+	public void setEndX(double endX) {
+		this.endX = endX;
+	}
+
+    public void setEndY(double endY) {
+		this.endY = endY;
     }
 
-	 /*getters */
-    public double getX2(){
-        return x2;
+	// getters
+    public double getStartX() {
+        return startX;
     }
-	public double getY2(){
-		return y2;
+
+	public double getStartY() {
+		return startY;
+	}
+
+    public double getEndX() {
+        return endX;
+    }
+
+	public double getEndY() {
+		return endY;
 	}
 
 	@Override
-	public void resolveCollision(DynamicObject dObj){
+	public void resolveCollision(DynamicGameObject dObj){
 	}
 }
