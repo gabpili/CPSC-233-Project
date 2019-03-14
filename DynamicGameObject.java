@@ -27,7 +27,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	/**
      * copy constructor 
 	 */
-    public DynamicGameObject(DynamicObject toCopy){
+    public DynamicGameObject(DynamicGameObject toCopy){
         super(toCopy);
         this.speed = toCopy.speed;
         this.direction = toCopy.direction;
