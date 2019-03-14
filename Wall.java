@@ -10,10 +10,10 @@ public class Wall extends BasicGameObject{
 	private double endY;
 	
 	/**
-	* Constructor consists arguments: x, y, name, x2 and y2
-	* values are set using a constructor in the BasicGameObject 
-	* and setter methods within this Wall class.
-	*/ 
+	 * Constructor consists arguments: x, y, name, x2 and y2
+	 * values are set using a constructor in the BasicGameObject 
+	 * and setter methods within this Wall class.
+	 */ 
 	public Wall(double startX, double startY, String name, double endX, double endY) {
 		super(startX, startY, name, 0, Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) / 2);
 		setStartX(startX);
@@ -34,8 +34,8 @@ public class Wall extends BasicGameObject{
 	}
 	
        /** 
-       * Sets given value of startX to this.startX
-       */
+        * Sets given value of startX to this.startX
+        */
 	public void setStartX(double startX) {
 		this.startX = startX;
 	}
@@ -48,15 +48,15 @@ public class Wall extends BasicGameObject{
 	}
 	
        /** 
-       * Sets methods sets given value of endX to this.endX
-       */
+        * Sets methods sets given value of endX to this.endX
+        */
 	public void setEndX(double endX) {
 		this.endX = endX;
 	}
 	
     /** 
-    * Sets methods sets given value of endY to this.endY
-    */
+     * Sets methods sets given value of endY to this.endY
+     */
     public void setEndY(double endY) {
 	this.endY = endY;
     }
@@ -90,9 +90,9 @@ public class Wall extends BasicGameObject{
 	}
 	
     	/**
-	* The method resolveCollision is overided from BasicGameObject
-    	* argument name is dObj of type DynamicGameObject
-    	*/
+	 * The method resolveCollision is overided from BasicGameObject
+    	 * argument name is dObj of type DynamicGameObject
+    	 */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj){
 	}
