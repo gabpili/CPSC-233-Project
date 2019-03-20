@@ -3,13 +3,13 @@ import java.util.ArrayList;
 
 public class PresetMaps {
 	public static void positionCarsToFinish(ArrayList<Car> carList, FinishLine finish) {
-		double length = Math.sqrt(Math.pow(finish.getX2() - finish.getX(), 2) + Math.pow(finish.getY2() - finish.getY(), 2));
-		double columni = (finish.getY() - finish.getY2()) / length;
-		double columnj = (finish.getX2() - finish.getX()) / length;
-		double column1x = finish.getX() + (finish.getX2() - finish.getX()) / 3;
-		double column1y = finish.getY() + (finish.getY2() - finish.getY()) / 3;
-		double column2x = column1x + (finish.getX2() - finish.getX()) / 3;
-		double column2y = column1y + (finish.getY2() - finish.getY()) / 3;
+		double length = Math.sqrt(Math.pow(finish.getEndX() - finish.getStartX(), 2) + Math.pow(finish.getEndY() - finish.getStartY(), 2));
+		double columni = (finish.getStartY() - finish.getEndY()) / length;
+		double columnj = (finish.getEndX() - finish.getStartX()) / length;
+		double column1x = finish.getStartX() + (finish.getEndX() - finish.getStartX()) / 3;
+		double column1y = finish.getStartY() + (finish.getEndY() - finish.getStartY()) / 3;
+		double column2x = column1x + (finish.getEndX() - finish.getStartX()) / 3;
+		double column2y = column1y + (finish.getEndY() - finish.getStartY()) / 3;
 
 		for (int i = 0; i < carList.size(); i++) {
 			Car c = carList.get(i);
