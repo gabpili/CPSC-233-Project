@@ -3,9 +3,6 @@ import java.lang.Math;
 
 
 public class Driver {
-	/**
- 	* Instance vairables
- 	*/
 	private Car attachedCar;
 	private int section = 0;
 	private int lap = 1;
