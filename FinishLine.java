@@ -28,7 +28,7 @@ public class FinishLine extends Checkpoint{
     */
 
 	@Override
-	public void resolveCollision(DynamicObject dObj) {
+	public void resolveCollision(DynamicGameObject dObj) {
 		dObj.addFlag(new Flag(lastNumber, Flag.HandlingMethod.NEXT_LAP));
 	}
 

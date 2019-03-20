@@ -1,7 +1,7 @@
 import java.lang.Math;
 import java.util.ArrayList;
 
-public abstract class StaticObject {
+public abstract class BasicGameObject {
 	/**
  	 * instance variables
  	 */
@@ -17,7 +17,7 @@ public abstract class StaticObject {
  	 * Constructor that takes 5 arguments and sets the given values to the following
 	 * variables. maximum raidus (maxR) is also initialized under this constructor.
  	 */
-	public StaticObject(double x, double y, String name, double halfW, double halfH) {
+	public BasicGameObject(double x, double y, String name, double halfW, double halfH) {
 		setX(x);
 		setY(y);
 		this.name = name;
@@ -30,7 +30,7 @@ public abstract class StaticObject {
 	/**
  	 * Copy constructor
  	 */
-	public StaticObject(StaticObject copy) {
+	public BasicGameObject(BasicGameObject copy) {
 		this.x = copy.x;
 		this.y = copy.y;
 		this.name = copy.name;
@@ -121,7 +121,7 @@ public abstract class StaticObject {
 	/**
  	 * returns distance between this object and other object d
  	 */
-	public double distance(StaticObject d) {
+	public double distance(BasicGameObject d) {
 		double dx = d.x - this.x;
 		double dy = d.y - this.y;
 		return Math.sqrt((dx * dx) + (dy * dy));
@@ -130,7 +130,7 @@ public abstract class StaticObject {
 	/**
  	 * Method returns the angle pointing from given object 'd' to 'this' object
  	 */
-	public double directionFrom(StaticObject d) {
+	public double directionFrom(BasicGameObject d) {
 		double dx = this.x - d.x;
 		double dy = this.y - d.y;
 		return Math.atan2(dy, dx);
@@ -141,7 +141,7 @@ public abstract class StaticObject {
  	 * respond to collision by adding flags to objects
  	 * each physical object type responds differently
  	 */
-	abstract void resolveCollision(DynamicObject dObj);
+	abstract void resolveCollision(DynamicGameObject dObj);
 
 	/**
  	 * Method puts values in String format.

@@ -2,49 +2,99 @@ import java.lang.Math;
 
 public class Wall extends BasicGameObject{
 	/**
-	* Instance Variables 
-	*/
-	private double x2;
-	private double y2;
-
-	/* Constructor
-	* Constructor consists arguments: x, y, name, x2 and y2
-	* x, y and name variables are extended from the BasicGameObject class using 'super' keyword
-	* takes the square root of  the exponent power of (x2 - x) and adds it to exponent power of (y2-y) and divides the result by 2
-	*/ 
-	public Wall(double x, double y, String name, double x2, double y2){
-		super(x, y, name, 0, Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) / 2);
-		setX2(x2);
-		setY2(y2);
+	 * Instance Variables 
+	 */
+	private double startX;
+	private double startY;
+	private double endX;
+	private double endY;
+	
+	/**
+	 * Constructor consists arguments: x, y, name, x2 and y2
+	 * values are set using a constructor in the BasicGameObject 
+	 * and setter methods within this Wall class.
+	 */ 
+	public Wall(double startX, double startY, String name, double endX, double endY) {
+		super(startX, startY, name, 0, Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) / 2);
+		setStartX(startX);
+		setStartY(startY);
+		setEndX(endX);
+		setEndY(endY);
 	}
-        /* Copy Constructor */
-	public Wall(Wall copy){
+	
+    /**
+	 * Copy Constructor 
+	 */
+	public Wall(Wall copy) {
+
 		super(copy);
-		double x2 = copy.x2;
-		double y2 = copy.y2;
+		startX = copy.startX;
+		startY = copy.startY;
+		endX = copy.endX;
+		endY = copy.endY;
 	}
-
-       /* setter methods
-       * sets x2 and y2 
-       */
-	public void setX2(double x2){
-		this.x2 = x2;
+	
+    /** 
+     * Sets given value of startX to this.startX
+     */
+	public void setStartX(double startX) {
+		this.startX = startX;
 	}
-        public void setY2(double y2){
-		this.y2 = y2;
-        }
-  
-    /*getter methods 
-    * Returns x2 and y2
-    */
-    public double getX2(){
-        return x2;
+	
+    /** 
+     * Sets given value of startY to this.startY
+     */
+	public void setStartY(double startY) {
+		this.startY = startY;
+	}
+	
+    /** 
+     * Sets methods sets given value of endX to this.endX
+     */
+	public void setEndX(double endX) {
+		this.endX = endX;
+	}
+	
+    /** 
+     * Sets methods sets given value of endY to this.endY
+     */
+    public void setEndY(double endY) {
+	this.endY = endY;
     }
-	public double getY2(){
-		return y2;
+	
+    /**
+     * Returns value of startX
+     */
+    public double getStartX() {
+        return startX;
+    }
+	
+    /**
+     * Returns value of startY
+     */
+	public double getStartY() {
+		return startY;
 	}
-
-    @Override
-    public void resolveCollision(DynamicGameObject dObj){
+    
+    /**
+     * Getter methods returns value of endX
+     */
+    public double getEndX() {
+        return endX;
+    }
+	
+    /**
+     * Getter methods returns value of endY
+     */
+	public double getEndY() {
+		return endY;
+	}
+	
+    /**
+	 * The method resolveCollision is overided from BasicGameObject
+     * argument name is dObj of type DynamicGameObject
+     */
+	@Override
+	public void resolveCollision(DynamicGameObject dObj){
 	}
 }

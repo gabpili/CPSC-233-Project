@@ -11,6 +11,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	 */
     public DynamicGameObject(double x, double y, String name, double halfW, double halfH){
         this(x, y, name, halfW, halfH, 0, 0);
+
     }
     
 	/**
@@ -22,6 +23,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
         super(x, y, name, halfW, halfH);
         setSpeed(speed);
         setDirection(direction);
+
     }
     
 	/**
@@ -31,6 +33,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
         super(toCopy);
         this.speed = toCopy.speed;
         this.direction = toCopy.direction;
+
     }
 
 	/**
@@ -38,6 +41,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	 */
     public void setSpeed(double speed){
         this.speed = speed;
+
     }
 
     /**
@@ -48,12 +52,15 @@ public abstract class DynamicGameObject extends BasicGameObject {
     public void setDirection(double direction){
         while(direction <= -Math.PI){
             direction += Math.PI * 2;
+
         }
         while(direction > Math.PI){
             direction -= Math.PI * 2;
+
         }
 
         this.direction = direction;
+
     }
 
     /**
@@ -63,6 +70,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
         setSpeed(Math.sqrt(xvelocity * xvelocity + yvelocity * yvelocity));
         double newDirection = Math.atan2(yvelocity, xvelocity);
         setDirection(newDirection);
+
     }
 
 	/**
@@ -70,6 +78,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	 */
     public double getSpeed(){
         return speed;
+
     }
     
 	/**
@@ -77,6 +86,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	 */
     public double getDirection(){
         return direction;
+
     }
     
 	/**
@@ -84,13 +94,15 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	 */
     public double getXVelocity(){
         return Math.cos(direction) * speed;
+
     }
     
-	/**
+    /**
      * returns the 'y' velocity using sine
 	 */
     public double getYVelocity(){
         return Math.sin(direction) * speed;
+
     }
 
     /**
@@ -99,13 +111,8 @@ public abstract class DynamicGameObject extends BasicGameObject {
     public void tick(double time){
         setX(getX() + getXVelocity() * time);
         setY(getY() + getYVelocity() * time);
-        tickExtended(time);
+
     }
-    
-	/**
-     * overriden by Car, which has additional attributes to tick with time
-	 */
-    abstract void tickExtended(double time);
 
 	/**
      * returns values into string format using the toString() method in StaticObject
@@ -114,5 +121,6 @@ public abstract class DynamicGameObject extends BasicGameObject {
 	 */
     public String toString(){
         return super.toString() + (int) speed +  "m/s " + (int) Math.toDegrees(direction) + "deg";
+        
     }
 }

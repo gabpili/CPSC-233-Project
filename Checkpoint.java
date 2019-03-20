@@ -1,8 +1,7 @@
 public class Checkpoint extends Wall{
-	
 	/**
-	 * Instance variables
-	 */
+	 * checkpoint number
+	 */	
 	private int number;
 
 	/**
@@ -30,7 +29,7 @@ public class Checkpoint extends Wall{
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
+  
 	/**
 	 * Returns the value of the number.
 	 */
