@@ -97,7 +97,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
 
     }
     
-	/**
+    /**
      * returns the 'y' velocity using sine
 	 */
     public double getYVelocity(){

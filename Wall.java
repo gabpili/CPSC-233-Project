@@ -22,10 +22,11 @@ public class Wall extends BasicGameObject{
 		setEndY(endY);
 	}
 	
-        /**
+    /**
 	 * Copy Constructor 
 	 */
 	public Wall(Wall copy) {
+
 		super(copy);
 		startX = copy.startX;
 		startY = copy.startY;
@@ -33,23 +34,23 @@ public class Wall extends BasicGameObject{
 		endY = copy.endY;
 	}
 	
-       /** 
-        * Sets given value of startX to this.startX
-        */
+    /** 
+     * Sets given value of startX to this.startX
+     */
 	public void setStartX(double startX) {
 		this.startX = startX;
 	}
 	
-       /** 
-       * Sets given value of startY to this.startY
-       */
+    /** 
+     * Sets given value of startY to this.startY
+     */
 	public void setStartY(double startY) {
 		this.startY = startY;
 	}
 	
-       /** 
-        * Sets methods sets given value of endX to this.endX
-        */
+    /** 
+     * Sets methods sets given value of endX to this.endX
+     */
 	public void setEndX(double endX) {
 		this.endX = endX;
 	}
@@ -74,7 +75,7 @@ public class Wall extends BasicGameObject{
 	public double getStartY() {
 		return startY;
 	}
-	
+    
     /**
      * Getter methods returns value of endX
      */
@@ -82,17 +83,17 @@ public class Wall extends BasicGameObject{
         return endX;
     }
 	
-    	/**
-    	* Getter methods returns value of endY
-     	*/
+    /**
+     * Getter methods returns value of endY
+     */
 	public double getEndY() {
 		return endY;
 	}
 	
-    	/**
+    /**
 	 * The method resolveCollision is overided from BasicGameObject
-    	 * argument name is dObj of type DynamicGameObject
-    	 */
+     * argument name is dObj of type DynamicGameObject
+     */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj){
 	}

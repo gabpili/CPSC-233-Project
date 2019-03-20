@@ -1,9 +1,9 @@
 public class Checkpoint extends Wall{
 	/**
-	 * Instance variables
+	 * checkpoint number
 	 */	
 	private int number;
-	
+
 	/**
 	 * Constructor that takes in 6 arguments and sets given the startX, startY, name 
 	 * endX and endY values using a constructor in the Wall class and sets number given
@@ -29,7 +29,7 @@ public class Checkpoint extends Wall{
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
+  
 	/**
 	 * Returns the value of the number.
 	 */
