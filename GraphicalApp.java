@@ -1,222 +1,125 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Collection;
-import java.lang.Math;
+
+import base.Map;
+import base.Driver;
+import gameobj.*;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Line;
-import javafx.scene.control.Label;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
-import javafx.animation.AnimationTimer;
 
+import javafx.scene.control.Button;
+
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class GraphicalApp extends Application {
 	/**
-	 * scale of pixels to metres
+	 *
 	 */
-	private static int scale = 4;
+	public static Car loadCar(String carName) throws FileNotFoundException, IOException, IllegalArgumentException {
+	    File carFile = new File(carName + ".txt");
+	    BufferedReader inputStream = new BufferedReader(new FileReader(carFile));
 
-	/** 
-	 * current loaded Map object
-	 * holds all info about physical objects
-	 */
-	private static Map currentMap;
+	    /* Declaring an empty array that will later on be filled with
+		arguments from the text chosen car and its corresponding
+		text file.
 
-	/**
-	 * list of pairs of object to its shape on display
-	 * object references are used purely for accessing shape information and comparisons, and are not mutated 
-	 */
-    private static HashMap<BasicGameObject, Shape> objDisplay = new HashMap<BasicGameObject, Shape>();
+	    Loop will continue until the text file runs out of lines. */
+	    ArrayList<Double> arguments = new ArrayList<Double>();
+	    String line;
+	    while ((line = inputStream.readLine()) != null) {
+            if (line.charAt(0) != '/') {
+           		arguments.add(Double.valueOf(line));
 
-    /**
-     * list of javafx KeyCodes caught by key press events
-     */
-	private static ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
+           	}
+       	}
 
-	/**
-	 * test Car object
-	 */
-	private static Car mainCar;
+       	if (arguments.size() != 10) {
+       		throw new IllegalArgumentException("The file <" + carFile + "> contains improper number of attributes to create a car; needs 10");
 
+       	}
 
-	/**
-	 * detects collision between each DynamicGameObject and every BasicGameObject
-	 * colliding objects have collisions resolved as per the BasicGameObject's specific method of resolution
-	 */
-	private static void collisionStep(double time) {
-		currentMap.collisionDetectResolveAll();
-	}
+       	double halfW = arguments.get(0);
+       	double halfH = arguments.get(1);
+       	double mass = arguments.get(2);
+       	double engine = arguments.get(3);
+       	double brake = arguments.get(4);
+       	double drag = arguments.get(5);
+       	double rollingResistance = arguments.get(6);
+       	double frontToAxle = arguments.get(7);
+       	double backToAxle = arguments.get(8);
+       	double turnLimit = arguments.get(9);
 
-	/**
-	 * passes in input as characters into map
-	 */
-	private static void inputStep(double time) {
-		if (!keysPressed.isEmpty()) {
-			ArrayList<Character> inputCharacters = new ArrayList<Character>();
+		inputStream.close();
 
-			for (KeyCode k: keysPressed) {
-				if (k.isLetterKey()) {
-					inputCharacters.add(Character.valueOf(k.toString().charAt(0)));
-
-				}
-			}
-			currentMap.giveInput(inputCharacters, time);
-
-		}else {
-			currentMap.giveInput("", time);
-
-		}
-	}
-
-	/**
-	 * ticks all objects, handling all flags and changing positions
-	 * @return all changed objects to have their shape counterparts updated
-	 */
-	private static ArrayList<BasicGameObject> tickStep(double time) {
-		return currentMap.tickAll(time);
+		return new Car(carName, halfW, halfH, mass, engine, brake, drag, rollingResistance, frontToAxle, backToAxle, turnLimit);
 
 	}
-
-	/**
-	 * sets coordinates of Line shape based on Wall object
-	 */
-    private static void updateDisplayShape(Line l, Wall o) {
-        l.setStartX(o.getStartX() * scale);
-        l.setStartY(o.getStartY() * scale);
-        l.setEndX(o.getEndX() * scale);
-        l.setEndY(o.getEndY() * scale);
-
-    }
-
-    /**
-     * sets coordinate and width/height of Rectangle shape based on given object
-     */
-    private static void updateDisplayShape (Rectangle r, BasicGameObject o) {
-        r.setX((o.getX() - o.getHalfW()) * scale);
-        r.setY((o.getY() - o.getHalfH()) * scale);
-
-		if (o instanceof DynamicGameObject) {
-			DynamicGameObject o_ = (DynamicGameObject) o;
-			r.setRotate(Math.toDegrees(o_.getDirection()) + 90);
-
-		}
-    }
-
-    /**
-     * updates every shape of objects that were put to be updated in toUpdate
-     * @return shapes to remove from windowPane
-     */
-	private static ArrayList<Shape> displayStep(ArrayList<BasicGameObject> toUpdate) {
-		ArrayList<Shape> shapesToRemove = new ArrayList<Shape>();
-
-		if (!toUpdate.isEmpty()) {
-
-	        for (BasicGameObject o: toUpdate) {
-	            if (!currentMap.getBasicObjList().contains(o) &&
-					!currentMap.getDynamicObjList().contains(o)) {
-	            	shapesToRemove.add(objDisplay.get(o));
-	                objDisplay.remove(o);
-
-	            }else if (o instanceof Wall) {
-                    updateDisplayShape((Line) objDisplay.get(o), (Wall) o);
-
-                }else {
-                    updateDisplayShape((Rectangle) objDisplay.get(o), o);
-
-                }
-	        }
-		}
-
-		return shapesToRemove;
-	}
-
-	/**
-	 * takes list of objects and creates hashmap pairs of object to shape
-	 */
-    private static HashMap<BasicGameObject, Shape> createDisplayShapes(
-		ArrayList<? extends BasicGameObject> objList) {
-
-        HashMap<BasicGameObject, Shape> temp = new HashMap<BasicGameObject, Shape>();
-
-        for (BasicGameObject o: objList) {
-            if (o instanceof Wall) {
-                Line newShape = new Line();
-				updateDisplayShape(newShape, (Wall) o);
-                temp.put(o, newShape);
-
-            } else {
-                Rectangle newShape = new Rectangle();
-				updateDisplayShape(newShape, o);
-                newShape.setWidth(o.getHalfW() * 2 * scale);
-                newShape.setHeight(o.getHalfH() * 2 * scale);
-                temp.put(o, newShape);
-
-            }
-        }
-
-        return(temp);
-
-    }
 
     /**
      * starts program with stage/scene setup of all of its nodes
      * starts animation timer to loop program through the game loop steps
      */
-	public void start (Stage primaryStage) throws Exception {
-		Group root = new Group();
+	public void start(Stage primaryStage) throws Exception {
+		Group menuroot = new Group();
 
-		// game window with physical game objects
-        objDisplay.putAll(createDisplayShapes(currentMap.getBasicObjList()));
-        objDisplay.putAll(createDisplayShapes(currentMap.getDynamicObjList()));
-
-        GameDisplay gameDisplay = new GameDisplay(100, true);
-
-        // add to root
-        root.getChildren().add(gameDisplay.getDebugOverlay());
-        root.getChildren().add(gameDisplay.getGameWindow());
-
-        Scene scene = new Scene(root, currentMap.getWidth() * scale,
-			currentMap.getHeight() * scale);
-		// handle key press + release
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			/**
-			 * adds KeyCode to keysPressed if it isn't already in it
-			 */
+     	Button button = new Button();
+		button.setText("Start");
+		button.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
-			public void handle(KeyEvent e) {
-				KeyCode k = e.getCode();
-				if (!keysPressed.contains(k)) {
-					keysPressed.add(k);
+			public void handle(ActionEvent e){
+				try {
+					ArrayList<Driver> driverList = new ArrayList<Driver>();
+					ArrayList<DynamicGameObject> carList = new ArrayList<DynamicGameObject>();
+					Car car = loadCar("Magic School Bus");
+					car.setX(10);
+					car.setY(100);
+					driverList.add(new Driver(car));
+					carList.add(car);
+
+					Map currentMap = new Map(null, carList, driverList, 200, 200);
+					currentMap.addBasicGameObject(new MisslePickup(30, 100));
+					currentMap.addBasicGameObject(new SpeedboostPickup(60, 100));
+					currentMap.addBasicGameObject(new StaticObstacle(40, 40, "Box", 1, 1, 250));
+					currentMap.addBasicGameObject(new StaticObstacle(44, 40, "Small Box", 0.4, 0.4, 60));
+					currentMap.addBasicGameObject(new StaticObstacle(38, 41, "Barrel", 0.2, 0.2, 300));
+					currentMap.addBasicGameObject(new StaticObstacle(39, 38, "Small Box", 0.4, 0.4, 60));
+					currentMap.addBasicGameObject(new StaticObstacle(35, 42, "Small Box", 0.4, 0.4, 60));
+					currentMap.addBasicGameObject(new StaticObstacle(42, 43, "Small Box", 0.4, 0.4, 60));
+					currentMap.addBasicGameObject(new FinishLine(10, 100, "Finish", 10, 120, 0));
+
+					GameDisplay gameDisplay = new GameDisplay(currentMap, true, 100);
+
+					primaryStage.setScene(gameDisplay.getScene());
+					primaryStage.show();
+
+					gameDisplay.start();
+
+				}catch(Exception ex) {
+					ex.printStackTrace();
+					System.out.println(ex.getMessage());
 				}
+
 			}
-		});
-		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-			/**
-			 * removes KeyCode in keysPressed if it exists
-			 */
-			@Override
-			public void handle(KeyEvent e) {
-				KeyCode k = e.getCode();
-				if (keysPressed.contains(k)) {
-					keysPressed.remove(k);
-				}
-			}
-		});
+	   });
+
+	    menuroot.getChildren().add(button);
+
+		Scene menu = new Scene(menuroot);
 
 		// setup and show stage
-		primaryStage.setScene(scene);
-        primaryStage.setTitle("Project C");
-        primaryStage.show();
-
-        gameDisplay.start();
+		primaryStage.setScene(menu);
+		primaryStage.setTitle("Project C");
+		primaryStage.show();
 
 	}
 
@@ -224,17 +127,6 @@ public class GraphicalApp extends Application {
 	 * loads test map and launches program
 	 */
 	public static void main(String[] args) {
-		ArrayList<Driver> interfaceList = new ArrayList<Driver>();
-		interfaceList.add(new Driver(new Car(50, 5, "Magic School Bus", Math.toRadians(90), 1, 2.4, 8.2, 0.3)));
-		mainCar = interfaceList.get(0).getAttachedCar();
-
-		ArrayList<Car> carList = new ArrayList<Car>();
-		carList.add(mainCar);
-		carList.add(new Car(mainCar));
-		carList.add(new Car(mainCar));
-		carList.add(new Car(mainCar));
-
-		currentMap = PresetMaps.loadMap1(carList, interfaceList);
 
 		launch(args);
 
@@ -246,103 +138,5 @@ public class GraphicalApp extends Application {
 	 *
 	 * optional debugOverlay for testing
 	 */
-	class GameDisplay extends AnimationTimer {
-		private final int fpsLimit; // 0 < fps
-	    private double gameFps; // actual game fps
-	    private double animFps; // actual animation fps
-	    private long gameLast = 0;
-	    private long animLast = 0;
-	    private int count = 0;
 
-	    private Pane gameWindow = new Pane();
-
-	    private Pane debugOverlay = new Pane();
-		private Label carInfo = new Label();
-		private	Label collidingInfo = new Label();
-	    private Label fpsLabel = new Label();
-	    private Label gameFpsLabel = new Label();
-	    private boolean showDebugOverlay;
-
-	    private Driver mainDriver;
-
-	    public GameDisplay(int fpsLimit, boolean showDebugOverlay) {
-	    	this.fpsLimit = fpsLimit;
-
-	        gameWindow.getChildren().addAll(objDisplay.values());
-
-			debugOverlay.getChildren().add(carInfo);
-			debugOverlay.getChildren().add(collidingInfo);
-			debugOverlay.getChildren().add(fpsLabel);
-	        debugOverlay.getChildren().add(gameFpsLabel);
-	        carInfo.setLayoutY(300);
-			collidingInfo.setLayoutY(315);
-	        gameFpsLabel.setLayoutY(20);
-
-	        this.showDebugOverlay = showDebugOverlay;
-			
-			mainDriver = currentMap.getDriverList().get(0);
-
-	    }
-
-	    public Pane getGameWindow() {
-	    	return gameWindow;
-
-	    }
-
-	    public Pane getDebugOverlay() {
-	    	return debugOverlay;
-
-	    }
-
-	    /**
-	     * called every animation frame, which java attempts to keep at 60 fps
-	     * the time between frames and fps are kept track to maintain given fps limit
-	     * the purpose of a lower fps limit is to possibly lower load on cpu
-	     */
-	    @Override
-	    public void handle(long now){
-	        // maintain game fps
-	        animFps = 1000000000d / (now - animLast);
-
-	        if (count > animFps / fpsLimit){
-	            gameFps = 1000000000d / (now - gameLast);
-
-	            gameFrame((now - gameLast) / 1000000000d);
-
-	            if (showDebugOverlay) {
-	                fpsLabel.setText("" + (int)(animFps));
-	                gameFpsLabel.setText("" + (int)(gameFps));
-	            }
-
-	            gameLast = now;
-	            count = 0;
-
-	        }
-
-	        animLast = now;
-	        count++;
-
-	    }
-
-	    /**
-	     * steps through the 4 game loop process and updates info labels
-	     */
-	    private void gameFrame(double time) {
-	    	// 4 game loop process
-	        collisionStep(time);
-	        inputStep(time);
-	        ArrayList<BasicGameObject> toUpdate = tickStep(time);
-	        gameWindow.getChildren().removeAll(displayStep(toUpdate));
-
-	        // update debug overlay labels
-			carInfo.setText("" + mainCar);
-			collidingInfo.setText("Section: " + mainDriver.getSection()
-				+ " Lap " + mainDriver.getLap()
-				+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getBasicObjList())
-				+ "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getDynamicObjList()));
-
-	    }
-	}
 }
-
-
