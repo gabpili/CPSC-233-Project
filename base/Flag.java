@@ -27,11 +27,11 @@ public final class Flag{
         NEXT_SECTION(1), // last number
         NEXT_LAP(1), // last number
         TIMED_DISABLE(1), // time left in sec
-        PICKUP_MISSLE(0),
+        PICKUP_MISSILE(0),
         PICKUP_SPEEDBOOST(0),
         EXPOLSION(2), // radius, strength
         RESPAWN(0),
-        SPAWN_MISSLE(3); // x, y, direction
+        SPAWN_MISSILE(3); // x, y, direction
 
         private int numOfValues;
 

@@ -270,6 +270,7 @@ public class GameDisplay extends AnimationTimer {
                     objDisplay.remove(o);
 
                 }else if (!objDisplay.containsKey(o)) {
+                	System.out.println("spawn in new shape!!");
                     Shape newShape = createDisplayShape(o);
                     objDisplay.put(o, newShape);
                     gameWindow.getChildren().add(newShape);
@@ -323,6 +324,8 @@ public class GameDisplay extends AnimationTimer {
         collisionStep(time);
         inputStep(time);
         ArrayList<BasicGameObject> toUpdate = tickStep(time);
+        System.out.println("---");
+        System.out.println(toUpdate);
         displayStep(toUpdate);
 
         // update debug overlay labels

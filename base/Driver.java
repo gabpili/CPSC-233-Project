@@ -5,7 +5,7 @@ import java.lang.Math;
 
 import gameobj.Car;
 import gameobj.Pickup;
-import gameobj.MisslePickup;
+import gameobj.MissilePickup;
 import gameobj.SpeedboostPickup;
 
 public class Driver {
@@ -157,7 +157,7 @@ public class Driver {
 	}
 
 	public void useItem() {
-		if(item instanceof MisslePickup) {
+		if(item instanceof MissilePickup) {
 			Vector vec = attachedCar.getDirection().multiply(attachedCar.getHalfH() + 1.6);
 			double[] values = new double[]{
 				attachedCar.getX() + vec.getI(),
@@ -165,7 +165,7 @@ public class Driver {
 				attachedCar.getDirection().theta()
 			};
 
-			attachedCar.addFlag(new Flag(Flag.HandlingMethod.SPAWN_MISSLE, values));
+			attachedCar.addFlag(new Flag(Flag.HandlingMethod.SPAWN_MISSILE, values));
 
 			setItem(null);
 

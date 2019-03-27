@@ -92,7 +92,7 @@ public class GraphicalApp extends Application {
 
 					// create a test map
 					Map currentMap = new Map(null, carList, driverList, 200, 200);
-					currentMap.addBasicGameObject(new MisslePickup(30, 100));
+					currentMap.addBasicGameObject(new MissilePickup(30, 100));
 					currentMap.addBasicGameObject(new SpeedboostPickup(60, 100));
 					currentMap.addBasicGameObject(new StaticObstacle(40, 40, "Box", 1, 1, 250));
 					currentMap.addBasicGameObject(new StaticObstacle(44, 40, "Small Box", 0.4, 0.4, 60));
