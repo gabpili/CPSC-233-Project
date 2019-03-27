@@ -4,11 +4,7 @@ import java.lang.Math;
 
 import base.Vector;
 
-public class Car extends DynamicGameObject{
-	/**
- 	 * instance variables
- 	 */
-	
+public class Car extends DynamicGameObject{	
 	// values to change velocity and angle given time
 	private Vector netForce = new Vector();
 	private Vector brakeForce = new Vector();
