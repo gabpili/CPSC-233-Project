@@ -24,6 +24,11 @@ import javafx.scene.input.KeyCode;
 
 import javafx.animation.AnimationTimer;
 
+/**
+ * runs an instance of the game inside of a scene, which can be accessed to be displayed by the graphical app
+ * holds the Map and the javafx shapes corresponding to each game object in the Map
+ * ticks the game using AnimationTimer
+ */
 public class GameDisplay extends AnimationTimer {
     /**
      * scale of pixels to metres
@@ -47,9 +52,19 @@ public class GameDisplay extends AnimationTimer {
      */
     private ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
 
+    /**
+     * main 'root' of the game scene
+     */
     private Pane gameWindow = new Pane();
+
+    /**
+     * game scene
+     */
     private Scene scene;
 
+    /**
+     * overlay containing information in labels, used for testing and debugging
+     */
     private Pane debugOverlay = new Pane();
     private Label carInfo = new Label();
     private	Label collidingInfo = new Label();
@@ -73,6 +88,9 @@ public class GameDisplay extends AnimationTimer {
     private long animLast = 0;
     private int count = 0;
 
+    /**
+     * constructor that takes in a fully loaded map, the option to show debug overlay and limit the fps below 60
+     */
     public GameDisplay(Map currentMap, boolean showDebugOverlay, int fpsLimit) {
         debugOverlay.getChildren().add(carInfo);
         debugOverlay.getChildren().add(collidingInfo);
@@ -127,6 +145,11 @@ public class GameDisplay extends AnimationTimer {
 
     }
 
+    /**
+     * returns game scene
+     * potential privacy leak: expected that the graphical app using this class
+     * 	   only calls this method to set stage as the returned scene
+     */
     public Scene getScene() {
         return scene;
 
@@ -134,7 +157,8 @@ public class GameDisplay extends AnimationTimer {
 
     /**
      * detects collision between each DynamicGameObject and every BasicGameObject
-     * colliding objects have collisions resolved as per the BasicGameObject's specific method of resolution
+     * colliding objects have collisions resolved as per the game object's specific method of resolution
+     * method of resolution described in each game object's resolveCollision method
      */
     private void collisionStep(double time) {
         currentMap.collisionDetectResolveAll();
@@ -142,7 +166,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * passes in input as characters into map
+     * passes in input as characters into map for it to be passed to the drivers to translate
      */
     private void inputStep(double time) {
         if (!keysPressed.isEmpty()) {
@@ -196,6 +220,10 @@ public class GameDisplay extends AnimationTimer {
         }
     }
 
+    /**
+     * returns a new Shape object based on the shape of the given game object
+     * positions are set to match the game object
+     */
     private Shape createDisplayShape(BasicGameObject o) {
         if (o instanceof Wall) {
             Line newShape = new Line();
@@ -213,7 +241,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * takes list of objects and creates hashmap pairs of object to shape
+     * takes list of game objects and creates hashmap pairs of object to shape
      */
     private HashMap<BasicGameObject, Shape> createDisplayShapes(
         ArrayList<? extends BasicGameObject> objList) {
@@ -230,8 +258,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * updates every shape of objects that were put to be updated in toUpdate
-     * @return shapes to remove from windowPane
+     * updates every shape of the game objects that were given to be updated within the gameWindow
      */
     private void displayStep(ArrayList<BasicGameObject> toUpdate) {
         if (!toUpdate.isEmpty()) {
