@@ -24,18 +24,19 @@ public class Wall extends BasicGameObject{
 		setStartY(startY);
 		setEndX(endX);
 		setEndY(endY);
+
 	}
 	
     /**
 	 * Copy Constructor 
 	 */
 	public Wall(Wall copy) {
-
 		super(copy);
 		startX = copy.startX;
 		startY = copy.startY;
 		endX = copy.endX;
 		endY = copy.endY;
+
 	}
 	
     /** 
@@ -43,6 +44,7 @@ public class Wall extends BasicGameObject{
      */
 	public void setStartX(double startX) {
 		this.startX = startX;
+
 	}
 	
     /** 
@@ -50,6 +52,7 @@ public class Wall extends BasicGameObject{
      */
 	public void setStartY(double startY) {
 		this.startY = startY;
+
 	}
 	
     /** 
@@ -57,13 +60,15 @@ public class Wall extends BasicGameObject{
      */
 	public void setEndX(double endX) {
 		this.endX = endX;
+
 	}
 	
     /** 
      * Sets methods sets given value of endY to this.endY
      */
     public void setEndY(double endY) {
-	this.endY = endY;
+		this.endY = endY;
+
     }
 	
     /**
@@ -71,6 +76,7 @@ public class Wall extends BasicGameObject{
      */
     public double getStartX() {
         return startX;
+
     }
 	
     /**
@@ -78,6 +84,7 @@ public class Wall extends BasicGameObject{
      */
 	public double getStartY() {
 		return startY;
+
 	}
     
     /**
@@ -85,6 +92,7 @@ public class Wall extends BasicGameObject{
      */
     public double getEndX() {
         return endX;
+
     }
 	
     /**
@@ -92,6 +100,7 @@ public class Wall extends BasicGameObject{
      */
 	public double getEndY() {
 		return endY;
+
 	}
 	
     /**
@@ -100,5 +109,6 @@ public class Wall extends BasicGameObject{
      */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj) throws IllegalArgumentException {
+		
 	}
 }

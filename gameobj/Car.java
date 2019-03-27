@@ -175,7 +175,6 @@ public class Car extends DynamicGameObject{
 			return wheelLoad * 2.2 * Math.signum(slipAngle) + 1 / slipAngle; 
 
 		}
-
 	}
 
 	/**
@@ -268,7 +267,6 @@ public class Car extends DynamicGameObject{
      * returns values into string format using the toString() method
      * linking it with what was calculated in this class such as velocity of the car.
      */
-
 	@Override
 	public String toString() {
 		return getName() + " " +  (int) (getVelocity().norm() * 3.6) + "km/h ";

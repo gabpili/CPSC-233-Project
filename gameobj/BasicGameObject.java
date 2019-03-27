@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import base.Flag;
 
 public abstract class BasicGameObject {
-	/**
- 	 * instance variables
- 	 */
 	private double x;
 	private double y;
 	private String name;
