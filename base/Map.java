@@ -291,14 +291,14 @@ public class Map{
     	for (DynamicGameObject o: dynamicObjList) {
     		for (BasicGameObject s: detectSATCollisions(o, basicObjList)) {
     			s.resolveCollision(o);
-                if (!(o instanceof Car)) {
+                if (o instanceof MissileProjectile && (s instanceof StaticObstacle || (s instanceof Wall && !(s instanceof Checkpoint)))) {
                     o.resolveCollision(o);
 
                 }
     		}
     		for (BasicGameObject d: detectSATCollisions(o, dynamicObjList)) {
     			d.resolveCollision(o);
-                if (!(o instanceof Car)) {
+                if (o instanceof MissileProjectile) {
                     o.resolveCollision(o);
 
                 }
