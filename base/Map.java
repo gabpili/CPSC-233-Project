@@ -321,17 +321,17 @@ public class Map{
         }
 
         if (o instanceof Pickup) {
-            Pickup o_ = (Pickup) o;
+            Pickup p = (Pickup) o;
 
             switch (f.toString()) {
                 case ("TIMED_DISABLE"):
                     double before = f.valueAt(0);
                     if (before > 0) {
-                        o_.setActive(false);
-                        o_.addFlag(new Flag(Flag.HandlingMethod.TIMED_DISABLE, before - time));
+                        p.setActive(false);
+                        p.addFlag(new Flag(Flag.HandlingMethod.TIMED_DISABLE, before - time));
 
                     }else {
-                        o_.setActive(true);
+                        p.setActive(true);
 
                     }
                     break;
@@ -392,9 +392,9 @@ public class Map{
         if (o instanceof Car) {
         	Driver i = null;
 
-        	for (Driver i_: driverList) {
-        		if (i_.getAttachedCar() == o) {
-        			i = i_;
+        	for (Driver d: driverList) {
+        		if (d.getAttachedCar() == o) {
+        			i = d;
 
         		}
         	}
@@ -428,9 +428,9 @@ public class Map{
                         Checkpoint cp = null;
                         for (BasicGameObject x: basicObjList) {
                             if (x instanceof Checkpoint) {
-                                Checkpoint x_ = (Checkpoint) x;
-                                if (x_.getNumber() == i.getSection()) {
-                                    cp = x_;
+                                Checkpoint chp = (Checkpoint) x;
+                                if (chp.getNumber() == i.getSection()) {
+                                    cp = chp;
                                     break;
 
                                 }
