@@ -42,7 +42,6 @@ public class Driver {
 	/**
 	* Setter method sets given value of 'item' to "this.item". 
 	*/
-
 	public void setItem(Pickup item) {
 		this.item = item;
 
@@ -51,7 +50,6 @@ public class Driver {
 	/**
 	* Setter method set given 'attachedCar' to "this.attachedCar".
 	*/
-
 	public void setAttachedCar(Car attachedCar) {
 		this.attachedCar = attachedCar;
 
