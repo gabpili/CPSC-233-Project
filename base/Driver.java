@@ -9,9 +9,7 @@ import gameobj.MissilePickup;
 import gameobj.SpeedboostPickup;
 
 public class Driver {
-	/**
- 	* Instance vairables
- 	*/
+	
 	private Car attachedCar;
 	private int section = 0;
 	private int lap = 1;
@@ -26,7 +24,7 @@ public class Driver {
 	}
 
 	/**
- 	 * Set method sets given value of section to "this.section".
+ 	 * Setter method sets given value of section to "this.section".
  	 */
 	public void setSection(int section) {
 	    this.section = section;
@@ -34,17 +32,25 @@ public class Driver {
 	}
 
 	/**
- 	 * Set method sets given value of lap to "this.lap".
+ 	 * Setter method sets given value of lap to "this.lap".
  	 */
 	public void setLap(int lap) {
 		this.lap = lap;
 
 	}
+	
+	/**
+	* Setter method sets given value of 'item' to "this.item". 
+	*/
 
 	public void setItem(Pickup item) {
 		this.item = item;
 
 	}
+	
+	/**
+	* Setter method set given 'attachedCar' to "this.attachedCar".
+	*/
 
 	public void setAttachedCar(Car attachedCar) {
 		this.attachedCar = attachedCar;
@@ -155,7 +161,11 @@ public class Driver {
 
 		}
 	}
-
+	
+	/**
+	* Method that allows players to use items they had picked up.
+	* Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
+	*/
 	public void useItem() {
 		if(item instanceof MissilePickup) {
 			Vector vec = attachedCar.getDirection().multiply(attachedCar.getHalfH() + 1.6);
