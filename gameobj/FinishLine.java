@@ -18,7 +18,7 @@ public class FinishLine extends Checkpoint{
 		this.lastNumber = lastNumber;
 
 	}
-        /**
+    /**
 	*Copy Constructor
 	*/
 	public FinishLine(FinishLine copy) {
@@ -34,6 +34,6 @@ public class FinishLine extends Checkpoint{
 	@Override
 	public void resolveCollision(DynamicGameObject dObj) throws IllegalArgumentException {
 		dObj.addFlag(new Flag(Flag.HandlingMethod.NEXT_LAP, lastNumber));
-		
+
 	}
 }
