@@ -199,8 +199,8 @@ public class GameDisplay extends AnimationTimer {
         r.setY((o.getY() - o.getHalfH()) * scale);
 
         if (o instanceof DynamicGameObject) {
-            DynamicGameObject o_ = (DynamicGameObject) o;
-            r.setRotate(Math.toDegrees(o_.getDirection().theta()) + 90);
+            DynamicGameObject d = (DynamicGameObject) o;
+            r.setRotate(Math.toDegrees(d.getDirection().theta()) + 90);
 
         }
     }
