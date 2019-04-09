@@ -35,7 +35,7 @@ public class GraphicalApp extends Application {
 		text file.
 
 		Loop will continue until the text file runs out of lines. Adds
- 	   the lines into the 'arguments' array. */
+ 	    the lines into the 'arguments' array. */
 	    ArrayList<Double> arguments = new ArrayList<Double>();
 	    String line;
 	    while ((line = inputStream.readLine()) != null) {
