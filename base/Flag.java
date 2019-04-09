@@ -2,6 +2,11 @@ package base;
 
 import java.util.Arrays;
 
+/**
+ * used to signal a requested change of an object that holds the flag
+ * flags are handled and objects are affected in Map before DynamicGameObjects are ticked
+ * each flag is defined based on the handling method and the values needed to handle the flag
+ */
 public final class Flag{
 	/**
 	 * determines type of flag and how it should be handled
@@ -22,11 +27,11 @@ public final class Flag{
         NEXT_SECTION(1), // last number
         NEXT_LAP(1), // last number
         TIMED_DISABLE(1), // time left in sec
-        PICKUP_MISSLE(0),
+        PICKUP_MISSILE(0),
         PICKUP_SPEEDBOOST(0),
         EXPOLSION(2), // radius, strength
         RESPAWN(0),
-        SPAWN_MISSLE(3); // x, y, direction
+        SPAWN_MISSILE(3); // x, y, direction
 
         private int numOfValues;
 
@@ -41,9 +46,8 @@ public final class Flag{
         }
     }
 
-
     /**
-     *
+     * constructor for at least 2 values
      */
     public Flag(HandlingMethod method, double[] values) throws IllegalArgumentException {
         if (method.getNumOfValues() == values.length) {
@@ -57,7 +61,7 @@ public final class Flag{
     }
 
     /**
-     *
+     * constructor for 1 value
      */
     public Flag(HandlingMethod method, double value) throws IllegalArgumentException {
         if (method.getNumOfValues() == 1) {
@@ -71,7 +75,7 @@ public final class Flag{
     }
 
     /**
-     * constructor
+     * constructor with new vlaue
      */
     public Flag(HandlingMethod method) throws IllegalArgumentException {
         if (method.getNumOfValues() == 0) {
@@ -82,6 +86,10 @@ public final class Flag{
 
         }
     }
+
+    /**
+    * copy constructor
+    */
 
     public Flag(Flag toCopy) {
         this.method= toCopy.method;
@@ -95,7 +103,7 @@ public final class Flag{
     }
 
     /**
-     * return handling method
+     * returns handling method in string
      */
     @Override
     public String toString() {
@@ -103,6 +111,9 @@ public final class Flag{
 
     }
 
+    /**
+     * compares Flag objects for same values
+     */
     public boolean equals(Flag toCompare) {
         return this.method == toCompare.method && Arrays.equals(this.values, toCompare.values);
 
