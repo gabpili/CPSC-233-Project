@@ -75,7 +75,7 @@ public final class Flag{
     }
 
     /**
-     * constructor with new vlaue
+     * constructor with new value
      */
     public Flag(HandlingMethod method) throws IllegalArgumentException {
         if (method.getNumOfValues() == 0) {
