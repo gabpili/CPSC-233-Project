@@ -103,7 +103,7 @@ public class Map{
 
     }
 
-	/**
+    /**
 	 * passes list of input characters into each Driver
 	 */
     public void giveInput(ArrayList<Character> character, double time) {
@@ -113,7 +113,7 @@ public class Map{
         }
     }
 
-	/**
+    /**
 	 * converts String input into list of characters then calls itself through overloading
 	 */
   	public void giveInput(String input, double time) {
@@ -127,24 +127,17 @@ public class Map{
 
     }
 
-	/**
+    /**
 	 * returns list of objects within given proximity of given object from every object in the Map
 	 */
-    public ArrayList<BasicGameObject> getProximityObjects(BasicGameObject b, double proximity) {
+    public ArrayList<BasicGameObject> getProximityObjects(DynamicGameObject d, double proximity) {
         ArrayList<BasicGameObject> withinProximity = new ArrayList<BasicGameObject>();
 
         for (BasicGameObject o: basicObjList) {
-            if (o.distance(b) <= proximity && o != b) {
-            	withinProximity.add(o);
+            if (o.distance(d) <= proximity) {
+            withinProximity.add(o);
 
             }
-        }
-
-        for (DynamicGameObject o: dynamicObjList) {
-        	if (o.distance(b) <= proximity && o != b) {
-        		withinProximity.add(o);
-
-        	}
         }
 
         return withinProximity;
@@ -310,7 +303,7 @@ public class Map{
      * apply flag action to basic object o
      * returns list of objects that have been altered and need updating visually
      */
-    public ArrayList<BasicGameObject> handleFlag(BasicGameObject o, Flag f, double time) {
+    public ArrayList<BasicGameObject> handleFlag(BasicGameObject o, Flag f, double time){
         ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
         toUpdate.add(o);
         switch (f.toString()) {
@@ -321,17 +314,17 @@ public class Map{
         }
 
         if (o instanceof Pickup) {
-            Pickup o_ = (Pickup) o;
+            Pickup p = (Pickup) o;
 
             switch (f.toString()) {
                 case ("TIMED_DISABLE"):
                     double before = f.valueAt(0);
                     if (before > 0) {
-                        o_.setActive(false);
-                        o_.addFlag(new Flag(Flag.HandlingMethod.TIMED_DISABLE, before - time));
+                        p.setActive(false);
+                        p.addFlag(new Flag(Flag.HandlingMethod.TIMED_DISABLE, before - time));
 
                     }else {
-                        o_.setActive(true);
+                        p.setActive(true);
 
                     }
                     break;
@@ -384,17 +377,17 @@ public class Map{
                         toUpdate.add(x);
 
                     }
+
                 }
                 break;
-
         }
 
         if (o instanceof Car) {
         	Driver i = null;
 
-        	for (Driver i_: driverList) {
-        		if (i_.getAttachedCar() == o) {
-        			i = i_;
+        	for (Driver d: driverList) {
+        		if (d.getAttachedCar() == o) {
+        			i = d;
 
         		}
         	}
@@ -428,10 +421,9 @@ public class Map{
                         Checkpoint cp = null;
                         for (BasicGameObject x: basicObjList) {
                             if (x instanceof Checkpoint) {
-                                Checkpoint x_ = (Checkpoint) x;
-                                if (x_.getNumber() == i.getSection()) {
-                                    cp = x_;
-                                    break;
+                                Checkpoint chp = (Checkpoint) x;
+                                if (chp.getNumber() == i.getSection()) {
+                                    cp = chp;
 
                                 }
                             }
@@ -442,9 +434,6 @@ public class Map{
                             Car c = new Car((Car) o);
                             c.setX(cp.getStartX() + vec.getI());
                             c.setY(cp.getStartY() + vec.getJ());
-                            c.setSpeed(0);
-                            c.setDirection(vec.rotateOrthogonalCCW());
-                            addDynamicGameObject(c);
                             i.setAttachedCar(c);
                             toUpdate.add(c);
 
@@ -496,10 +485,10 @@ public class Map{
 
                         }
                     }
+
 		        }
         	}else {
         		toUpdate.add(o);
-
         	}
         	o.tick(time);
 

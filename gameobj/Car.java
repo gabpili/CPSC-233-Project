@@ -8,8 +8,7 @@ public class Car extends DynamicGameObject{
 	// values to change velocity and angle given time
 	private Vector netForce = new Vector();
 	private Vector brakeForce = new Vector();
-	private double netTorque = 0;
-	private double angularAcceleration = 0;
+	private double netAngularAcceleration = 0;
 	private double angularVelocity = 0;
 
 	// basic forward/backward
@@ -29,18 +28,23 @@ public class Car extends DynamicGameObject{
 	private double turnAngularVelocity = 0;
 	private double turnAngle = 0;
 	private final double turnLimit;
-
+	
 	// high speed turning values; Pacejka tire model dependants
-	private final double wheelLoad;
-	private final double corneringStiffness;
+	private final double axleLoadFront;
+	private final double axleLoadBack;
 	private final double slipAngleThreshhold = 0.35;
+	private final double corneringStiffnessFront;
+	private final double corneringStiffnessBack;
+	private final double inertia;
 	
 	/**
 	 * full constructor
 	 */
 	public Car(double x, double y, String name, double halfW, double halfH, double mass, double direction, 
 		double engine, double brake, double drag, double rollingResistance, 
-		double frontToAxle, double backToAxle, double turnLimit) {
+		double frontToAxle, double backToAxle, 
+		double turnLimit, 
+		double corneringStiffnessFront, double corneringStiffnessBack) {
 		super(x, y, name, halfW, halfH, mass, 0, direction);
 
 		this.engine = Math.abs(engine);
@@ -56,16 +60,23 @@ public class Car extends DynamicGameObject{
 
 		this.turnLimit = Math.abs(turnLimit);
 
-		this.wheelLoad = getMass() / 2 * 9.81;
-		this.corneringStiffness = wheelLoad * 2.2 / slipAngleThreshhold;
+		this.axleLoadFront = (getMass() * 9.81) * backToAxle / (frontToAxle + backToAxle);
+		this.axleLoadBack = (getMass() * 9.81) * frontToAxle / (frontToAxle + backToAxle);
+		this.corneringStiffnessFront = corneringStiffnessFront;
+		this.corneringStiffnessBack = corneringStiffnessBack;
+		this.inertia = mass * (Math.pow(halfW * 2, 2) + Math.pow(halfH * 2, 2)) / 12;
 
 	}
 
 	public Car(String name, double halfW, double halfH, double mass, 
 		double engine, double brake, double drag, double rollingResistance, 
-		double frontToAxle, double backToAxle, double turnLimit) {
+		double frontToAxle, double backToAxle, 
+		double turnLimit, 
+		double corneringStiffnessFront, double corneringStiffnessBack) {
 		this(0, 0, name, halfW, halfH, mass, 0, engine, brake, drag, rollingResistance,
-			frontToAxle, backToAxle, turnLimit);
+			frontToAxle, backToAxle, 
+			turnLimit, 
+			corneringStiffnessFront, corneringStiffnessBack);
 
 	}
 
@@ -84,8 +95,11 @@ public class Car extends DynamicGameObject{
 		this.centreToBackAxle = toCopy.centreToBackAxle;
 		this.axleDistance = toCopy.axleDistance;
 		this.turnLimit = toCopy.turnLimit;
-		this.wheelLoad = toCopy.wheelLoad;
-		this.corneringStiffness = toCopy.corneringStiffness;
+		this.axleLoadFront = toCopy.axleLoadFront;
+		this.axleLoadBack = toCopy.axleLoadBack;
+		this.corneringStiffnessFront = toCopy.corneringStiffnessFront;
+		this.corneringStiffnessBack = toCopy.corneringStiffnessBack;
+		this.inertia = toCopy.inertia;
 
 	}
 
@@ -119,10 +133,15 @@ public class Car extends DynamicGameObject{
 	}
 
 	/**
-	 * adds given torque as newton metres to the netTorque
+	 * adds given torque as newton metres to the netAngularAcceleration
 	 */
-	public void addTorque(double torque) {
-		netTorque += torque;
+	public void addTorque(double force, double radius) {
+		netAngularAcceleration += force / getMass() / radius;
+
+	}
+
+	public void addAngularAcceleration(double angularAcceleration) {
+		netAngularAcceleration += angularAcceleration;
 
 	}
 
@@ -163,14 +182,15 @@ public class Car extends DynamicGameObject{
 	 * returns lateral force for a wheel given its slipAngle
 	 * resource: https://en.wikipedia.org/wiki/Hans_B._Pacejka#The_Pacejka_%22Magic_Formula%22_tire_models
 	 */
-	private double calculatePacejkaForce(double slipAngle) {
-		if (Math.abs(slipAngle) < slipAngleThreshhold) {
-			return corneringStiffness * slipAngle;
+	private double calculatePacejkaForce(double axleLoad, double corneringStiffness, double slipAngle) {
+		if (Math.abs(slipAngle) < slipAngleThreshhold + 0.01) {
+			return slipAngle * corneringStiffness * axleLoad;
 
 		}else {
-			return wheelLoad * 2.2 * Math.signum(slipAngle) + 1 / slipAngle; 
+			return slipAngleThreshhold * corneringStiffness * axleLoad * Math.signum(slipAngle);
 
 		}
+
 	}
 
 	/**
@@ -187,48 +207,50 @@ public class Car extends DynamicGameObject{
 
 		// wheel turning (angularVelocity += ||vParallel|| * sin(delta)/L)
 		setFrontWheelAngle(turnAngle + turnAngularVelocity * time);
-		angularVelocity = v.norm() * Math.sin(turnAngle) / axleDistance;
+		//angularVelocity += vParallel.norm() * Math.sin(turnAngle) / axleDistance;
+		System.out.println(turnAngle);
+		System.out.println(angularVelocity);
 
 		// change angular velocity and direction
-		angularVelocity += netTorque / getMass() * time;
+		angularVelocity += netAngularAcceleration * time;
 		setDirection(d.rotate(angularVelocity * time));
 
 		// reset angular values
-		netTorque = 0;
-		angularAcceleration = 0;
+		netAngularAcceleration = 0;
 		turnAngularVelocity = 0;
 
 		// set variables of changed values
 		d = getDirection();
 		vParallel = d.projectionOf(v);
 
-		/* cornering/lateral force and torque
+		/* cornering/lateral forces and torque -------------------------------------------------------------------
 		approximates front wheels as one wheel and back wheels as one wheel
 		resource: http://www.asawicki.info/Mirror/Car%20Physics%20for%20Games/Car%20Physics%20for%20Games.html
 			  by: Marco Monster */
-		if (v.norm() != 0) {
-			Vector tangentialVelocity = dLateral.multiply(-angularVelocity * centreToFrontAxle);
+		double tangentialVelocityFront = angularVelocity * centreToFrontAxle;
+		double tangentialVelocityBack = -angularVelocity * centreToBackAxle;
 
-			// calculating slip angle
-			double slipAngleFront = d.includedAngle(v.add(tangentialVelocity)) 
-				* Math.signum(dLateral.dot(vLateral.add(tangentialVelocity))) 
-				+ turnAngle * Math.signum(d.dot(vParallel));
-			double slipAngleBack = d.includedAngle(v.add(tangentialVelocity.negate())) 
-				* Math.signum(dLateral.dot(vLateral.add(tangentialVelocity.negate())));
+		// calculating slip angle
+		double slipAngleFront;
+		double slipAngleBack;
+		if (v.dot(d) == 0) {
+			slipAngleFront = Math.PI * Math.signum(v.dot(dLateral) + tangentialVelocityFront) - turnAngle * Math.signum(v.dot(d));
+			slipAngleBack = Math.PI * Math.signum(v.dot(dLateral) + tangentialVelocityBack);
 
-			// calculating lateral forces of each axle from slip angles
-			double forceLateralFront = calculatePacejkaForce(slipAngleFront) * Math.cos(turnAngle);
-			double forceLateralBack = calculatePacejkaForce(slipAngleBack);
-
-			// net lateral force as a vector
-			Vector fLateral = dLateral.multiply(forceLateralFront + forceLateralBack);
-
-			// finally adds to netForce and netTorque
-			addForce(fLateral);
-			netTorque += forceLateralFront / Math.pow(centreToFrontAxle, 2)
-				- forceLateralBack / Math.pow(centreToBackAxle, 2);
+		}else {
+			slipAngleFront = Math.atan((v.dot(dLateral) + tangentialVelocityFront) / Math.abs(v.dot(d))) - turnAngle * Math.signum(v.dot(d));
+			slipAngleBack = Math.atan((v.dot(dLateral) + tangentialVelocityBack) / Math.abs(v.dot(d)));
 
 		}
+		
+		// calculating lateral forces of each axle from slip angles
+		double forceLateralFront = -calculatePacejkaForce(axleLoadFront, corneringStiffnessFront, slipAngleFront);
+		double forceLateralBack = -calculatePacejkaForce(axleLoadBack, corneringStiffnessBack, slipAngleBack);
+
+		// finally adds to net force and net torque
+		addForce(dLateral.multiply(forceLateralFront).rotate(turnAngle).add(dLateral.multiply(forceLateralBack)));
+		netAngularAcceleration += (forceLateralFront * Math.cos(turnAngle) * centreToFrontAxle - forceLateralBack * centreToBackAxle) / inertia;
+		// ------------------------------------------------------------------------------------------------------
 
 		// drag (-drag * v^2 + -rollingResistance * v)
 		addForce(v.multiply(-drag * v.norm() - rollingResistance));

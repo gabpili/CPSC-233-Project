@@ -33,7 +33,7 @@ public final class Vector {
      */
     public Vector() {
     	this(0, 0);
-    	
+
     }
 
     /**
@@ -65,7 +65,7 @@ public final class Vector {
      * returns the norm
      */
     public double norm() {
-    	return Math.sqrt(normSqr());
+    	return Math.sqrt(i * i + j * j);
 
     }
 
@@ -111,7 +111,7 @@ public final class Vector {
     	}else {
     		return 0;
     	}
-    	
+
     }
 
     /**
@@ -164,7 +164,7 @@ public final class Vector {
 
     	}else {
     		return new Vector(i, j);
-    		
+
     	}
 
     }
@@ -197,7 +197,7 @@ public final class Vector {
      */
     public Vector rotate(double theta) {
     	return new Vector(
-    		i * Math.cos(theta) - j * Math.sin(theta), 
+    		i * Math.cos(theta) - j * Math.sin(theta),
     		i * Math.sin(theta) + j * Math.cos(theta));
 
     }

@@ -16,13 +16,14 @@ public class StaticObstacle extends BasicGameObject{
 	 */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj) throws IllegalArgumentException {
-		if (dObj.getMass() > getMass() * 20) {
-			addFlag(new Flag(Flag.HandlingMethod.DESTROY));
-			dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * 0.4));
+		if (!(dObj instanceof MissleProjectile)) {
+			if (dObj.getMass() / 20 > getMass()) {
+				super.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
+				dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * 0.4));
 
-		}else {
-			dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * -0.5));
-
+			}else {
+				dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * -0.5));
+			}
 		}
 	}
 }

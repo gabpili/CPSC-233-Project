@@ -24,6 +24,9 @@ import javafx.scene.input.KeyCode;
 
 import javafx.animation.AnimationTimer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 /**
  * runs an instance of the game inside of a scene, which can be accessed to be displayed by the graphical app
  * holds the Map and the javafx shapes corresponding to each game object in the Map
@@ -33,7 +36,7 @@ public class GameDisplay extends AnimationTimer {
     /**
      * scale of pixels to metres
      */
-    private int scale = 4;
+    private int scale = 2;
 
     /**
      * current loaded Map object
@@ -51,6 +54,7 @@ public class GameDisplay extends AnimationTimer {
      * list of javafx KeyCodes caught by key press event handlers
      */
     private ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
+
 
     /**
      * main 'root' of the game scene
@@ -88,6 +92,9 @@ public class GameDisplay extends AnimationTimer {
     private long animLast = 0;
     private int count = 0;
 
+    private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    private PrintStream out = new PrintStream(buffer);
+
     /**
      * constructor that takes in a fully loaded map, the option to show debug overlay and limit the fps below 60
      */
@@ -96,7 +103,7 @@ public class GameDisplay extends AnimationTimer {
         debugOverlay.getChildren().add(collidingInfo);
         debugOverlay.getChildren().add(fpsLabel);
         debugOverlay.getChildren().add(gameFpsLabel);
-        carInfo.setLayoutY(300);
+        carInfo.setLayoutY(100);
         collidingInfo.setLayoutY(315);
         gameFpsLabel.setLayoutY(20);
 
@@ -142,13 +149,16 @@ public class GameDisplay extends AnimationTimer {
 
         mainDriver = currentMap.getDriverList().get(0);
         mainCar = mainDriver.getAttachedCar();
+        if (showDebugOverlay) {
+        	System.setOut(out);
 
+        }
     }
 
     /**
      * returns game scene
      * potential privacy leak: expected that the graphical app using this class
-     * 	   only calls this method to set stage as the returned scene
+     * only calls this method to set stage as the returned scene
      */
     public Scene getScene() {
         return scene;
@@ -270,7 +280,6 @@ public class GameDisplay extends AnimationTimer {
                     objDisplay.remove(o);
 
                 }else if (!objDisplay.containsKey(o)) {
-                	System.out.println("spawn in new shape!!");
                     Shape newShape = createDisplayShape(o);
                     objDisplay.put(o, newShape);
                     gameWindow.getChildren().add(newShape);
@@ -320,20 +329,22 @@ public class GameDisplay extends AnimationTimer {
      * steps through the 4 game loop process and updates info labels
      */
     private void gameFrame(double time) {
+    	//time /= 6;
         // 4 game loop process
         collisionStep(time);
         inputStep(time);
         ArrayList<BasicGameObject> toUpdate = tickStep(time);
-        System.out.println("---");
-        System.out.println(toUpdate);
         displayStep(toUpdate);
 
         // update debug overlay labels
-        carInfo.setText("" + mainCar);
+        carInfo.setText("" + mainCar
+        	+ "\n" + buffer.toString());
         collidingInfo.setText("Section: " + mainDriver.getSection()
             + " Lap " + mainDriver.getLap()
             + "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getBasicObjList())
             + "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getDynamicObjList()));
+
+        buffer.reset();
 
     }
 }
