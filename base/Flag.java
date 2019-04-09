@@ -88,9 +88,8 @@ public final class Flag{
     }
 
     /**
-    * copy constructor
-    */
-
+     * copy constructor
+     */
     public Flag(Flag toCopy) {
         this.method= toCopy.method;
         this.values = toCopy.values.clone();
