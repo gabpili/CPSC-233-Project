@@ -1,24 +1,24 @@
 /halfW (m)
-1.4
+0.8
 /halfH (m)
-6
+2
 /mass (kg)
-11400
+1200
 /engine (W)
-72000
+8000
 /brake (W)
-80000
+12000
 /drag
-50
+2.5
 /rollingResistance
-40
+8
 /frontToAxle (m)
-1
+0.75
 /backToAxle (m)
-4
+0.75
 /turnLimit (rad)
-0.4
+0.6
 /corneringStiffnessFront
-10
+5
 /corneringStiffnessBack
-20
+5.2

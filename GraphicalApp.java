@@ -22,9 +22,8 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class GraphicalApp extends Application {
-
 	/**
-	 * creates a Car out of values within a text file with the name of the Car to be created
+	 *
 	 */
 	public static Car loadCar(String carName) throws FileNotFoundException, IOException, IllegalArgumentException {
 	    File carFile = new File(carName + ".txt");
@@ -34,8 +33,7 @@ public class GraphicalApp extends Application {
 		arguments from the text chosen car and its corresponding
 		text file.
 
-	    Loop will continue until the text file runs out of lines. Adds
-	    the lines into the 'arguments' array. */
+	    Loop will continue until the text file runs out of lines. */
 	    ArrayList<Double> arguments = new ArrayList<Double>();
 	    String line;
 	    while ((line = inputStream.readLine()) != null) {
@@ -45,8 +43,8 @@ public class GraphicalApp extends Application {
            	}
        	}
 
-       	if (arguments.size() != 10) {
-       		throw new IllegalArgumentException("The file <" + carFile + "> contains improper number of attributes to create a car; needs 10");
+       	if (arguments.size() != 12) {
+       		throw new IllegalArgumentException("The file <" + carFile + "> contains improper number of attributes to create a car; needs 12");
 
        	}
 
@@ -60,11 +58,16 @@ public class GraphicalApp extends Application {
        	double frontToAxle = arguments.get(7);
        	double backToAxle = arguments.get(8);
        	double turnLimit = arguments.get(9);
+       	double corneringStiffnessFront = arguments.get(10);
+       	double corneringStiffnessBack = arguments.get(11);
 
 		inputStream.close();
 
-		// return selected car and create new car object with values from text file.
-		return new Car(carName, halfW, halfH, mass, engine, brake, drag, rollingResistance, frontToAxle, backToAxle, turnLimit);
+		return new Car(carName, halfW, halfH, mass, 
+			engine, brake, drag, rollingResistance, 
+			frontToAxle, backToAxle, 
+			turnLimit, 
+			corneringStiffnessFront, corneringStiffnessBack);
 
 	}
 
@@ -83,26 +86,25 @@ public class GraphicalApp extends Application {
 				try {
 					ArrayList<Driver> driverList = new ArrayList<Driver>();
 					ArrayList<DynamicGameObject> carList = new ArrayList<DynamicGameObject>();
-					// calls loadCar method to load a car.
-					Car car = loadCar("Magic School Bus");
+					Car car = loadCar(getParameters().getRaw().get(0));
 					car.setX(10);
-					car.setY(100);
+					car.setY(70);
 					driverList.add(new Driver(car));
 					carList.add(car);
 
-					// create a test map
-					Map currentMap = new Map(null, carList, driverList, 200, 200);
-					currentMap.addBasicGameObject(new MissilePickup(30, 100));
-					currentMap.addBasicGameObject(new SpeedboostPickup(60, 100));
+					Map currentMap = new Map(null, carList, driverList, 500, 500);
+					currentMap.addBasicGameObject(new MisslePickup(30, 80));
+					currentMap.addBasicGameObject(new SpeedboostPickup(60, 80));
 					currentMap.addBasicGameObject(new StaticObstacle(40, 40, "Box", 1, 1, 250));
 					currentMap.addBasicGameObject(new StaticObstacle(44, 40, "Small Box", 0.4, 0.4, 60));
 					currentMap.addBasicGameObject(new StaticObstacle(38, 41, "Barrel", 0.2, 0.2, 300));
 					currentMap.addBasicGameObject(new StaticObstacle(39, 38, "Small Box", 0.4, 0.4, 60));
 					currentMap.addBasicGameObject(new StaticObstacle(35, 42, "Small Box", 0.4, 0.4, 60));
 					currentMap.addBasicGameObject(new StaticObstacle(42, 43, "Small Box", 0.4, 0.4, 60));
-					currentMap.addBasicGameObject(new FinishLine(10, 100, "Finish", 10, 120, 0));
+					currentMap.addBasicGameObject(new FinishLine(10, 60, "Finish", 10, 80, 0));
+					currentMap.addBasicGameObject(new Wall(100, 100, "bub", 80, 220));
 
-					GameDisplay gameDisplay = new GameDisplay(currentMap, true, 100);
+					GameDisplay gameDisplay = new GameDisplay(currentMap, true, 60);
 
 					primaryStage.setScene(gameDisplay.getScene());
 					primaryStage.show();
@@ -111,7 +113,7 @@ public class GraphicalApp extends Application {
 
 				}catch(Exception ex) {
 					ex.printStackTrace();
-					System.out.println(ex.getMessage());
+
 				}
 
 			}
@@ -124,15 +126,25 @@ public class GraphicalApp extends Application {
 		// setup and show stage
 		primaryStage.setScene(menu);
 		primaryStage.setTitle("Project C");
+		primaryStage.setResizable(false);
 		primaryStage.show();
 
 	}
 
 	/**
-	 * launches program
+	 * loads test map and launches program
 	 */
 	public static void main(String[] args) {
+
 		launch(args);
 
 	}
+
+	/**
+	 * inner class that runs a timer on an fps and holds Pane object of all displayed game shapes
+	 * every game frame, the game loop steps are executed to run the game
+	 *
+	 * optional debugOverlay for testing
+	 */
+
 }

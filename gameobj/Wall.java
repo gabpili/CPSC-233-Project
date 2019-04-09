@@ -24,19 +24,18 @@ public class Wall extends BasicGameObject{
 		setStartY(startY);
 		setEndX(endX);
 		setEndY(endY);
-
 	}
 	
     /**
 	 * Copy Constructor 
 	 */
 	public Wall(Wall copy) {
+
 		super(copy);
 		startX = copy.startX;
 		startY = copy.startY;
 		endX = copy.endX;
 		endY = copy.endY;
-
 	}
 	
     /** 
@@ -44,7 +43,6 @@ public class Wall extends BasicGameObject{
      */
 	public void setStartX(double startX) {
 		this.startX = startX;
-
 	}
 	
     /** 
@@ -52,7 +50,6 @@ public class Wall extends BasicGameObject{
      */
 	public void setStartY(double startY) {
 		this.startY = startY;
-
 	}
 	
     /** 
@@ -60,15 +57,13 @@ public class Wall extends BasicGameObject{
      */
 	public void setEndX(double endX) {
 		this.endX = endX;
-
 	}
 	
     /** 
      * Sets methods sets given value of endY to this.endY
      */
     public void setEndY(double endY) {
-		this.endY = endY;
-
+	this.endY = endY;
     }
 	
     /**
@@ -76,7 +71,6 @@ public class Wall extends BasicGameObject{
      */
     public double getStartX() {
         return startX;
-
     }
 	
     /**
@@ -84,7 +78,6 @@ public class Wall extends BasicGameObject{
      */
 	public double getStartY() {
 		return startY;
-
 	}
     
     /**
@@ -92,7 +85,6 @@ public class Wall extends BasicGameObject{
      */
     public double getEndX() {
         return endX;
-
     }
 	
     /**
@@ -100,15 +92,28 @@ public class Wall extends BasicGameObject{
      */
 	public double getEndY() {
 		return endY;
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public double distance(BasicGameObject o) {
+		double dx = o.getX() - (getEndX() + getStartX()) / 2;
+		double dy = o.getY() - (getEndY() + getStartY()) / 2;
+		return Math.sqrt((dx * dx) + (dy * dy));
 
 	}
 	
     /**
-	 * The method resolveCollision is overided from BasicGameObject
+	 * The method resolveCollision is overidden from BasicGameObject
      * argument name is dObj of type DynamicGameObject
      */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj) throws IllegalArgumentException {
-		
+		/* get nearby walls of car, then,
+		if car has hit corner then find point of collision from nearest wall point, bouncing or rotating back
+		if a wall is close enough to force a pivot then rotate*/
+
 	}
 }

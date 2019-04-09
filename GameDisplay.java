@@ -24,16 +24,14 @@ import javafx.scene.input.KeyCode;
 
 import javafx.animation.AnimationTimer;
 
-/**
- * runs an instance of the game inside of a scene, which can be accessed to be displayed by the graphical app
- * holds the Map and the javafx shapes corresponding to each game object in the Map
- * ticks the game using AnimationTimer
- */
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 public class GameDisplay extends AnimationTimer {
     /**
      * scale of pixels to metres
      */
-    private int scale = 4;
+    private int scale = 2;
 
     /**
      * current loaded Map object
@@ -52,19 +50,9 @@ public class GameDisplay extends AnimationTimer {
      */
     private ArrayList<KeyCode> keysPressed = new ArrayList<KeyCode>();
 
-    /**
-     * main 'root' of the game scene
-     */
     private Pane gameWindow = new Pane();
-
-    /**
-     * game scene
-     */
     private Scene scene;
 
-    /**
-     * overlay containing information in labels, used for testing and debugging
-     */
     private Pane debugOverlay = new Pane();
     private Label carInfo = new Label();
     private	Label collidingInfo = new Label();
@@ -88,15 +76,15 @@ public class GameDisplay extends AnimationTimer {
     private long animLast = 0;
     private int count = 0;
 
-    /**
-     * constructor that takes in a fully loaded map, the option to show debug overlay and limit the fps below 60
-     */
+    private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    private PrintStream out = new PrintStream(buffer);
+
     public GameDisplay(Map currentMap, boolean showDebugOverlay, int fpsLimit) {
         debugOverlay.getChildren().add(carInfo);
         debugOverlay.getChildren().add(collidingInfo);
         debugOverlay.getChildren().add(fpsLabel);
         debugOverlay.getChildren().add(gameFpsLabel);
-        carInfo.setLayoutY(300);
+        carInfo.setLayoutY(100);
         collidingInfo.setLayoutY(315);
         gameFpsLabel.setLayoutY(20);
 
@@ -142,14 +130,12 @@ public class GameDisplay extends AnimationTimer {
 
         mainDriver = currentMap.getDriverList().get(0);
         mainCar = mainDriver.getAttachedCar();
+        if (showDebugOverlay) {
+        	System.setOut(out);
 
+        }
     }
 
-    /**
-     * returns game scene
-     * potential privacy leak: expected that the graphical app using this class
-     * 	   only calls this method to set stage as the returned scene
-     */
     public Scene getScene() {
         return scene;
 
@@ -157,8 +143,7 @@ public class GameDisplay extends AnimationTimer {
 
     /**
      * detects collision between each DynamicGameObject and every BasicGameObject
-     * colliding objects have collisions resolved as per the game object's specific method of resolution
-     * method of resolution described in each game object's resolveCollision method
+     * colliding objects have collisions resolved as per the BasicGameObject's specific method of resolution
      */
     private void collisionStep(double time) {
         currentMap.collisionDetectResolveAll();
@@ -166,7 +151,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * passes in input as characters into map for it to be passed to the drivers to translate
+     * passes in input as characters into map
      */
     private void inputStep(double time) {
         if (!keysPressed.isEmpty()) {
@@ -214,16 +199,12 @@ public class GameDisplay extends AnimationTimer {
         r.setY((o.getY() - o.getHalfH()) * scale);
 
         if (o instanceof DynamicGameObject) {
-            DynamicGameObject d = (DynamicGameObject) o;
-            r.setRotate(Math.toDegrees(d.getDirection().theta()) + 90);
+            DynamicGameObject o_ = (DynamicGameObject) o;
+            r.setRotate(Math.toDegrees(o_.getDirection().theta()) + 90);
 
         }
     }
 
-    /**
-     * returns a new Shape object based on the shape of the given game object
-     * positions are set to match the game object
-     */
     private Shape createDisplayShape(BasicGameObject o) {
         if (o instanceof Wall) {
             Line newShape = new Line();
@@ -241,7 +222,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * takes list of game objects and creates hashmap pairs of object to shape
+     * takes list of objects and creates hashmap pairs of object to shape
      */
     private HashMap<BasicGameObject, Shape> createDisplayShapes(
         ArrayList<? extends BasicGameObject> objList) {
@@ -258,7 +239,8 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * updates every shape of the game objects that were given to be updated within the gameWindow
+     * updates every shape of objects that were put to be updated in toUpdate
+     * @return shapes to remove from windowPane
      */
     private void displayStep(ArrayList<BasicGameObject> toUpdate) {
         if (!toUpdate.isEmpty()) {
@@ -270,7 +252,6 @@ public class GameDisplay extends AnimationTimer {
                     objDisplay.remove(o);
 
                 }else if (!objDisplay.containsKey(o)) {
-                	System.out.println("spawn in new shape!!");
                     Shape newShape = createDisplayShape(o);
                     objDisplay.put(o, newShape);
                     gameWindow.getChildren().add(newShape);
@@ -320,20 +301,22 @@ public class GameDisplay extends AnimationTimer {
      * steps through the 4 game loop process and updates info labels
      */
     private void gameFrame(double time) {
+    	//time /= 6;
         // 4 game loop process
         collisionStep(time);
         inputStep(time);
         ArrayList<BasicGameObject> toUpdate = tickStep(time);
-        System.out.println("---");
-        System.out.println(toUpdate);
         displayStep(toUpdate);
 
         // update debug overlay labels
-        carInfo.setText("" + mainCar);
+        carInfo.setText("" + mainCar
+        	+ "\n" + buffer.toString());
         collidingInfo.setText("Section: " + mainDriver.getSection()
             + " Lap " + mainDriver.getLap()
             + "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getBasicObjList())
             + "\n" + currentMap.detectSATCollisions(mainCar, currentMap.getDynamicObjList()));
+
+        buffer.reset();
 
     }
 }

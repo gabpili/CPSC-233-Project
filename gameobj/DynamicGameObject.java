@@ -8,7 +8,7 @@ import base.Flag;
 public abstract class DynamicGameObject extends BasicGameObject {
     // Instance Variables
     private Vector velocity = new Vector();
-    private Vector direction = new Vector(1, 0);
+    private Vector direction =  new Vector(1, 0);
 
 	/**
 	 * Constructor takes in five arguments: x, y, name, half width and half height
@@ -32,9 +32,6 @@ public abstract class DynamicGameObject extends BasicGameObject {
 
     }
 
-    /**
-     * full constructor with velocity as a vector of m/s components and direction as a normal vector
-     */
     public DynamicGameObject(double x, double y, String name, double halfW, double halfH, double mass, 
     	Vector velocity, Vector direction) {
     	super(x, y, name, halfW, halfH, mass);
@@ -53,9 +50,6 @@ public abstract class DynamicGameObject extends BasicGameObject {
 
     }
 
-    /**
-     * sets magnitude of velocity in m/s
-     */
     public void setSpeed(double speed) {
     	if (velocity.normSqr() == 0) {
     		velocity = new Vector(direction).multiply(speed);
@@ -66,57 +60,36 @@ public abstract class DynamicGameObject extends BasicGameObject {
     	}
     }
 
-    /**
-     * sets magnitude and direction of velocity and does not change the object's direction
-     */
     public void setVelocity(double speed, double direction) {
     	this.velocity = new Vector(direction).multiply(speed);
 
     }
 
-    /**
-     * sets velocity to given vector, components in m/s
-     */
     public void setVelocity(Vector velocity) {
     	this.velocity = new Vector(velocity);
 
     }
 
-    /**
-     * sets direction to given direction in rads
-     */
     public void setDirection(double direction) {
     	this.direction = new Vector(direction);
 
     }
 
-    /**
-     * sets direction to the normalized given vector
-     */
     public void setDirection(Vector direction) {
-    	this.direction = new Vector(direction).normalize();
+    	this.direction = new Vector(direction);
 
     }
 
-    /**
-     * gets speed as a positive value in m/s
-     */
     public double getSpeed() {
     	return velocity.norm();
 
     }
 
-    /**
-     * gets velocity as a vector, its components in m/s
-     */
     public Vector getVelocity() {
     	return new Vector(velocity);
 
     }
 
-    /**
-     * gets direction as a normal vector
-     */
     public Vector getDirection() {
     	return new Vector(direction);
 
