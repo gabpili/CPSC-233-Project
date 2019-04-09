@@ -22,9 +22,10 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class GraphicalApp extends Application {
+
 	/**
-	 *
-	 */
+	* creates a Car out of values within a text file with the name of the Car to be created
+ 	*/
 	public static Car loadCar(String carName) throws FileNotFoundException, IOException, IllegalArgumentException {
 	    File carFile = new File(carName + ".txt");
 	    BufferedReader inputStream = new BufferedReader(new FileReader(carFile));
@@ -33,7 +34,8 @@ public class GraphicalApp extends Application {
 		arguments from the text chosen car and its corresponding
 		text file.
 
-	    Loop will continue until the text file runs out of lines. */
+		Loop will continue until the text file runs out of lines. Adds
+ 	   the lines into the 'arguments' array. */
 	    ArrayList<Double> arguments = new ArrayList<Double>();
 	    String line;
 	    while ((line = inputStream.readLine()) != null) {
@@ -63,10 +65,11 @@ public class GraphicalApp extends Application {
 
 		inputStream.close();
 
-		return new Car(carName, halfW, halfH, mass, 
-			engine, brake, drag, rollingResistance, 
-			frontToAxle, backToAxle, 
-			turnLimit, 
+		// return selected car and create new car object with values from text file.
+		return new Car(carName, halfW, halfH, mass,
+			engine, brake, drag, rollingResistance,
+			frontToAxle, backToAxle,
+			turnLimit,
 			corneringStiffnessFront, corneringStiffnessBack);
 
 	}
@@ -86,12 +89,15 @@ public class GraphicalApp extends Application {
 				try {
 					ArrayList<Driver> driverList = new ArrayList<Driver>();
 					ArrayList<DynamicGameObject> carList = new ArrayList<DynamicGameObject>();
+
+					// calls loadCar method to load a car.
 					Car car = loadCar(getParameters().getRaw().get(0));
 					car.setX(10);
 					car.setY(70);
 					driverList.add(new Driver(car));
 					carList.add(car);
 
+					// create a test map
 					Map currentMap = new Map(null, carList, driverList, 500, 500);
 					currentMap.addBasicGameObject(new MisslePickup(30, 80));
 					currentMap.addBasicGameObject(new SpeedboostPickup(60, 80));
@@ -132,19 +138,11 @@ public class GraphicalApp extends Application {
 	}
 
 	/**
-	 * loads test map and launches program
+	 * launches program
 	 */
 	public static void main(String[] args) {
 
 		launch(args);
 
 	}
-
-	/**
-	 * inner class that runs a timer on an fps and holds Pane object of all displayed game shapes
-	 * every game frame, the game loop steps are executed to run the game
-	 *
-	 * optional debugOverlay for testing
-	 */
-
 }
