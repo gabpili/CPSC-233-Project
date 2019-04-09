@@ -103,8 +103,8 @@ public class Map{
 
     }
 
-	/**
-	 *
+    /**
+	 * passes list of input characters into each Driver
 	 */
     public void giveInput(ArrayList<Character> character, double time) {
         for (Driver i: driverList) {
@@ -113,8 +113,8 @@ public class Map{
         }
     }
 
-	/**
-	 *
+    /**
+	 * converts String input into list of characters then calls itself through overloading
 	 */
   	public void giveInput(String input, double time) {
         ArrayList<Character> inputInChar = new ArrayList<Character>();
@@ -127,8 +127,8 @@ public class Map{
 
     }
 
-	/**
-	 *
+    /**
+	 * returns list of objects within given proximity of given object from every object in the Map
 	 */
     public ArrayList<BasicGameObject> getProximityObjects(DynamicGameObject d, double proximity) {
         ArrayList<BasicGameObject> withinProximity = new ArrayList<BasicGameObject>();
@@ -301,6 +301,7 @@ public class Map{
 
     /**
      * apply flag action to basic object o
+     * returns list of objects that have been altered and need updating visually
      */
     public ArrayList<BasicGameObject> handleFlag(BasicGameObject o, Flag f, double time){
         ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
@@ -313,17 +314,17 @@ public class Map{
         }
 
         if (o instanceof Pickup) {
-            Pickup o_ = (Pickup) o;
+            Pickup p = (Pickup) o;
 
             switch (f.toString()) {
                 case ("TIMED_DISABLE"):
                     double before = f.valueAt(0);
                     if (before > 0) {
-                        o_.setActive(false);
-                        o_.addFlag(new Flag(Flag.HandlingMethod.TIMED_DISABLE, before - time));
+                        p.setActive(false);
+                        p.addFlag(new Flag(Flag.HandlingMethod.TIMED_DISABLE, before - time));
 
                     }else {
-                        o_.setActive(true);
+                        p.setActive(true);
 
                     }
                     break;
@@ -337,6 +338,7 @@ public class Map{
 
     /**
      * apply flag action to dynamic object o
+     * returns list of objects that have been altered and need updating visually
      */
     public ArrayList<BasicGameObject> handleFlag(DynamicGameObject o, Flag f, double time) {
         ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
@@ -383,9 +385,9 @@ public class Map{
         if (o instanceof Car) {
         	Driver i = null;
 
-        	for (Driver i_: driverList) {
-        		if (i_.getAttachedCar() == o) {
-        			i = i_;
+        	for (Driver d: driverList) {
+        		if (d.getAttachedCar() == o) {
+        			i = d;
 
         		}
         	}
@@ -407,8 +409,8 @@ public class Map{
     					}
     					break;
 
-                    case ("PICKUP_MISSLE"):
-                        i.setItem(new MisslePickup());
+                    case ("PICKUP_MISSILE"):
+                        i.setItem(new MissilePickup());
                         break;
 
                     case ("PICKUP_SPEEDBOOST"):
@@ -419,9 +421,9 @@ public class Map{
                         Checkpoint cp = null;
                         for (BasicGameObject x: basicObjList) {
                             if (x instanceof Checkpoint) {
-                                Checkpoint x_ = (Checkpoint) x;
-                                if (x_.getNumber() == i.getSection()) {
-                                    cp = x_;
+                                Checkpoint chp = (Checkpoint) x;
+                                if (chp.getNumber() == i.getSection()) {
+                                    cp = chp;
 
                                 }
                             }
@@ -438,9 +440,9 @@ public class Map{
                         }
                         break;
 
-                    case ("SPAWN_MISSLE"):
+                    case ("SPAWN_MISSILE"):
                         double vParallel = o.getDirection().dot(o.getVelocity());
-                        MissleProjectile mp = new MissleProjectile(f.valueAt(0), f.valueAt(1), vParallel + 30, f.valueAt(2));
+                        MissileProjectile mp = new MissileProjectile(f.valueAt(0), f.valueAt(1), vParallel + 30, f.valueAt(2));
                         addDynamicGameObject(mp);
                         toUpdate.add(mp);
                         break;
@@ -454,6 +456,7 @@ public class Map{
 
     /**
 	 * handle all flags of each object and tick all DynamicGameObjects to change positions
+     * returns list of objects that have been altered and need updating visually
 	 */
     public ArrayList<BasicGameObject> tickAll(double time){
     	ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
