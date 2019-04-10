@@ -3,6 +3,7 @@ package gameobj;
 import base.Flag;
 
 public class StaticObstacle extends BasicGameObject{
+
 	/**
 	 * Constructor takes in five arguments: x, y, name, half width and half height
 	 * sets them using a constructor from the BasicGameObject class.
@@ -11,6 +12,7 @@ public class StaticObstacle extends BasicGameObject{
 		super(x, y, name, halfW, halfH, mass);
 
 	}
+	
 	/**
 	 * flags this obstacle to be destroyed and flags the colliding dObj to change speed by -5
 	 */
