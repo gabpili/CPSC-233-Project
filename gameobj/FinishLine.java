@@ -5,11 +5,11 @@ import base.Flag;
 public class FinishLine extends Checkpoint{
 
     /**
-    *Instance variable lastNumber
-    */
+     *Number of the last Checkpoint
+     */
     private int lastNumber;
 
-	 /**
+    /**
 	 * Constructor takes in six arguments: x, y, name, x2, y2, lastNumber
 	 *  x, y, name, x2 and y2 variables are extended from the CheckPoint class using 'super' keyword
 	 */
@@ -18,9 +18,10 @@ public class FinishLine extends Checkpoint{
 		this.lastNumber = lastNumber;
 
 	}
+
     /**
-	*Copy Constructor
-	*/
+	 *Copy Constructor
+	 */
 	public FinishLine(FinishLine copy) {
 		super(copy);
 		copy.lastNumber = lastNumber;
@@ -28,10 +29,9 @@ public class FinishLine extends Checkpoint{
 	}
 
     /**
-    * adds a next lap flag to the car
-    */
-
-	@Override
+     * adds a next lap flag to the car
+     */
+    @Override
 	public void resolveCollision(DynamicGameObject dObj) throws IllegalArgumentException {
 		dObj.addFlag(new Flag(Flag.HandlingMethod.NEXT_LAP, lastNumber));
 

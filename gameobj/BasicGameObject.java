@@ -109,8 +109,8 @@ public abstract class BasicGameObject {
 	}
 
 	/**
-	* Getter method returns the value of mass.
-	*/
+	 * Getter method returns the value of mass.
+	 */
 	public double getMass() {
 		return mass;
 
