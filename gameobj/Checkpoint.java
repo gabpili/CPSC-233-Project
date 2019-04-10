@@ -4,6 +4,9 @@ import base.Flag;
 
 public class Checkpoint extends Wall{
 	
+	/**
+	 * checkpoint number
+	 */
 	private int number;
 
 	/**
