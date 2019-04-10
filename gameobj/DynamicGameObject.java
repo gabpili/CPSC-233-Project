@@ -6,24 +6,24 @@ import base.Vector;
 import base.Flag;
 
 public abstract class DynamicGameObject extends BasicGameObject {
-    // Instance Variables
+    
     private Vector velocity = new Vector();
     private Vector direction = new Vector(1, 0);
 
-	/**
-	 * Constructor takes in five arguments: x, y, name, half width and half height
-	 * sets them using another constructor in this class.
-	 */
+    /**
+     * Constructor takes in five arguments: x, y, name, half width and half height
+     * sets them using another constructor in this class.
+     */
     public DynamicGameObject(double x, double y, String name, double halfW, double halfH, double mass) {
         this(x, y, name, halfW, halfH, mass, 0, 0);
 
     }
     
-	/**
-	 * Constructor takes in seven arguments and uses methods within the class to set speed with given 
+    /**
+     * Constructor takes in seven arguments and uses methods within the class to set speed with given 
      * speed and direction with given direction as well as a constructor from the StaticObject class 
      * to set x, y, name, halfW and halfH. 
-	 */
+     */
     public DynamicGameObject(double x, double y, String name, double halfW, double halfH, double mass, 
     	double speed, double direction) {
         super(x, y, name, halfW, halfH, mass);
@@ -43,9 +43,9 @@ public abstract class DynamicGameObject extends BasicGameObject {
 
     }
     
-	/**
+    /**
      * copy constructor 
-	 */
+     */
     public DynamicGameObject(DynamicGameObject toCopy) {
         super(toCopy);
         this.velocity = new Vector(toCopy.velocity);
@@ -131,11 +131,11 @@ public abstract class DynamicGameObject extends BasicGameObject {
 
     }
 
-	/**
+    /**
      * returns values into string format using the toString() method in StaticObject
      * and concatinating it with what was calculated for in this class such as speed and the 
      * degree of the direction. 
-	 */
+     */
     public String toString() {
         return super.toString() + (int) velocity.norm() +  "m/s " + (int) Math.toDegrees(direction.theta()) + "deg";
         
