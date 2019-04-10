@@ -24,7 +24,7 @@ public class Driver {
 	}
 
 	/**
- 	 * Set method sets given value of section to "this.section".
+ 	 * Setter method sets given value of section to "this.section".
  	 */
 	public void setSection(int section) {
 	    this.section = section;
@@ -32,7 +32,7 @@ public class Driver {
 	}
 
 	/**
- 	 * Set method sets given value of lap to "this.lap".
+ 	 * Setter method sets given value of lap to "this.lap".
  	 */
 	public void setLap(int lap) {
 		this.lap = lap;
@@ -40,16 +40,16 @@ public class Driver {
 	}
 
 	/**
-	* Setter method sets given value of 'item' to "this.item".
-	*/
+	 * Setter method sets given value of 'item' to "this.item".
+	 */
 	public void setItem(Pickup item) {
 		this.item = item;
 
 	}
 
 	/**
-	* Setter method set given 'attachedCar' to "this.attachedCar".
-	*/
+	 * Setter method set given 'attachedCar' to "this.attachedCar".
+	 */
 	public void setAttachedCar(Car attachedCar) {
 		this.attachedCar = attachedCar;
 
@@ -105,9 +105,8 @@ public class Driver {
 	 */
 	private void turn(int direction, double time) {
 		if (direction == 0) {
-			double toTurn;
 			direction = (int)(-Math.signum(attachedCar.getTurnAngle()));
-			toTurn = direction * 0.8;
+			double toTurn = direction * 1.5;
 
 			if ((attachedCar.getTurnAngle() + toTurn * time) * -direction < 0) {
 				attachedCar.setTurnAngularVelocity(attachedCar.getTurnAngularVelocity() - attachedCar.getTurnAngle() / time);
@@ -117,7 +116,7 @@ public class Driver {
 
 			}
 		}else {
-			attachedCar.setTurnAngularVelocity(attachedCar.getTurnAngularVelocity() + direction * 0.8);
+			attachedCar.setTurnAngularVelocity(attachedCar.getTurnAngularVelocity() + direction * 1.5);
 
 		}
 	}
@@ -150,6 +149,18 @@ public class Driver {
 				case ('F'):
 					useItem();
 					break;
+				case ('Z'):
+					attachedCar.addForce(attachedCar.getDirection().rotateOrthogonalCCW().multiply(100000));
+					break;
+				case ('C'):
+					attachedCar.addForce(attachedCar.getDirection().rotateOrthogonalCW().multiply(100000));
+					break;
+				case ('Q'):
+					attachedCar.addAngularAcceleration(-50);
+					break;
+				case ('E'):
+					attachedCar.addAngularAcceleration(50);
+					break;
 
 			}
 		}
@@ -161,9 +172,9 @@ public class Driver {
 	}
 
 	/**
-	* Method that allows players to use items they had picked up.
-	* Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
-	*/
+	 * Method that allows players to use items they had picked up.
+	 * Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
+	 */
 	public void useItem() {
 		if(item instanceof MissilePickup) {
 			Vector vec = attachedCar.getDirection().multiply(attachedCar.getHalfH() + 1.6);
