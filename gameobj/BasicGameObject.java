@@ -107,7 +107,10 @@ public abstract class BasicGameObject {
 		return maxR;
 
 	}
-
+	
+	/**
+	 * Getter method returns the mass.
+	 */
 	public double getMass() {
 		return mass;
 
