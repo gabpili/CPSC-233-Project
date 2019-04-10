@@ -46,7 +46,7 @@ public class Checkpoint extends Wall{
 	}
 
 	/**
-	 * Override method that takes in a DynamicGameObject and adds a
+	 * Override method that takes in a DynamicGameObject and adds a Flag that changes section of the driver
 	 */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj) {
