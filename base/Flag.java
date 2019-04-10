@@ -8,6 +8,7 @@ import java.util.Arrays;
  * each flag is defined based on the handling method and the values needed to handle the flag
  */
 public final class Flag{
+
 	/**
 	 * determines type of flag and how it should be handled
 	 */
@@ -63,7 +64,7 @@ public final class Flag{
     /**
      * constructor for 1 value
      */
-    public Flag(HandlingMethod method, double value) throws IllegalArgumentException {
+     public Flag(HandlingMethod method, double value) throws IllegalArgumentException {
         if (method.getNumOfValues() == 1) {
             values = new double[]{value};
             this.method = method;
@@ -96,6 +97,9 @@ public final class Flag{
 
     }
 
+    /**
+     * returns the value at a specified index 
+     */
     public double valueAt(int index) {
         return values[index];
 

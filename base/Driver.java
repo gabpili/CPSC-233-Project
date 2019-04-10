@@ -172,9 +172,9 @@ public class Driver {
 	}
 
 	/**
-	* Method that allows players to use items they had picked up.
-	* Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
-	*/
+	 * Method that allows players to use items they had picked up.
+	 * Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
+	 */
 	public void useItem() {
 		if(item instanceof MissilePickup) {
 			Vector vec = attachedCar.getDirection().multiply(attachedCar.getHalfH() + 1.6);
