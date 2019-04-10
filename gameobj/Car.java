@@ -5,6 +5,7 @@ import java.lang.Math;
 import base.Vector;
 
 public class Car extends DynamicGameObject{	
+	
 	// values to change velocity and angle given time
 	private Vector netForce = new Vector();
 	private Vector brakeForce = new Vector();
@@ -139,7 +140,10 @@ public class Car extends DynamicGameObject{
 		netAngularAcceleration += force / getMass() / radius;
 
 	}
-
+	
+	/**
+	 * adds given angularAcceleration to the netAngularAcceleration
+	 */
 	public void addAngularAcceleration(double angularAcceleration) {
 		netAngularAcceleration += angularAcceleration;
 
