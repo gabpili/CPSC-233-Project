@@ -24,8 +24,8 @@ import java.io.FileNotFoundException;
 public class GraphicalApp extends Application {
 
 	/**
-	* creates a Car out of values within a text file with the name of the Car to be created
- 	*/
+	 * creates a Car out of values within a text file with the name of the Car to be created
+ 	 */
 	public static Car loadCar(String carName) throws FileNotFoundException, IOException, IllegalArgumentException {
 	    File carFile = new File(carName + ".txt");
 	    BufferedReader inputStream = new BufferedReader(new FileReader(carFile));

@@ -33,6 +33,7 @@ import java.io.PrintStream;
  * ticks the game using AnimationTimer
  */
 public class GameDisplay extends AnimationTimer {
+    
     /**
      * scale of pixels to metres
      */
