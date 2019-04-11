@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.lang.Math;
 
 import base.Map;
 import base.Driver;
@@ -23,10 +22,11 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class GraphicalApp extends Application {
+	private String level;
 
 	/**
-	 * creates a Car out of values within a text file with the name of the Car to be created
- 	 */
+	* creates a Car out of values within a text file with the name of the Car to be created
+ 	*/
 	public static Car loadCar(String carName) throws FileNotFoundException, IOException, IllegalArgumentException {
 	    File carFile = new File(carName + ".txt");
 	    BufferedReader inputStream = new BufferedReader(new FileReader(carFile));
@@ -92,25 +92,43 @@ public class GraphicalApp extends Application {
 					ArrayList<DynamicGameObject> carList = new ArrayList<DynamicGameObject>();
 
 					// calls loadCar method to load a car.
-					Car car = loadCar(getParameters().getRaw().get(0));
-					car.setX(10);
-					car.setY(70);
+					Car car = loadCar("Normal Car");
+					car.setX(90);
+					car.setY(10);
 					driverList.add(new Driver(car));
 					carList.add(car);
 
 					// create a test map
-					Map currentMap = new Map(null, carList, driverList, 500, 500);
-					currentMap.addBasicGameObject(new MissilePickup(30, 80));
-					currentMap.addBasicGameObject(new SpeedboostPickup(60, 80));
-					currentMap.addBasicGameObject(new StaticObstacle(40, 40, "Box", 1, 1, 250));
-					currentMap.addBasicGameObject(new StaticObstacle(44, 40, "Small Box", 0.4, 0.4, 60));
-					currentMap.addBasicGameObject(new StaticObstacle(38, 41, "Barrel", 0.2, 0.2, 300));
-					currentMap.addBasicGameObject(new StaticObstacle(39, 38, "Small Box", 0.4, 0.4, 60));
-					currentMap.addBasicGameObject(new StaticObstacle(35, 42, "Small Box", 0.4, 0.4, 60));
-					currentMap.addBasicGameObject(new StaticObstacle(42, 43, "Small Box", 0.4, 0.4, 60));
-					currentMap.addBasicGameObject(new FinishLine(10, 60, "Finish", 10, 80, 0));
-					currentMap.addBasicGameObject(new SpeedboostTile(70, 90, Math.toRadians(60)));
-					currentMap.addBasicGameObject(new Wall(100, 100, "bub", 80, 220));
+					Map currentMap = new base.Map(null, carList, driverList, 200, 150);
+
+					//call methods from MapIO class to load from chosen file
+					currentMap = MapIO.loadStaticObstacle("StaticObstacle1.txt", currentMap);
+					currentMap = MapIO.loadMissilePickup("MissilePickUp.txt", currentMap);
+					currentMap = MapIO.loadSpeedboostPickup("SpeedBoostPickup1.txt", currentMap);
+					currentMap = MapIO.loadFinishLine("FinishLine1.txt", currentMap);
+					currentMap = MapIO.loadSpeedboostTile("SpeedBoostTile1.txt", currentMap);
+					currentMap = MapIO.loadWall("Wall1.txt", currentMap);
+
+					FinishLine finish = null;
+					for (BasicGameObject o: currentMap.getBasicObjList()) {
+						if (o instanceof FinishLine) {
+							finish = (FinishLine) o;
+							break;
+
+						}
+					}
+
+					if (finish != null) {
+						double dx = finish.getEndX() - finish.getStartX();
+						double dy = finish.getEndY() - finish.getStartY();
+						double centreX = finish.getStartX() + dx / 2;
+						double centreY = finish.getStartY() + dy / 2;
+
+						car.setX(centreX);
+						car.setY(centreY);
+						car.setDirection(Math.atan2(dy , dx) - Math.PI / 2);
+
+					}
 
 					GameDisplay gameDisplay = new GameDisplay(currentMap, true, 60);
 
@@ -123,7 +141,6 @@ public class GraphicalApp extends Application {
 					ex.printStackTrace();
 
 				}
-
 			}
 	   });
 
@@ -143,7 +160,6 @@ public class GraphicalApp extends Application {
 	 * launches program
 	 */
 	public static void main(String[] args) {
-
 		launch(args);
 
 	}
