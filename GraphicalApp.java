@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 import base.Map;
 import base.Driver;
@@ -99,7 +100,7 @@ public class GraphicalApp extends Application {
 
 					// create a test map
 					Map currentMap = new Map(null, carList, driverList, 500, 500);
-					currentMap.addBasicGameObject(new MisslePickup(30, 80));
+					currentMap.addBasicGameObject(new MissilePickup(30, 80));
 					currentMap.addBasicGameObject(new SpeedboostPickup(60, 80));
 					currentMap.addBasicGameObject(new StaticObstacle(40, 40, "Box", 1, 1, 250));
 					currentMap.addBasicGameObject(new StaticObstacle(44, 40, "Small Box", 0.4, 0.4, 60));
@@ -108,6 +109,7 @@ public class GraphicalApp extends Application {
 					currentMap.addBasicGameObject(new StaticObstacle(35, 42, "Small Box", 0.4, 0.4, 60));
 					currentMap.addBasicGameObject(new StaticObstacle(42, 43, "Small Box", 0.4, 0.4, 60));
 					currentMap.addBasicGameObject(new FinishLine(10, 60, "Finish", 10, 80, 0));
+					currentMap.addBasicGameObject(new SpeedboostTile(70, 90, Math.toRadians(60)));
 					currentMap.addBasicGameObject(new Wall(100, 100, "bub", 80, 220));
 
 					GameDisplay gameDisplay = new GameDisplay(currentMap, true, 60);
