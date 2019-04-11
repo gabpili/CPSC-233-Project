@@ -118,4 +118,10 @@ public class BasicGameObjectTest{
 
 	}
 
+	@Test
+	public void test_toString() {
+		BasicGameObject b = new MockBasicGameObject(0, 0, "bub", 10, 5, 2);
+		assertEquals("Expected to string to return <name> x:<x>m y:<y>m ", "bub x:0m y:0m ", b.toString());
+	}
+
 }
