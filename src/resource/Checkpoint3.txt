@@ -1,0 +1,7 @@
+10, 110, "Checkpoint 7", 30, 110, 7:
+50, 70, "Checkpoint 6", 60, 80, 6:
+120, 70, "Checkpoint 5", 130, 60, 5:
+90, 140, "Checkpoint 4", 110, 120, 4:
+150, 120, "Checkpoint 3", 170, 140, 3:
+170, 60, "Checkpoint 2", 190, 60, 2:
+110, 20, "Checkpoint 1", 110, 10, 1:
