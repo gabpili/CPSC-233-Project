@@ -7,7 +7,7 @@ import java.lang.Math;
  * contains various operations needed for vector math
  */
 public final class Vector {
-    
+
     private final double i;
     private final double j;
 
@@ -206,8 +206,15 @@ public final class Vector {
     /**
      * returns true if vec holds same components
      */
-    public boolean equals(Vector vec) {
-    	return this.i == vec.i && this.j == vec.j;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Vector)) {
+            return false;
+
+        }
+        Vector vec = (Vector) o;
+
+    	return Double.valueOf(this.i).equals(Double.valueOf(vec.i)) && Double.valueOf(this.j).equals(Double.valueOf(vec.j));
     }
 
     /**
@@ -222,5 +229,14 @@ public final class Vector {
      */
     public String toString() {
     	return i + " " + j;
+    }
+
+    public static void main(String[] args) {
+        Vector v1 = new Vector(2.0);
+        Vector v2 = new Vector(2.0);
+        Vector v3 = new Vector(v2);
+        System.out.println(v1.equals(v2));
+        System.out.println(v2.equals(v3));
+        System.out.println(v1.equals(v3));
     }
 }

@@ -98,7 +98,7 @@ public final class Flag{
     }
 
     /**
-     * returns the value at a specified index 
+     * returns the value at a specified index
      */
     public double valueAt(int index) {
         return values[index];
@@ -117,8 +117,15 @@ public final class Flag{
     /**
      * compares Flag objects for same values
      */
-    public boolean equals(Flag toCompare) {
-        return this.method == toCompare.method && Arrays.equals(this.values, toCompare.values);
+    @Override
+    public boolean equals(Object toCompare) {
+        if (!(toCompare instanceof Flag)) {
+            return false;
+
+        }
+        Flag flag = (Flag) toCompare;
+
+        return this.method == flag.method && Arrays.equals(this.values, flag.values);
 
     }
 }
