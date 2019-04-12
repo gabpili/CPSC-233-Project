@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 import base.Map;
 import base.Driver;
@@ -94,7 +95,7 @@ public class GraphicalApp extends Application {
 				primaryStage.setScene(nextScene);
 
 			}catch (Exception ex) {
-				ex.printStackTrace();[[]]
+				ex.printStackTrace();
 				System.out.println(ex.getMessage());
 
 			}
