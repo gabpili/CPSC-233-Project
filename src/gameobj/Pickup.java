@@ -1,6 +1,7 @@
 package gameobj;
 
 public abstract class Pickup extends BasicGameObject {
+    
     private boolean active = true;
 
     /**

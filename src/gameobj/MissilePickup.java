@@ -4,6 +4,7 @@ import base.Flag;
 import base.Manifold;
 
 public class MissilePickup extends Pickup {
+    
     public static final double COOLDOWN = 10.0;
 
 	/**

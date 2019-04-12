@@ -5,7 +5,7 @@ import java.lang.Math;
 import base.Manifold;
 import base.Vector;
 
-public class Car extends DynamicGameObject{	
+public class Car extends DynamicGameObject{
 
 	// basic forward/backward
     private Vector brakeForce = new Vector();
@@ -25,21 +25,21 @@ public class Car extends DynamicGameObject{
 	private double turnAngularVelocity = 0;
 	private double turnAngle = 0;
 	private final double turnLimit;
-	
+
 	// high speed turning values; Pacejka tire model dependants
 	private final double axleLoadFront;
 	private final double axleLoadBack;
 	private final double slipAngleThreshhold = 0.35;
 	private final double corneringStiffnessFront;
 	private final double corneringStiffnessBack;
-	
+
 	/**
 	 * full constructor
 	 */
-	public Car(double x, double y, String name, double halfW, double halfH, double mass, double direction, 
-		double engine, double brake, double drag, double rollingResistance, 
-		double frontToAxle, double backToAxle, 
-		double turnLimit, 
+	public Car(double x, double y, String name, double halfW, double halfH, double mass, double direction,
+		double engine, double brake, double drag, double rollingResistance,
+		double frontToAxle, double backToAxle,
+		double turnLimit,
 		double corneringStiffnessFront, double corneringStiffnessBack) {
 		super(x, y, direction, name, halfW, halfH, mass, 0);
 
@@ -63,14 +63,17 @@ public class Car extends DynamicGameObject{
 
 	}
 
+    /**
+     * constructor that excludes position
+     */
 	public Car(String name, double halfW, double halfH, double mass, 
-		double engine, double brake, double drag, double rollingResistance, 
-		double frontToAxle, double backToAxle, 
-		double turnLimit, 
+		double engine, double brake, double drag, double rollingResistance,
+		double frontToAxle, double backToAxle,
+		double turnLimit,
 		double corneringStiffnessFront, double corneringStiffnessBack) {
 		this(0, 0, name, halfW, halfH, mass, 0, engine, brake, drag, rollingResistance,
-			frontToAxle, backToAxle, 
-			turnLimit, 
+			frontToAxle, backToAxle,
+			turnLimit,
 			corneringStiffnessFront, corneringStiffnessBack);
 
 	}
@@ -207,7 +210,7 @@ public class Car extends DynamicGameObject{
 			slipAngleBack = Math.atan((v.dot(dLateral) + tangentialVelocityBack) / Math.abs(v.dot(d)));
 
 		}
-		
+
 		// calculating lateral forces of each axle from slip angles
 		double forceLateralFront = -calculatePacejkaForce(axleLoadFront, corneringStiffnessFront, slipAngleFront);
 		double forceLateralBack = -calculatePacejkaForce(axleLoadBack, corneringStiffnessBack, slipAngleBack);
@@ -241,7 +244,7 @@ public class Car extends DynamicGameObject{
 	public void resolveCollision(DynamicGameObject dObj, Manifold manifold) throws IllegalArgumentException {
 
 	}
-	
+
      /**
      * returns values into string format using the toString() method
      * linking it with what was calculated in this class such as velocity of the car.

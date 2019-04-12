@@ -26,11 +26,11 @@ public abstract class BasicGameObject {
         this(x, y, 0, name, halfW, halfH, mass);
 
     }
-    
+
     /**
-     * Constructor takes in seven arguments and uses methods within the class to set speed with given 
-     * speed and direction with given direction as well as a constructor from the StaticObject class 
-     * to set x, y, name, halfW and halfH. 
+     * Constructor takes in seven arguments and uses methods within the class to set speed with given
+     * speed and direction with given direction as well as a constructor from the StaticObject class
+     * to set x, y, name, halfW and halfH.
      */
     public BasicGameObject(double x, double y, double direction, String name, double halfW, double halfH, double mass) {
         this(x, y, new Vector(direction), name, halfW, halfH, mass);
@@ -84,11 +84,17 @@ public abstract class BasicGameObject {
 
 	}
 
+	/**
+	 * Setter method sets given 'direction' of type double to the variable 'direction'
+	 */
     public void setDirection(double direction) {
         this.direction = new Vector(direction);
 
     }
 
+	/**
+	 * Setter method sets given 'direction' of type Vector to the variable 'direction'
+	 */
     public void setDirection(Vector direction) {
         this.direction = new Vector(direction).normalize();
 
@@ -110,6 +116,9 @@ public abstract class BasicGameObject {
 
 	}
 
+	/**
+	 * Getter method returns the value of direction.
+	 */
     public Vector getDirection() {
         return direction;
 
@@ -195,7 +204,7 @@ public abstract class BasicGameObject {
 		return Math.sqrt((dx * dx) + (dy * dy));
 
 	}
-	
+
 	/**
  	 * Method returns the angle pointing from given object 'd' to 'this' object
  	 */
