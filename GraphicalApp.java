@@ -68,7 +68,6 @@ public class GraphicalApp extends Application {
 
 			}
 		}
-
 	}
 
     class LoadCarEventHandler implements EventHandler<ActionEvent>{
@@ -100,8 +99,6 @@ public class GraphicalApp extends Application {
 
 			}
 		}
-
-
 	}
 
 	/**
