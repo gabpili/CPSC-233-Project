@@ -248,6 +248,6 @@ public class Car extends DynamicGameObject{
      */
 	@Override
 	public String toString() {
-		return getName() + " " +  (int) (getVelocity().norm() * 3.6) + "km/h ";
+		return getName() + " " +  (int) (getVelocity().norm() * 3.6) + "km/h " + getNetForce();
 	}
 }

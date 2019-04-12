@@ -25,12 +25,12 @@ public class StaticObstacle extends BasicGameObject{
         dObj.setX(dObj.getX() + transform.getI());
         dObj.setY(dObj.getY() + transform.getJ());
 
-		if (dObj.getMass() / 20 > getMass()) {
+		if (Math.abs(dObj.getVelocity().dot(manifold.getCollisionNormal())) * dObj.getMass() / 80 > getMass()) {
 			super.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
-			dObj.addForce(manifold.getCollisionNormal().multiply(getMass() * 100));
+			dObj.addForce(manifold.getCollisionNormal().multiply(getMass() * 4000));
 
 		}else {
-			dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * -0.5));
+			dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * -0.2));
 
 		}
 	}

@@ -64,6 +64,9 @@ public class GraphicalApp extends Application {
                 try {ResourceIO.loadWall("resource\\map" + mapName + "-data\\Wall.txt", currentMap);
                 }catch (FileNotFoundException f) {System.out.println("no walls");}
 
+                try {ResourceIO.loadCheckpoint("resource\\map" + mapName + "-data\\Checkpoint.txt", currentMap);
+                }catch (FileNotFoundException f) {System.out.println("no checkpoints");}
+
                 FinishLine finish = null;
                 for (BasicGameObject o: currentMap.getBasicObjList()) {
                     if (o instanceof FinishLine) {
