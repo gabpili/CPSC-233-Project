@@ -315,47 +315,39 @@ public class ResourceIO{
 		 * are insufficient to create a new Checkpoint, the exception will be caught and the
 		 * application will crash.
 		 */
-		public static base.Map loadCheckpoint(String fileName, base.Map currentMap) throws FileNotFoundException, IOException, IllegalArgumentException{
-	    	try{
-				File mapFile = new File(fileName);
-				BufferedReader inputStream = new BufferedReader(new FileReader(mapFile));
+		public static void loadCheckpoint(String fileName, base.Map currentMap) throws FileNotFoundException, IOException, IllegalArgumentException{
+			File mapFile = new File(fileName);
+			BufferedReader inputStream = new BufferedReader(new FileReader(mapFile));
 
-			    String line;
-				while ((line = inputStream.readLine()) != null) {	            	
-					//denotes end of array
-					if (line.endsWith(":")){
-						String[] values = line.split(":");						
-						String str = " ";
-						//convert to string in order to split again; create an arraylist
-						for (String element : values){
-							str += element;
-							ArrayList<String> arguments = new ArrayList<String>();
+			String line;
+			while ((line = inputStream.readLine()) != null) {	            	
+				//denotes end of array
+				if (line.endsWith(":")){
+					String[] values = line.split(":");						
+					String str = " ";
+					//convert to string in order to split again; create an arraylist
+					for (String element : values){
+						str += element;
+						ArrayList<String> arguments = new ArrayList<String>();
 
-							//get rid of commas and add those elements into the arguments list
-							for (String e: str.split(",")){
-								arguments.add(e.trim());
-							}
-
-							double startX = Double.parseDouble(arguments.get(0));
-							double startY = Double.parseDouble(arguments.get(1));
-							String name = arguments.get(2);
-							double endX = Double.parseDouble(arguments.get(3));
-							double endY = Double.parseDouble(arguments.get(4));
-							int number = Integer.parseInt(arguments.get(5));
-
-							//add checkpoints to map
-							currentMap.addBasicGameObject(new Checkpoint(startX, startY, name, endX, endY, number));
-
+						//get rid of commas and add those elements into the arguments list
+						for (String e: str.split(",")){
+							arguments.add(e.trim());
 						}
-					}
-		       	}
-			}
-			catch(IllegalArgumentException e){
-				System.out.println("The file " + fileName + " contains improper number of attributes to create checkpoints");
-				System.exit(0);
-			}
 
-		return currentMap;
+						double startX = Double.parseDouble(arguments.get(0));
+						double startY = Double.parseDouble(arguments.get(1));
+						String name = arguments.get(2);
+						double endX = Double.parseDouble(arguments.get(3));
+						double endY = Double.parseDouble(arguments.get(4));
+						int number = Integer.parseInt(arguments.get(5));
+
+						//add checkpoints to map
+						currentMap.addBasicGameObject(new Checkpoint(startX, startY, name, endX, endY, number));
+
+					}
+				}
+			}
 		}		
 	}
 
