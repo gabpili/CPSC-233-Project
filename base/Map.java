@@ -103,7 +103,7 @@ public class Map{
 
     }
 
-	/**
+    /**
 	 * passes list of input characters into each Driver
 	 */
     public void giveInput(ArrayList<Character> character, double time) {
@@ -113,7 +113,7 @@ public class Map{
         }
     }
 
-	/**
+    /**
 	 * converts String input into list of characters then calls itself through overloading
 	 */
   	public void giveInput(String input, double time) {
@@ -127,24 +127,17 @@ public class Map{
 
     }
 
-	/**
+    /**
 	 * returns list of objects within given proximity of given object from every object in the Map
 	 */
-    public ArrayList<BasicGameObject> getProximityObjects(BasicGameObject b, double proximity) {
+    public ArrayList<BasicGameObject> getProximityObjects(DynamicGameObject d, double proximity) {
         ArrayList<BasicGameObject> withinProximity = new ArrayList<BasicGameObject>();
 
         for (BasicGameObject o: basicObjList) {
-            if (o.distance(b) <= proximity && o != b) {
-            	withinProximity.add(o);
+            if (o.distance(d) <= proximity) {
+            withinProximity.add(o);
 
             }
-        }
-
-        for (DynamicGameObject o: dynamicObjList) {
-        	if (o.distance(b) <= proximity && o != b) {
-        		withinProximity.add(o);
-
-        	}
         }
 
         return withinProximity;
@@ -291,14 +284,14 @@ public class Map{
     	for (DynamicGameObject o: dynamicObjList) {
     		for (BasicGameObject s: detectSATCollisions(o, basicObjList)) {
     			s.resolveCollision(o);
-                if (o instanceof MissileProjectile && (s instanceof StaticObstacle || (s instanceof Wall && !(s instanceof Checkpoint)))) {
+                if (!(o instanceof Car)) {
                     o.resolveCollision(o);
 
                 }
     		}
     		for (BasicGameObject d: detectSATCollisions(o, dynamicObjList)) {
     			d.resolveCollision(o);
-                if (o instanceof MissileProjectile) {
+                if (!(o instanceof Car)) {
                     o.resolveCollision(o);
 
                 }
@@ -310,7 +303,7 @@ public class Map{
      * apply flag action to basic object o
      * returns list of objects that have been altered and need updating visually
      */
-    public ArrayList<BasicGameObject> handleFlag(BasicGameObject o, Flag f, double time) {
+    public ArrayList<BasicGameObject> handleFlag(BasicGameObject o, Flag f, double time){
         ArrayList<BasicGameObject> toUpdate = new ArrayList<BasicGameObject>();
         toUpdate.add(o);
         switch (f.toString()) {
@@ -384,9 +377,9 @@ public class Map{
                         toUpdate.add(x);
 
                     }
+
                 }
                 break;
-
         }
 
         if (o instanceof Car) {
@@ -425,26 +418,24 @@ public class Map{
                         break;
 
                     case ("RESPAWN"):
+                    System.out.println("hope");
                         Checkpoint cp = null;
                         for (BasicGameObject x: basicObjList) {
                             if (x instanceof Checkpoint) {
                                 Checkpoint chp = (Checkpoint) x;
                                 if (chp.getNumber() == i.getSection()) {
                                     cp = chp;
-                                    break;
 
                                 }
                             }
                         }
 
                         if (cp != null) {
+                            System.out.println("aaaaaaaaaaaaa");
                             Vector vec = new Vector(cp.getEndX() - cp.getStartX(), cp.getEndY() - cp.getStartY()).multiply(0.5);
                             Car c = new Car((Car) o);
                             c.setX(cp.getStartX() + vec.getI());
                             c.setY(cp.getStartY() + vec.getJ());
-                            c.setSpeed(0);
-                            c.setDirection(vec.rotateOrthogonalCCW());
-                            addDynamicGameObject(c);
                             i.setAttachedCar(c);
                             toUpdate.add(c);
 
@@ -496,10 +487,10 @@ public class Map{
 
                         }
                     }
+
 		        }
         	}else {
         		toUpdate.add(o);
-
         	}
         	o.tick(time);
 

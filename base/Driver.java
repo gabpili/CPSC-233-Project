@@ -40,16 +40,16 @@ public class Driver {
 	}
 
 	/**
-	 * Setter method sets given value of 'item' to "this.item".
-	 */
+	* Setter method sets given value of 'item' to "this.item".
+	*/
 	public void setItem(Pickup item) {
 		this.item = item;
 
 	}
 
 	/**
-	 * Setter method set given 'attachedCar' to "this.attachedCar".
-	 */
+	* Setter method set given 'attachedCar' to "this.attachedCar".
+	*/
 	public void setAttachedCar(Car attachedCar) {
 		this.attachedCar = attachedCar;
 
@@ -172,9 +172,9 @@ public class Driver {
 	}
 
 	/**
-	 * Method that allows players to use items they had picked up.
-	 * Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
-	 */
+	* Method that allows players to use items they had picked up.
+	* Adds a flag for MisslePickup, adds a force for the SpeedboostPickup.
+	*/
 	public void useItem() {
 		if(item instanceof MissilePickup) {
 			Vector vec = attachedCar.getDirection().multiply(attachedCar.getHalfH() + 1.6);

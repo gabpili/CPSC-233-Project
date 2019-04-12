@@ -7,7 +7,6 @@ import java.lang.Math;
  * contains various operations needed for vector math
  */
 public final class Vector {
-    
     private final double i;
     private final double j;
 
