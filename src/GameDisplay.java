@@ -81,6 +81,9 @@ public class GameDisplay extends AnimationTimer {
     private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     private PrintStream out = new PrintStream(buffer);
 
+    /**
+     * Constructor that takes in 3 arguments
+     */
     public GameDisplay(Map currentMap, boolean showDebugOverlay, int fpsLimit) {
         debugOverlay.getChildren().add(carInfo);
         debugOverlay.getChildren().add(collidingInfo);
@@ -138,6 +141,9 @@ public class GameDisplay extends AnimationTimer {
         }
     }
 
+    /**
+     * Getter method that returns the value of scene
+     */
     public Scene getScene() {
         return scene;
 
@@ -329,7 +335,7 @@ public class GameDisplay extends AnimationTimer {
             }else {
                 if (currentMap.testSAT(mainCar, o) != null) testColliding.add(o);
             }
-            
+
         }
         collidingInfo.setText("Section: " + mainDriver.getSection()
             + " Lap " + mainDriver.getLap()
