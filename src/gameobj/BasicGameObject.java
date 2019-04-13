@@ -85,7 +85,7 @@ public abstract class BasicGameObject {
 	}
 
 	/**
-	 * Setter method sets given 'direction' of type double to the variable 'direction'
+	 * Setter method sets direction using angle in radians
 	 */
     public void setDirection(double direction) {
         this.direction = new Vector(direction);
@@ -93,7 +93,7 @@ public abstract class BasicGameObject {
     }
 
 	/**
-	 * Setter method sets given 'direction' of type Vector to the variable 'direction'
+	 * Setter method sets direction to a normalized vector
 	 */
     public void setDirection(Vector direction) {
         this.direction = new Vector(direction).normalize();

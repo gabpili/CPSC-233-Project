@@ -14,9 +14,7 @@ public class Map{
     private int height;
 
 	/**
-	 * Constructor takes in driverList of type Driver as well as integers
-	 * width and height and uses a constructor within the class to initialize
-	 * the values given values.
+	 * constructor that excludes any objects
 	 */
     public Map(ArrayList<Driver> driverList, int width, int height){
         this(null, null, driverList, width, height);
@@ -40,13 +38,13 @@ public class Map{
 
         }
         this.driverList.addAll(driverList);
-        this.width = width;
-        this.height = height;
+        this.width = Math.abs(width);
+        this.height = Math.abs(height);
 
     }
 
     /**
-	 * method returns list of basic objects
+	 * method returns ArrayList of basic objects
 	 * list contains non-moving obstacles and walls
 	 */
     public ArrayList<BasicGameObject> getBasicObjList() {
@@ -55,7 +53,7 @@ public class Map{
     }
 
     /**
-	 * method returns list of dynamic objects
+	 * method returns ArrayList of dynamic objects
 	 * list contains cars and moving obstacles
 	 */
     public ArrayList<DynamicGameObject> getDynamicObjList() {
@@ -64,7 +62,7 @@ public class Map{
     }
 
     /**
-	 * returns exact list of drivers
+	 * returns exact ArrayList of drivers
 	 */
     public ArrayList<Driver> getDriverList() {
       return driverList;
@@ -104,7 +102,7 @@ public class Map{
     }
 
 	/**
-	 *
+	 * passes ArrayList of character to each driver 
 	 */
     public void giveInput(ArrayList<Character> character, double time) {
         for (Driver i: driverList) {
@@ -114,7 +112,7 @@ public class Map{
     }
 
 	/**
-	 *
+	 * converts string into ArrayList of character to be used by the overloaded giveInput
 	 */
   	public void giveInput(String input, double time) {
         ArrayList<Character> inputInChar = new ArrayList<Character>();
@@ -128,16 +126,24 @@ public class Map{
     }
 
 	/**
-	 *
+	 * returns ArrayList of objects within proximity of given object
+	 * calculates distance from centre to centre
 	 */
-    public ArrayList<BasicGameObject> getProximityObjects(DynamicGameObject d, double proximity) {
+    public ArrayList<BasicGameObject> getProximityObjects(BasicGameObject o, double proximity) {
         ArrayList<BasicGameObject> withinProximity = new ArrayList<BasicGameObject>();
 
-        for (BasicGameObject o: basicObjList) {
-            if (o.distance(d) <= proximity) {
-            withinProximity.add(o);
+        for (BasicGameObject b: basicObjList) {
+            if (b.distance(o) <= proximity) {
+            	withinProximity.add(b);
 
             }
+        }
+
+        for (DynamicGameObject d: dynamicObjList) {
+        	if (d.distance(o) <= proximity) {
+        		withinProximity.add(d);
+
+        	}
         }
 
         return withinProximity;
@@ -175,12 +181,15 @@ public class Map{
     }
 
     /**
-	 * test if two objects b (moving object) and a are colliding using the
+	 * test if two objects a (moving object) and b (wall) are colliding using the
 	 * Separating Axis Theorem (SAT)
+     * then generate a collision manifold to be used for collision resolution
 	 *
 	 * resource: Separating Axis Theorem for Oriented Bounding Boxes by Johnny Huynh www.jkh.me
 	 *
-	 * @return true if colliding, false if not
+	 * modified to be simpler against flat walls
+	 *
+	 * @return a Manifold object if colliding, null if not
 	 */
     public Manifold testSAT(DynamicGameObject dObj, Wall wall) {
         double[] penetrationArray;
@@ -247,6 +256,16 @@ public class Map{
 
     }
 
+
+    /**
+	 * test if two objects a (moving object) and b (wall) are colliding using the
+	 * Separating Axis Theorem (SAT)
+     * then generate a collision manifold to be used for collision resolution
+	 *
+	 * resource: Separating Axis Theorem for Oriented Bounding Boxes by Johnny Huynh www.jkh.me
+	 *
+	 * @return a Manifold object if colliding, null if not
+	 */
     public Manifold testSAT(DynamicGameObject dObj, BasicGameObject bObj) {
         double[] penetrationArray = new double[4];
 
@@ -334,30 +353,7 @@ public class Map{
                 pointP, penetrationArray[3], normal, dObj.getVelocity());
 
         }
-        
-
     }
-
-    /**
-	 * performs SAT tests between given DynamicGameObject and every object in list
-	 *
-	 * @return list of objects that are colliding with dObj
-	 */
-    /*
-    public ArrayList<BasicGameObject> detectSATCollisions(DynamicGameObject dObj,
-        ArrayList<? extends BasicGameObject> sObjs) {
-
-        ArrayList<BasicGameObject> colliding = new ArrayList<BasicGameObject>();
-
-        for (BasicGameObject o: sObjs) {
-            if (dObj != o && testSAT(dObj, o)) {
-                colliding.add(o);
-
-            }
-        }
-        return colliding;
-
-    }*/
 
     /**
      * performs collision testing between every DynamicGameObject and all other objects
@@ -366,36 +362,39 @@ public class Map{
     public void collisionDetectResolveAll() {
     	for (DynamicGameObject o: dynamicObjList) {
     		for (BasicGameObject b: basicObjList) {
-                Manifold m = null;
-                if (b instanceof Wall) {
-                    m = testSAT(o, (Wall) b);
+                if (b != o) {
+                    Manifold m;
+                    if (b instanceof Wall) {
+                        m = testSAT(o, (Wall) b);
 
-                }else {
-                    m = testSAT(o, b);
+                    }else {
+                        m = testSAT(o, b);
 
-                }
+                    }
 
-                if (m != null) {
-                    b.resolveCollision(o, m);
+                    if (m != null) {
+                        b.resolveCollision(o, m);
 
-                }
+	                    if (o instanceof MissileProjectile && ((b instanceof Wall && !(b instanceof Checkpoint)) || b instanceof StaticObstacle)) {
+	                        o.resolveCollision(o, m);
 
-                if (!(o instanceof Car)) {
-                    o.resolveCollision(o, m);
-
+	                    }
+                    }
                 }
     		}
+
     		for (BasicGameObject d: dynamicObjList) {
-                Manifold m = testSAT(o, d);
+                if (d != o) {
+                    Manifold m = testSAT(o, d);
 
-    			if (m != null) {
-                    d.resolveCollision(o, m);
+                    if (m != null) {
+                        d.resolveCollision(o, m);
 
-                }
+	                    if (o instanceof MissileProjectile) {
+	                        o.resolveCollision(o, m);
 
-                if (!(o instanceof Car)) {
-                    o.resolveCollision(o, m);
-
+	                    }
+                    }
                 }
     		}
     	}
@@ -471,15 +470,14 @@ public class Map{
                         x.addFlag(new Flag(Flag.HandlingMethod.RESPAWN));
                         toUpdate.add(x);
 
-                    }
-                    else if (x instanceof StaticObstacle && x.getMass() < f.valueAt(1)) {
+                    }else if (x instanceof StaticObstacle && x.getMass() < f.valueAt(1)) {
                         x.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
                         toUpdate.add(x);
 
                     }
-
                 }
                 break;
+
         }
 
         if (o instanceof Car) {
@@ -509,7 +507,7 @@ public class Map{
     					}
     					break;
 
-                    case ("PICKUP_MISSLE"):
+                    case ("PICKUP_MISSILE"):
                         i.setItem(new MissilePickup());
                         break;
 
@@ -530,17 +528,20 @@ public class Map{
                         }
 
                         if (cp != null) {
-                            Vector vec = new Vector(cp.getEndX() - cp.getStartX(), cp.getEndY() - cp.getStartY()).multiply(0.5);
+                            Vector cpLength = new Vector(cp.getEndX() - cp.getStartX(), cp.getEndY() - cp.getStartY()).multiply(0.5);
                             Car c = new Car((Car) o);
-                            c.setX(cp.getStartX() + vec.getI());
-                            c.setY(cp.getStartY() + vec.getJ());
+                            c.setX(cp.getStartX() + cpLength.getI());
+                            c.setY(cp.getStartY() + cpLength.getJ());
+                            c.setDirection(cpLength.rotateOrthogonalCCW());
+                            c.setSpeed(0);
                             i.setAttachedCar(c);
+                            addDynamicGameObject(c);
                             toUpdate.add(c);
 
                         }
                         break;
 
-                    case ("SPAWN_MISSLE"):
+                    case ("SPAWN_MISSILE"):
                         double vParallel = o.getDirection().dot(o.getVelocity());
                         MissileProjectile mp = new MissileProjectile(f.valueAt(0), f.valueAt(1), vParallel + 30, f.valueAt(2));
                         addDynamicGameObject(mp);

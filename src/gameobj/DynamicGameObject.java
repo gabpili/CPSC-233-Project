@@ -17,8 +17,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     private final double inertiaMoment;
 
 	/**
-	 * Constructor takes in five arguments: x, y, name, half width and half height
-	 * sets them using another constructor in this class.
+	 * constructor that excludes direction
 	 */
     public DynamicGameObject(double x, double y, String name, double halfW, double halfH, double mass) {
         this(x, y, 0, name, halfW, halfH, mass, 0);
@@ -26,9 +25,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
 	/**
-	 * Constructor takes in seven arguments and uses methods within the class to set speed with given
-     * speed and direction with given direction as well as a constructor from the StaticObject class
-     * to set x, y, name, halfW and halfH.
+	 * full constructor with direction in radians and speed in m/s
 	 */
     public DynamicGameObject(double x, double y, double direction, String name, double halfW, double halfH, double mass,
     	double speed) {
@@ -39,7 +36,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Constructor takes seven arguments and uses type vector when given a direction and velocity
+     * full constructor with direction and velocity as vectors
      */
     public DynamicGameObject(double x, double y, Vector direction, String name, double halfW, double halfH, double mass,
     	Vector velocity) {
@@ -60,7 +57,8 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Setter method sets given 'speed' to variable 'velocity'
+     * Setter method sets magnitude of velocity to given speed
+     * does not change the direction of velocity
      */
     public void setSpeed(double speed) {
     	if (velocity.normSqr() == 0) {
@@ -73,7 +71,8 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Setter method sets given 'speed' and give 'direction' to the variable 'velocity'
+     * Setter method sets magnitude of velocity and direction of the object
+     * does not change the direction of velocity
      */
     public void setVelocity(double speed, double direction) {
     	this.velocity = new Vector(direction).multiply(speed);
@@ -81,7 +80,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Setter method sets given 'velocity' to the variable 'velocity'
+     * Setter method sets velocity as vector
      */
     public void setVelocity(Vector velocity) {
     	this.velocity = new Vector(velocity);
@@ -89,7 +88,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Setter method sets given 'angularVelocity' to the variable 'angularVelocity'
+     * Setter method sets angular velocity in radians/s
      */
     public void setAngularVelocity(double angularVelocity) {
         this.angularVelocity = angularVelocity;
@@ -97,7 +96,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Setter method sets given 'netForce' to the variable 'netForce'
+     * Setter method sets net force as vector
      */
     public void setNetForce(Vector netForce) {
         this.netForce = netForce;
@@ -105,7 +104,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Setter method sets given 'netAngularAcceleration' to the variable 'netAngularAcceleration'
+     * Setter method sets net angular acceleration as radians/s^2
      */
     public void setNetAngularAcceleration(double netAngularAcceleration) {
         this.netAngularAcceleration = netAngularAcceleration;
@@ -113,7 +112,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Getter method returns the value of velocity normal
+     * Getter method returns the value of velocity normal in m/s
      */
     public double getSpeed() {
     	return velocity.norm();
@@ -121,7 +120,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Getter method returns the value of velocity
+     * Getter method returns the velocity vector of components in m/s
      */
     public Vector getVelocity() {
     	return new Vector(velocity);
@@ -129,7 +128,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Getter method returns the value of angularVelocity
+     * Getter method returns angularVelocity in radians/s
      */
     public double getAngularVelocity() {
         return angularVelocity;
@@ -137,7 +136,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Getter method returns the value of netForce
+     * Getter method returns netForce vector of components in N
      */
     public Vector getNetForce() {
         return netForce;
@@ -145,7 +144,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * Getter method returns the value of netAngularAcceleration
+     * Getter method returns netAngularAcceleration in radians/s^2
      */
     public double getNetAngularAcceleration() {
         return netAngularAcceleration;
@@ -161,7 +160,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * adds given force as a vector to the netForce
+     * adds given force vector to the netForce
      */
     public void addForce(Vector force) {
         netForce = netForce.add(force);
@@ -169,7 +168,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * adds given torque as newton metres to the netAngularAcceleration
+     * adds given torque as Nm to the netAngularAcceleration
      */
     public void addTorque(double force, double radius) {
         netAngularAcceleration += force / getMass() / radius;
@@ -185,7 +184,7 @@ public abstract class DynamicGameObject extends BasicGameObject {
     }
 
     /**
-     * change position based on velocity components and time given
+     * change physical values given time
      */
     public void tick(double time) {
         // change angular velocity and direction

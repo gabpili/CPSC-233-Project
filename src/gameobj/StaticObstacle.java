@@ -16,7 +16,7 @@ public class StaticObstacle extends BasicGameObject{
 	}
 	
 	/**
-	 * flags this obstacle to be destroyed and flags the colliding dObj to change speed by -5
+	 * moves dObj to not be colliding and destroys this obstacle if dObj had enough speed and mass
 	 */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj, Manifold manifold) throws IllegalArgumentException {
@@ -27,10 +27,10 @@ public class StaticObstacle extends BasicGameObject{
 
 		if (Math.abs(dObj.getVelocity().dot(manifold.getCollisionNormal())) * dObj.getMass() / 80 > getMass()) {
 			super.addFlag(new Flag(Flag.HandlingMethod.DESTROY));
-			dObj.addForce(manifold.getCollisionNormal().multiply(getMass() * 4000));
+			dObj.addForce(manifold.getCollisionNormal().multiply(dObj.getSpeed() * dObj.getMass() * 40));
 
 		}else {
-			dObj.addFlag(new Flag(Flag.HandlingMethod.SET_SPEED, dObj.getSpeed() * -0.2));
+			dObj.addForce(manifold.getCollisionNormal().multiply(dObj.getSpeed() * dObj.getMass() * 20));
 
 		}
 	}

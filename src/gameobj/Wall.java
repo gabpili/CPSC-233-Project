@@ -95,7 +95,7 @@ public class Wall extends BasicGameObject{
 	}
 
 	/**
-	 *
+	 * returns distance from closest point on the wall to given object
 	 */
 	@Override
 	public double distance(BasicGameObject o) {
@@ -130,14 +130,10 @@ public class Wall extends BasicGameObject{
 	}
 
     /**
-	 * The method resolveCollision is overidden from BasicGameObject
-     * argument name is dObj of type DynamicGameObject
+	 * moves dObj to not be colliding and all velocity into wall is subtracted
      */
 	@Override
 	public void resolveCollision(DynamicGameObject dObj, Manifold manifold) throws IllegalArgumentException {
-		/* get nearby walls of car, then,
-		if car has hit corner then find point of collision from nearest wall point, bouncing or rotating back
-		if a wall is close enough to force a pivot then rotate*/
         Vector transform = manifold.getCollisionNormal().multiply(manifold.getPenetrationDepth());
 
         dObj.setX(dObj.getX() + transform.getI());

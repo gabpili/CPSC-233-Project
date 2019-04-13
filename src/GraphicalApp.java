@@ -17,9 +17,6 @@ import javafx.scene.control.Button;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
@@ -47,25 +44,25 @@ public class GraphicalApp extends Application {
 
                 //call methods from MapIO class to load from chosen file
                 try {ResourceIO.loadStaticObstacle("resource\\map" + mapName + "-data\\StaticObstacle.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no static obstacles");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\StaticObstacle.txt");}
 
                 try {ResourceIO.loadMissilePickup("resource\\map" + mapName + "-data\\MissilePickUp.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no missile pickups");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\MissilePickUp.txt");}
 
                 try {ResourceIO.loadSpeedboostPickup("resource\\map" + mapName + "-data\\SpeedBoostPickup.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no speedboost pickups");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\SpeedBoostPickup.txt");}
 
                 try {ResourceIO.loadFinishLine("resource\\map" + mapName + "-data\\FinishLine.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no finishlines");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\FinishLine.txt");}
 
                 try {ResourceIO.loadSpeedboostTile("resource\\map" + mapName + "-data\\SpeedBoostTile.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no speedboost tiles");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\SpeedBoostTile.txt");}
 
                 try {ResourceIO.loadWall("resource\\map" + mapName + "-data\\Wall.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no walls");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\Wall.txt");}
 
                 try {ResourceIO.loadCheckpoint("resource\\map" + mapName + "-data\\Checkpoint.txt", currentMap);
-                }catch (FileNotFoundException f) {System.out.println("no checkpoints");}
+                }catch (FileNotFoundException f) {System.out.println("no resource\\map" + mapName + "-data\\Checkpoint.txt");}
 
                 FinishLine finish = null;
                 for (BasicGameObject o: currentMap.getBasicObjList()) {
@@ -171,7 +168,7 @@ public class GraphicalApp extends Application {
 
         mapScreenRoot.getChildren().add(map1);
 		mapScreenRoot.getChildren().add(map2);
-		//mapScreenRoot.getChildren().add(map3);
+		mapScreenRoot.getChildren().add(map3);
 
 		map1.setOnAction(new LoadMapEventHandler("1",  driverList, carList, primaryStage));
 		map2.setOnAction(new LoadMapEventHandler("2",  driverList, carList, primaryStage));

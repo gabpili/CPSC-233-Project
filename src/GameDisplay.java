@@ -78,11 +78,15 @@ public class GameDisplay extends AnimationTimer {
 
     private boolean paused = false;
 
+    /**
+     * debugging stream that is used to contain all System.out text to display in a label
+     */
     private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     private PrintStream out = new PrintStream(buffer);
 
     /**
-     * Constructor that takes in 3 arguments
+     * constructor initializes overlays,
+     * sets up the game scene with shapes of physical objects and key event handlers
      */
     public GameDisplay(Map currentMap, boolean showDebugOverlay, int fpsLimit) {
         debugOverlay.getChildren().add(carInfo);
@@ -142,7 +146,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * Getter method that returns the value of scene
+     * Getter method that returns the game scene
      */
     public Scene getScene() {
         return scene;
@@ -150,7 +154,7 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * detects collision between each DynamicGameObject and every BasicGameObject
+     * detects collision between each DynamicGameObject and every object
      * colliding objects have collisions resolved as per the BasicGameObject's specific method of resolution
      */
     private void collisionStep(double time) {
@@ -310,33 +314,33 @@ public class GameDisplay extends AnimationTimer {
     }
 
     /**
-     * steps through the 4 game loop process and updates info labels
+     * steps through the 4 game loop process and updates debugging info labels
      */
     private void gameFrame(double time) {
         if (paused) {
             time = 0;
+
         }
-    	//time /= 6;
         // 4 game loop process
+        inputStep(time);
         ArrayList<BasicGameObject> toUpdate = tickStep(time);
         collisionStep(time);
-        inputStep(time);
         displayStep(toUpdate);
 
         // update debug overlay labels
         carInfo.setText("" + mainCar
         	+ "\n" + buffer.toString());
         ArrayList<BasicGameObject> testColliding = new ArrayList<BasicGameObject>();
-        System.out.println(currentMap.getBasicObjList());
         for (BasicGameObject o: currentMap.getBasicObjList()) {
-            System.out.print(0);
             if (o instanceof Wall) {
                 if (currentMap.testSAT(mainCar, (Wall) o) != null) testColliding.add(o);
+
             }else {
                 if (currentMap.testSAT(mainCar, o) != null) testColliding.add(o);
-            }
 
+            }
         }
+
         collidingInfo.setText("Section: " + mainDriver.getSection()
             + " Lap " + mainDriver.getLap()
             + "\n" + testColliding);

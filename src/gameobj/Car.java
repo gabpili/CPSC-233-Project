@@ -5,7 +5,7 @@ import java.lang.Math;
 import base.Manifold;
 import base.Vector;
 
-public class Car extends DynamicGameObject{
+public class Car extends DynamicGameObject {
 
 	// basic forward/backward
     private Vector brakeForce = new Vector();
@@ -64,7 +64,7 @@ public class Car extends DynamicGameObject{
 	}
 
     /**
-     * constructor that excludes position
+     * constructor that excludes position and direction
      */
 	public Car(String name, double halfW, double halfH, double mass, 
 		double engine, double brake, double drag, double rollingResistance,
