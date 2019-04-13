@@ -7,9 +7,9 @@ import java.io.IOException;
 import gameobj.BasicGameObject;
 import gameobj.DynamicGameObject;
 import base.Flag;
+import base.Manifold;
 
 import java.lang.Math;
-import java.util.ArrayList;
 import org.junit.Test;
 
 
@@ -30,7 +30,7 @@ public class BasicGameObjectTest{
 		}
 
 		@Override
-        public void resolveCollision(DynamicGameObject dObj) throws IllegalArgumentException{
+        public void resolveCollision(DynamicGameObject dObj, Manifold manifold) throws IllegalArgumentException{
 
         }
 
@@ -120,40 +120,9 @@ public class BasicGameObjectTest{
 	}
 
 	@Test
-	public void test_addFlag(){
-		BasicGameObject b = new MockBasicGameObject(0, 0, "Testing BasicGameObject", 10, 5, 2);
-		Flag f = new Flag(Flag.HandlingMethod.DESTROY);
-		b.addFlag(f);
-		assertEquals("Created BasicGameObject and added a flag", new Flag(Flag.HandlingMethod.DESTROY), b.getFlags().get(0));
-	}
-
-	@Test
-	public void test_removeFlag(){
-		BasicGameObject b = new MockBasicGameObject(0, 0, "Testing BasicGameObject", 10, 5, 2);
-		Flag f = new Flag(Flag.HandlingMethod.DESTROY);
-		b.addFlag(f);
-		b.removeFlag(new Flag(Flag.HandlingMethod.DESTROY));
-		assertEquals("Created Basic BasicGameObject and removing flag", new ArrayList<Flag>(), b.getFlags());
-	}
-
-	@Test
-	public void test_getFlag(){
-		BasicGameObject b = new MockBasicGameObject(0, 0, "Testing BasicGameObject", 10, 5, 2);
-		Flag f1 = new Flag(Flag.HandlingMethod.ADD_SPEED, 7);
-		Flag f2 = new Flag(Flag.HandlingMethod.ADD_DIRECTION, 1);
-		ArrayList<Flag> expected = new ArrayList<Flag>();
-		b.addFlag(f1);
-		b.addFlag(f2);
-		expected.add(new Flag(f1));
-		expected.add(new Flag(f2));
-		assertEquals("Created BasicGameObject getting a flag", expected, b.getFlags());
-
-	}
-
-	@Test
-	public void test_toString(){
+	public void test_toString() {
 		BasicGameObject b = new MockBasicGameObject(0, 0, "bub", 10, 5, 2);
-		assertEquals("Expected to string to return <name> x:<x>m y:<y>m ", "bub x:0m y:0m ", b.toString());
+		assertEquals("Expected to string to return <name> x:<x>m y:<y>m ", "bub x:0m y:0m 0deg ", b.toString());
 	}
 
 }
