@@ -5,7 +5,7 @@ Accessing the Car Simulator Game
   > You will need to place all the class files in the same folder.
   > Use 'javac*.java' to compile every class.
   > Run the 'GraphicalApp' class.
-  > 
+  
   
 Controls     
   > Press 'w' to accelerate.
@@ -20,3 +20,7 @@ Controls
   > Press'k' to pause
   > Press'j' to unpause
   
+  Testing
+    > make sure JUnit files are in src folder
+    > to test files, use javac -cp .:hamcrest-core-1.3.jar:junit-4.12.jar <Test Name>.java
+    > java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar org.junit.runner.JUnitCore <Test>
